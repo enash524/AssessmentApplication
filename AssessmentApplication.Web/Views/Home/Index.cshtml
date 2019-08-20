@@ -1,0 +1,19 @@
+﻿@{
+	ViewBag.Title = "Sales Order";
+}
+
+@section header {
+	<base href="~/" />
+}
+
+@section scripts {
+	@Scripts.Render("~/bundles/salesOrder")
+}
+
+<div class="container">
+	<h2>Sales Order</h2>
+
+	<div ng-app="salesOrderModule">
+		<div ng-view></div>
+	</div>
+</div>

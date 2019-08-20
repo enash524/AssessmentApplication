@@ -1,0 +1,32 @@
+﻿<div class="row" ng-if="vm.dataLoaded()">
+	<div class="col-sm-6 col-md-4 col-lg-3" ng-repeat="detail in vm.formModel.details">
+		<div class="detail">
+			<div class="detail-header" ng-bind="detail.name"></div>
+
+			<div class="detail-body">
+				<dl class="dl-horizontal">
+					<dt>Product Number:</dt>
+					<dd ng-bind="detail.productNumber"></dd>
+
+					<dt>Order Quantity:</dt>
+					<dd ng-bind="detail.orderQty"></dd>
+
+					<dt>Unit Price:</dt>
+					<dd ng-bind="detail.unitPrice | currency"></dd>
+					
+					<dt>Unit Price Discount:</dt>
+					<dd ng-bind="detail.unitPriceDiscount | currency"></dd>
+					
+					<dt>Line Total:</dt>
+					<dd ng-bind="detail.lineTotal | currency"></dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row" ng-if="!vm.dataLoaded()">
+	<div class="col-md-12">
+		<em>No records found</em>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+﻿body {
+	background: url(/images/background/wind-turbines1-.gif) no-repeat center center fixed;
+	background-size: cover;
+	padding: 20px 0;
+}
+
+.error-message {
+	color: #a94442;
+	display: inline-block;
+	padding: 8px;
+}
+
+.login-panel {
+	margin-top: 25%;
+}

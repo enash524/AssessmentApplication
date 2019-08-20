@@ -1,0 +1,17 @@
+﻿.detail {
+	margin: 5px 0;
+}
+
+.detail-header {
+	background-color: #008cba;
+	border: 1px solid #008cba;
+	color: #fff;
+	font-size: 1.3em;
+	font-weight: bold;
+	padding: 2px;
+}
+
+.detail-body {
+	border: 1px solid #008cba;
+	padding: 2px;
+}

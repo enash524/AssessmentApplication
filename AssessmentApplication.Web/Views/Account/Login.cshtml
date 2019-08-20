@@ -1,0 +1,58 @@
+﻿@using AssessmentApplication.Models.Account;
+@model LoginModel
+
+@{
+	Layout = null;
+}
+
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Log In -  Assessment Application</title>
+	@Styles.Render("~/Content/css")
+	<link href="~/Content/login.css" media="all" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<div class="login-panel panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Please Sign In</h3>
+				</div>
+
+				<div class="panel-body">
+					@using (Html.BeginForm("Login", "Account", null, FormMethod.Post, new { id = "login-form", novalidate = "novalidate", role = "form" }))
+					{
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-sign-in"></i></span>
+								@Html.TextBoxFor(m => m.Username, new { autofocus = "autofocus", @class = "form-control", id = "login-username", placeholder = "username", required = "required" })
+								@Html.ValidationMessageFor(m => m.Username, string.Empty, new { @class = "error-message" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+								@Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "login-password", placeholder = "password", required = "required" })
+								@Html.ValidationMessageFor(m => m.Password, string.Empty, new { @class = "error-message" })
+							</div>
+						</div>
+
+						<button class="btn btn-lg btn-primary btn-block" type="submit">
+							Login
+						</button>
+						@Html.AntiForgeryToken()
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/angularjs")
+</body>
+</html>
