@@ -48,7 +48,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AssessmentApplication.DataContracts\AssessmentApplication.DataContracts.csproj">
       <Project>{fb5e17db-f52d-4f50-a6aa-ab540bd787c6}</Project>
-      <Name>AquilonAssessmentApplication.DataContracts</Name>
+      <Name>AssessmentApplication.DataContracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
