@@ -1,29 +1,23 @@
-﻿using System.Data;
-using System.Data.SqlClient;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Dapper;
+using AssessmentApplication.Data.Interfaces;
+using AssessmentApplication.Domain.Entities;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 
 namespace AssessmentApplication.Application.SalesOrder.Queries.Detail
 {
-    public class SalesOrderDetailHandler : IRequestHandler<SalesOrderDetailQuery, SalesOrderDetailVm>
+    public class SalesOrderDetailHandler : IRequestHandler<SalesOrderDetailQuery, SalesOrderDetailEntity>
     {
-        private readonly IConfiguration _configuration;
+        private readonly ISalesOrderDetailRepository _salesOrderDetailRepository;
 
-        public SalesOrderDetailHandler(IConfiguration configuration)
+        public SalesOrderDetailHandler(ISalesOrderDetailRepository salesOrderDetailRepository)
         {
-            _configuration = configuration;
+            _salesOrderDetailRepository = salesOrderDetailRepository;
         }
 
-        public async Task<SalesOrderDetailVm> Handle(SalesOrderDetailQuery request, CancellationToken cancellationToken)
+        public Task<SalesOrderDetailEntity> Handle(SalesOrderDetailQuery request, CancellationToken cancellationToken)
         {
-            using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                SalesOrderDetailVm result = await connection.QueryFirstOrDefaultAsync<SalesOrderDetailVm>("Sales.uspGetSalesOrderDetail", new { salesOrderDetailId = request.SalesOrderDetailId });
-                return result;
-            }
+            return _salesOrderDetailRepository.GetSalesOrderDetailAsync(request.SalesOrderDetailId, cancellationToken);
         }
     }
 }

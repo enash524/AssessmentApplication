@@ -36,9 +36,9 @@
 - Tech to use
   - Bootstrap (color scheme other than default)
   - C#
-  - <span>ASP.NET</span> MVC
+  - ASP.NET MVC
   - AngularJS
   - jQuery
   - SQL Server
     - Stored procedures only, no in-line SQL
-    - You can use an ORM (not EF) or just POCO with <span>ADO.net</span>
+    - You can use an ORM (not EF) or just POCO with ADO.net

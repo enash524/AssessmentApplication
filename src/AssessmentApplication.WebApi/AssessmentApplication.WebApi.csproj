@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AssessmentApplication.Application\AssessmentApplication.Application.csproj" />
+    <ProjectReference Include="..\AssessmentApplication.Data\AssessmentApplication.Data.csproj" />
   </ItemGroup>
 
 

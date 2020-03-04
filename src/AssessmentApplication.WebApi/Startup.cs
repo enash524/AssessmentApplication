@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AssessmentApplication.Application;
+using AssessmentApplication.Data;
+using AssessmentApplication.Data.Profiles;
+using AssessmentApplication.WebApi.Profiles;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using MediatR;
-using AssessmentApplication.Application.SalesOrder.Queries.Detail;
-using System.Reflection;
 
 namespace AssessmentApplication.WebApi
 {
@@ -28,7 +23,10 @@ namespace AssessmentApplication.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(SalesOrderDetailHandler).GetTypeInfo().Assembly);
+            // TODO - ADD TO STATIC DependencyInjection CLASSES IF POSSIBLE!!!
+            services.AddAutoMapper(typeof(SalesOrderDetailVmProfile), typeof(SalesOrderDetailProfile));
+            services.AddApplication();
+            services.AddData(Configuration);
             services.AddControllers();
         }
 

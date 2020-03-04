@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AssessmentApplication.Application.Person.Queries;
 using AssessmentApplication.Application.SalesOrder.Queries.Detail;
 using AssessmentApplication.Application.SalesOrder.Queries.Search;
+using AssessmentApplication.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,14 +22,16 @@ namespace AssessmentApplication.WebApi.Controllers
                 SalesOrderDetailId = salesOrderId
             };
 
-            SalesOrderDetailVm result = await Mediator.Send(query);
+            SalesOrderDetailEntity entity = await Mediator.Send(query);
 
-            if (result == null)
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return Ok(result);
+            SalesOrderDetailVm vm = Mapper.Map<SalesOrderDetailVm>(entity);
+
+            return Ok(vm);
         }
 
         // GET api/SalesOrder/Search
@@ -55,6 +57,7 @@ namespace AssessmentApplication.WebApi.Controllers
         {
             GetPersonsQuery query = new GetPersonsQuery();
             List<PersonVm> result = await Mediator.Send(query);
+
             return Ok(result);
         }
     }
