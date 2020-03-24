@@ -12,7 +12,8 @@ namespace AssessmentApplication.Data
         public static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IDbConnection>(_ => new SqlConnection(configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<ISalesOrderDetailRepository, SalesOrderDetailRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<ISalesRepository, SalesRepository>();
 
             return services;
         }

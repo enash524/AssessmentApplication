@@ -1,5 +1,5 @@
-﻿using AssessmentApplication.Application.SalesOrder.Queries.Detail;
-using AssessmentApplication.Domain.Entities;
+﻿using AssessmentApplication.Domain.Entities;
+using AssessmentApplication.WebApi.Models;
 using AutoMapper;
 
 namespace AssessmentApplication.WebApi.Profiles

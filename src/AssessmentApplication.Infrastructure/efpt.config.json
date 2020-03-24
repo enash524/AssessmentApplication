@@ -1,0 +1,218 @@
+﻿{
+   "ContextClassName": "Adventureworks2017Context",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "DoNotCombineNamespace": false,
+   "IdReplace": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Sales",
+   "ProjectRootNamespace": "AssessmentApplication.Domain.Entities.Sales",
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 2,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[BillOfMaterials]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[Culture]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[Document]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[Illustration]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[Location]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[Product]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductCategory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductCostHistory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductDescription]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductDocument]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductInventory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductListPriceHistory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductModel]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductModelIllustration]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductModelProductDescriptionCulture]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductPhoto]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductProductPhoto]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductReview]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ProductSubcategory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[ScrapReason]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[TransactionHistory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[TransactionHistoryArchive]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[UnitMeasure]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[WorkOrder]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Production].[WorkOrderRouting]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Purchasing].[ProductVendor]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Purchasing].[PurchaseOrderDetail]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Purchasing].[PurchaseOrderHeader]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Purchasing].[ShipMethod]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Purchasing].[Vendor]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[CountryRegionCurrency]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[CreditCard]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[Currency]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[CurrencyRate]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[Customer]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[PersonCreditCard]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SalesOrderDetail]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SalesOrderHeader]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SalesOrderHeaderSalesReason]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SalesPerson]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SalesPersonQuotaHistory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SalesReason]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SalesTaxRate]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SalesTerritory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SalesTerritoryHistory]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[ShoppingCartItem]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SpecialOffer]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[SpecialOfferProduct]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Sales].[Store]"
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseSpatial": false
+}

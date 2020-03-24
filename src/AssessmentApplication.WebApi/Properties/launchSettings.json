@@ -20,7 +20,7 @@
     "AssessmentApplication.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "hc",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
