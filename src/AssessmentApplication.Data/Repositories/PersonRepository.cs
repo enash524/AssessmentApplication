@@ -6,17 +6,20 @@ using AssessmentApplication.Data.Interfaces;
 using AssessmentApplication.Domain.Entities;
 using AutoMapper;
 using Dapper;
+using Microsoft.Extensions.Logging;
 
 namespace AssessmentApplication.Data.Repositories
 {
     public class PersonRepository : IPersonRepository
     {
         private readonly IDbConnection _dbConnection;
+        private readonly ILogger<PersonRepository> _logger;
         private readonly IMapper _mapper;
 
-        public PersonRepository(IMapper mapper, IDbConnection dbConnection)
+        public PersonRepository(IDbConnection dbConnection, ILogger<PersonRepository> logger, IMapper mapper)
         {
             _dbConnection = dbConnection;
+            _logger = logger;
             _mapper = mapper;
         }
 

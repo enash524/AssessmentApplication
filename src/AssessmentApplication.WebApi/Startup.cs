@@ -21,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace AssessmentApplication.WebApi
 {
@@ -44,6 +45,17 @@ namespace AssessmentApplication.WebApi
                 typeof(SalesOrderDetailVmProfile),
                 typeof(SalesOrderDetailProfile),
                 typeof(SalesOrderHeaderProfile));
+
+            services
+                .AddLogging(config =>
+                {
+                    config
+                        .AddConfiguration(Configuration.GetSection("Logging"))
+                        .AddConsole(config =>
+                        {
+                            config.TimestampFormat = "yyyy-MM-dd hh:mm:ss tt ";
+                        });
+                });
 
             services.AddApplication();
             services.AddData(Configuration);

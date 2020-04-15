@@ -9,17 +9,20 @@ using AssessmentApplication.Domain.Common;
 using AssessmentApplication.Domain.Entities;
 using AutoMapper;
 using Dapper;
+using Microsoft.Extensions.Logging;
 
 namespace AssessmentApplication.Data.Repositories
 {
     public class SalesRepository : ISalesRepository
     {
         private readonly IDbConnection _dbConnection;
+        private readonly ILogger<SalesRepository> _logger;
         private readonly IMapper _mapper;
 
-        public SalesRepository(IMapper mapper, IDbConnection dbConnection)
+        public SalesRepository(IDbConnection dbConnection, ILogger<SalesRepository> logger, IMapper mapper)
         {
             _dbConnection = dbConnection;
+            _logger = logger;
             _mapper = mapper;
         }
 
