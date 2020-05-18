@@ -4,6 +4,7 @@ using AssessmentApplication.Domain.Entities;
 using AssessmentApplication.WebApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace AssessmentApplication.WebApi.Controllers
 {
@@ -14,6 +15,7 @@ namespace AssessmentApplication.WebApi.Controllers
         [ProducesResponseType(typeof(PersonVm), StatusCodes.Status200OK)]
         public async Task<ActionResult<PersonVm>> GetPersonById(int id)
         {
+            Logger.LogInformation($"GetPersonById: {id}");
             GetPersonByIdQuery query = new GetPersonByIdQuery
             {
                 BusinessEntityId = id
