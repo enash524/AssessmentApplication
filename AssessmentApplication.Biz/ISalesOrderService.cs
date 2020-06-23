@@ -5,14 +5,14 @@ using AssessmentApplication.DataContracts;
 
 namespace AssessmentApplication.Biz
 {
-	public interface ISalesOrderService
-	{
-		#region Public Methods
+    public interface ISalesOrderService
+    {
+        #region Public Methods
 
-		Task<List<SalesOrderHeader>> GetAllSalesOrderHeaderAsync(string customerName, DateTime? dueDateEnd, DateTime? dueDateStart, DateTime? orderDateEnd, DateTime? orderDateStart, DateTime? shipDateEnd, DateTime? shipDateStart);
+        Task<List<SalesOrderHeader>> GetAllSalesOrderHeaderAsync(string customerName, DateTime? dueDateEnd, DateTime? dueDateStart, DateTime? orderDateEnd, DateTime? orderDateStart, DateTime? shipDateEnd, DateTime? shipDateStart);
 
-		Task<List<SalesOrderDetail>> GetSalesOrderDetailAsync(int salesOrderId);
+        Task<List<SalesOrderDetail>> GetSalesOrderDetailAsync(int salesOrderId);
 
-		#endregion Public Methods
-	}
+        #endregion Public Methods
+    }
 }

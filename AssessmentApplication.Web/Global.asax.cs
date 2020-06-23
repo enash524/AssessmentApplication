@@ -5,19 +5,19 @@ using System.Web.Routing;
 
 namespace AssessmentApplication
 {
-	public class MvcApplication : System.Web.HttpApplication
-	{
-		#region Protected Methods
+    public class MvcApplication : System.Web.HttpApplication
+    {
+        #region Protected Methods
 
-		protected void Application_Start()
-		{
-			AreaRegistration.RegisterAllAreas();
-			GlobalConfiguration.Configure(WebApiConfig.Register);
-			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-			RouteConfig.RegisterRoutes(RouteTable.Routes);
-			BundleConfig.RegisterBundles(BundleTable.Bundles);
-		}
+        protected void Application_Start()
+        {
+            AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
 
-		#endregion Protected Methods
-	}
+        #endregion Protected Methods
+    }
 }

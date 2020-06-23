@@ -12,7 +12,6 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderHeader
         /// </summary>
         public GetSalesOrderHeaderQueryValidator()
         {
-
         }
     }
 }

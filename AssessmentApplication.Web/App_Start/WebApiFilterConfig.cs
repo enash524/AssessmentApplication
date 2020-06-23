@@ -3,15 +3,15 @@ using System.Web.Http.Filters;
 
 namespace AssessmentApplication
 {
-	public class WebApiFilterConfig
-	{
-		#region Public Methods
+    public class WebApiFilterConfig
+    {
+        #region Public Methods
 
-		public static void RegisterGlobalFilters(HttpFilterCollection filters)
-		{
-			filters.Add(new AuthorizeAttribute());
-		}
+        public static void RegisterGlobalFilters(HttpFilterCollection filters)
+        {
+            filters.Add(new AuthorizeAttribute());
+        }
 
-		#endregion Public Methods
-	}
+        #endregion Public Methods
+    }
 }

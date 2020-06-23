@@ -5,36 +5,36 @@ using Newtonsoft.Json.Serialization;
 
 namespace AssessmentApplication
 {
-	public static class WebApiConfig
-	{
-		#region Public Properties
+    public static class WebApiConfig
+    {
+        #region Public Properties
 
-		public static string UrlPrefix => "api";
+        public static string UrlPrefix => "api";
 
-		public static string UrlPrefixRelative => "~/api";
+        public static string UrlPrefixRelative => "~/api";
 
-		#endregion Public Properties
+        #endregion Public Properties
 
-		#region Public Methods
+        #region Public Methods
 
-		public static void Register(HttpConfiguration config)
-		{
-			// Web API configuration and services
-			WebApiFilterConfig.RegisterGlobalFilters(config.Filters);
+        public static void Register(HttpConfiguration config)
+        {
+            // Web API configuration and services
+            WebApiFilterConfig.RegisterGlobalFilters(config.Filters);
 
-			// Web API routes
-			config.MapHttpAttributeRoutes();
+            // Web API routes
+            config.MapHttpAttributeRoutes();
 
-			config.Routes.MapHttpRoute(
-				name: "DefaultApi",
-				routeTemplate: UrlPrefix + "/{controller}/{id}",
-				defaults: new { id = RouteParameter.Optional }
-			);
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: UrlPrefix + "/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
 
-			JsonMediaTypeFormatter jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
-			jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-		}
+            JsonMediaTypeFormatter jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
+            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        }
 
-		#endregion Public Methods
-	}
+        #endregion Public Methods
+    }
 }
