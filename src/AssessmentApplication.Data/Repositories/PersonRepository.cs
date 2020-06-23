@@ -35,6 +35,7 @@ namespace AssessmentApplication.Data.Repositories
             }
 
             PersonEntity entity = _mapper.Map<PersonEntity>(dto);
+
             return entity;
         }
     }

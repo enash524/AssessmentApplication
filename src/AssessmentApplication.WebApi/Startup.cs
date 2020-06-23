@@ -5,12 +5,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AssessmentApplication.Application;
 using AssessmentApplication.Application.Mappers;
+using AssessmentApplication.Application.Queries.Sales.SalesOrderDetail;
 using AssessmentApplication.Data;
 using AssessmentApplication.Data.Profiles;
 using AssessmentApplication.WebApi.Extensions;
 using AssessmentApplication.WebApi.Middleware;
 using AssessmentApplication.WebApi.Profiles;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -41,12 +43,11 @@ namespace AssessmentApplication.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             // TODO - ADD TO STATIC DependencyInjection CLASSES IF POSSIBLE!!!
-            services.AddAutoMapper(
-                typeof(SalesOrderDetailVmProfile),
-                typeof(SalesOrderDetailProfile),
-                typeof(SalesOrderHeaderProfile));
-
             services
+                .AddAutoMapper(
+                    typeof(SalesOrderDetailVmProfile),
+                    typeof(SalesOrderDetailProfile),
+                    typeof(SalesOrderHeaderProfile))
                 .AddLogging(config =>
                 {
                     config
@@ -55,18 +56,21 @@ namespace AssessmentApplication.WebApi
                         {
                             config.TimestampFormat = "yyyy-MM-dd hh:mm:ss tt ";
                         });
-                });
+                })
+                .AddApplication()
+                .AddData(Configuration)
+                .AddControllers(opt =>
+                {
+                    // remove formatter that turns nulls into 204 - No Content responses
+                    // this formatter breaks Angular's Http response JSON parsing
+                    opt.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
+                })
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetSalesOrderDetailQueryValidator>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddApplication();
-            services.AddData(Configuration);
-            services.AddControllers(opt =>
-            {
-                // remove formatter that turns nulls into 204 - No Content responses
-                // this formatter breaks Angular's Http response JSON parsing
-                opt.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.AddHealthChecks().AddMemoryHealthCheck("memory");
+            services
+                .AddHealthChecks()
+                .AddMemoryHealthCheck("memory");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +80,10 @@ namespace AssessmentApplication.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UseSwagger();
 
             app.UseHttpsRedirection();
 

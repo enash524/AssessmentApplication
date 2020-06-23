@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AssessmentApplication.Application.Sales.SalesOrderDetail.Queries;
-using AssessmentApplication.Application.Sales.SalesOrderHeader.Queries;
+using AssessmentApplication.Application.Models;
+using AssessmentApplication.Application.Queries.Sales.SalesOrderDetail;
+using AssessmentApplication.Application.Queries.Sales.SalesOrderHeader;
 using AssessmentApplication.Domain.Common;
 using AssessmentApplication.Domain.Entities;
 using AssessmentApplication.WebApi.Models;
@@ -22,8 +23,8 @@ namespace AssessmentApplication.WebApi.Controllers
             {
                 SalesOrderDetailId = id
             };
-            SalesOrderDetailEntity entity = await Mediator.Send(query);
-            SalesOrderDetailVm vm = Mapper.Map<SalesOrderDetailVm>(entity);
+            QueryResult<SalesOrderDetailEntity> entity = await Mediator.Send(query);
+            SalesOrderDetailVm vm = Mapper.Map<SalesOrderDetailVm>(entity.Result);
 
             return Ok(vm);
         }

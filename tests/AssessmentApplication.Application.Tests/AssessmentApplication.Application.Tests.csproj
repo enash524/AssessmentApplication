@@ -26,4 +26,8 @@
     <ProjectReference Include="..\..\src\AssessmentApplication.Application\AssessmentApplication.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Queries\Sales\SalesOrderHeader\" />
+  </ItemGroup>
+
 </Project>

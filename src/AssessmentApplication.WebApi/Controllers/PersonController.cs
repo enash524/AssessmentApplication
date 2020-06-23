@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using AssessmentApplication.Application.Person.Queries;
+using AssessmentApplication.Application.Models;
+using AssessmentApplication.Application.Queries.Person;
 using AssessmentApplication.Domain.Entities;
 using AssessmentApplication.WebApi.Models;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,8 @@ namespace AssessmentApplication.WebApi.Controllers
         // GET api/Person/5
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(PersonVm), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PersonVm>> GetPersonById(int id)
         {
             Logger.LogInformation($"GetPersonById: {id}");
@@ -20,8 +23,19 @@ namespace AssessmentApplication.WebApi.Controllers
             {
                 BusinessEntityId = id
             };
-            PersonEntity entity = await Mediator.Send(query);
-            PersonVm vm = Mapper.Map<PersonVm>(entity);
+            QueryResult<PersonEntity> entity = await Mediator.Send(query);
+
+            if (entity.QueryResultType == QueryResultType.Invalid)
+            {
+                return BadRequest();
+            }
+
+            if (entity.QueryResultType == QueryResultType.NotFound)
+            {
+                return NotFound();
+            }
+
+            PersonVm vm = Mapper.Map<PersonVm>(entity.Result);
 
             return Ok(vm);
         }
