@@ -191,10 +191,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\background\wind-turbines1-.gif" />
-    <Content Include="ngApps\SalesOrder\Detail.html" />
     <Content Include="ngApps\SalesOrder\Models\DetailFormModel.js" />
     <Content Include="ngApps\SalesOrder\Models\SalesOrderDetail.js" />
-    <Content Include="ngApps\SalesOrder\Search.html" />
     <Content Include="ngApps\SalesOrder\modal.service.js" />
     <Content Include="ngApps\SalesOrder\Models\Address.js" />
     <Content Include="ngApps\SalesOrder\Models\DateModel.js" />
@@ -202,7 +200,6 @@
     <Content Include="ngApps\SalesOrder\Models\Person.js" />
     <Content Include="ngApps\SalesOrder\Models\SalesOrderHeader.js" />
     <Content Include="ngApps\SalesOrder\Models\ShipMethod.js" />
-    <Content Include="ngApps\SalesOrder\nowLoading.html" />
     <Content Include="ngApps\SalesOrder\salesOrder.controller.js" />
     <Content Include="ngApps\SalesOrder\salesOrder.module.js" />
     <Content Include="ngApps\SalesOrder\salesOrder.service.js" />
