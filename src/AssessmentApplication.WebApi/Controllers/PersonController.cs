@@ -30,7 +30,7 @@ namespace AssessmentApplication.WebApi.Controllers
                 return BadRequest();
             }
 
-            if (entity.QueryResultType == QueryResultType.NotFound)
+            if (entity.Result == null || entity.QueryResultType == QueryResultType.NotFound)
             {
                 return NotFound();
             }

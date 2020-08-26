@@ -16,14 +16,26 @@ namespace AssessmentApplication.WebApi.Controllers
         // GET api/Sales/Detail/5
         [HttpGet("Detail/{id:int}")]
         [ProducesResponseType(typeof(SalesOrderDetailVm), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetSalesOrderDetail(int id)
+        public async Task<ActionResult<SalesOrderDetailVm>> GetSalesOrderDetail(int id)
         {
             GetSalesOrderDetailQuery query = new GetSalesOrderDetailQuery
             {
                 SalesOrderDetailId = id
             };
             QueryResult<SalesOrderDetailEntity> entity = await Mediator.Send(query);
+
+            if (entity.QueryResultType == QueryResultType.Invalid)
+            {
+                return BadRequest();
+            }
+
+            if (entity.Result == null || entity.QueryResultType == QueryResultType.NotFound)
+            {
+                return NotFound();
+            }
+
             SalesOrderDetailVm vm = Mapper.Map<SalesOrderDetailVm>(entity.Result);
 
             return Ok(vm);
@@ -33,7 +45,7 @@ namespace AssessmentApplication.WebApi.Controllers
         [HttpGet("SalesOrderHeader")]
         [ProducesResponseType(typeof(PagedResponse<List<SalesOrderHeaderVm>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetSalesOrderHeader()
+        public async Task<ActionResult<PagedResponse<List<SalesOrderHeaderVm>>>> GetSalesOrderHeader()
         {
             GetSalesOrderHeaderQuery query = new GetSalesOrderHeaderQuery();
             PagedResponse<List<SalesOrderHeaderEntity>> entity = await Mediator.Send(query);
