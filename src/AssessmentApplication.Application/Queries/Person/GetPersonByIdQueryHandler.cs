@@ -35,9 +35,9 @@ namespace AssessmentApplication.Application.Queries.Person
         /// <summary>
         /// Handles the GetPersonByIdQuery
         /// </summary>
-        /// <param name="request">The GetPersonByIdQuery input parameters</param>
+        /// <param name="request">The GetPersonByIdQuery input parameters.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        /// <returns>Task representing the PersonEntity wrapped in a QueryResult</returns>
+        /// <returns>Task representing the PersonEntity wrapped in a QueryResult.</returns>
         public async Task<QueryResult<PersonEntity>> Handle(GetPersonByIdQuery request, CancellationToken cancellationToken)
         {
             ValidationResult validation = _validator.Validate(request);

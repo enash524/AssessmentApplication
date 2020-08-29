@@ -40,17 +40,19 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderDetail
         /// <returns>Task representing the SalesOrderDetailEntity wrapped in a QueryResult</returns>
         public async Task<QueryResult<SalesOrderDetailEntity>> Handle(GetSalesOrderDetailQuery request, CancellationToken cancellationToken)
         {
-            ValidationResult validation = _validator.Validate(request);
+            ValidationResult validationResult = _validator.Validate(request);
 
-            if (!validation.IsValid)
+            if (!validationResult.IsValid)
             {
-                // TODO - SET PROPER LOGGING MESSAGE!!!
-                _logger.LogError("asdf");
+                _logger.LogError(
+                    "GetSalesOrderDetailQuery with SalesOrderDetailId: {SalesOrderDetailId} produced errors on validation {errors}",
+                    request.SalesOrderDetailId,
+                    validationResult.ToString());
 
                 return new QueryResult<SalesOrderDetailEntity>
                 {
-                    Result = null,
-                    QueryResultType = QueryResultType.Invalid
+                    QueryResultType = QueryResultType.Invalid,
+                    Result = null
                 };
             }
 
@@ -58,10 +60,12 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderDetail
 
             if (entity == null)
             {
+                _logger.LogError("GetSalesOrderDetailQuery with SalesOrderDetailId: {SalesOrderDetailId} was not found.", request.SalesOrderDetailId);
+
                 return new QueryResult<SalesOrderDetailEntity>
                 {
-                    Result = null,
-                    QueryResultType = QueryResultType.NotFound
+                    QueryResultType = QueryResultType.NotFound,
+                    Result = null
                 };
             }
 
