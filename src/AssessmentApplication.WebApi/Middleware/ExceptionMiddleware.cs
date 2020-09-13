@@ -9,10 +9,10 @@ namespace AssessmentApplication.WebApi.Middleware
 {
     public class ExceptionMiddleware
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<ExceptionMiddleware> _logger;
         private readonly RequestDelegate _next;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger logger)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -34,7 +34,8 @@ namespace AssessmentApplication.WebApi.Middleware
         {
             _logger.LogError(exception, exception.Message);
 
-            HttpStatusCode code = HttpStatusCode.InternalServerError; // 500 if unexpected
+            // 500 if unexpected
+            HttpStatusCode code = HttpStatusCode.InternalServerError;
 
             if (exception is ValidationException)
             {

@@ -7,12 +7,12 @@ namespace AssessmentApplication.Application.Mappers
     /// <summary>
     /// Provides a named configuration for maps. Naming conventions become scoped per profile.
     /// </summary>
-    public class SalesOrderHeaderProfile : Profile
+    public class ApplicationMappingProfile : Profile
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SalesOrderHeaderProfile`1"/> class.
+        /// Initializes a new instance of the <see cref="ApplicationMappingProfile`1"/> class.
         /// </summary>
-        public SalesOrderHeaderProfile()
+        public ApplicationMappingProfile()
         {
             CreateMap<GetSalesOrderHeaderQuery, SalesOrderHeaderRequest>();
         }

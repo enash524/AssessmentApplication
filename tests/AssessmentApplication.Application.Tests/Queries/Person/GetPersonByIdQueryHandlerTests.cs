@@ -5,6 +5,7 @@ using AssessmentApplication.Application.Queries.Person;
 using AssessmentApplication.Data.Interfaces;
 using AssessmentApplication.Domain.Entities;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -37,14 +38,17 @@ namespace AssessmentApplication.Application.Tests.Queries.Person
             // Act
             QueryResult<PersonEntity> actual = await _handler.Handle(new GetPersonByIdQuery(), new CancellationToken());
 
-            actual
-                .Should()
-                .NotBeNull();
+            using (new AssertionScope())
+            {
+                actual
+                    .Should()
+                    .NotBeNull();
 
-            actual
-                .QueryResultType
-                .Should()
-                .Be(QueryResultType.Invalid);
+                actual
+                    .QueryResultType
+                    .Should()
+                    .Be(QueryResultType.Invalid);
+            }
         }
 
         [Fact]
@@ -65,12 +69,15 @@ namespace AssessmentApplication.Application.Tests.Queries.Person
             QueryResult<PersonEntity> actual = await _handler.Handle(new GetPersonByIdQuery() { BusinessEntityId = 1 }, new CancellationToken());
 
             // Assert
-            actual
-                .Should()
-                .BeEquivalentTo(expected);
+            using (new AssertionScope())
+            {
+                actual
+                    .Should()
+                    .BeEquivalentTo(expected);
 
-            _repository
-                .Verify(x => x.GetPersonByIdAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Once);
+                _repository
+                    .Verify(x => x.GetPersonByIdAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Once());
+            }
         }
 
         [Fact]
@@ -85,14 +92,17 @@ namespace AssessmentApplication.Application.Tests.Queries.Person
             QueryResult<PersonEntity> actual = await _handler.Handle(new GetPersonByIdQuery() { BusinessEntityId = 1 }, new CancellationToken());
 
             // Assert
-            actual
-                .Should()
-                .NotBeNull();
+            using (new AssertionScope())
+            {
+                actual
+                    .Should()
+                    .NotBeNull();
 
-            actual
-                .QueryResultType
-                .Should()
-                .Be(QueryResultType.NotFound);
+                actual
+                    .QueryResultType
+                    .Should()
+                    .Be(QueryResultType.NotFound);
+            }
         }
     }
 }

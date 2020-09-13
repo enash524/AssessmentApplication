@@ -6,6 +6,7 @@ using AssessmentApplication.Application.Queries.Sales.SalesOrderDetail;
 using AssessmentApplication.Application.Queries.Sales.SalesOrderHeader;
 using AssessmentApplication.Domain.Common;
 using AssessmentApplication.Domain.Entities;
+using AssessmentApplication.Models.SalesOrder;
 using AssessmentApplication.WebApi.Controllers;
 using AssessmentApplication.WebApi.Models;
 using AutoMapper;
@@ -83,9 +84,9 @@ namespace AssessmentApplication.WebApi.Tests
                     .NotBeNull()
                     .And
                     .BeOfType<OkObjectResult>();
-            }
 
-            _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+                _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+            }
         }
 
         [Fact]
@@ -114,9 +115,9 @@ namespace AssessmentApplication.WebApi.Tests
                     .NotBeNull()
                     .And
                     .BeOfType<BadRequestResult>();
-            }
 
-            _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+                _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+            }
         }
 
         [Fact]
@@ -145,15 +146,17 @@ namespace AssessmentApplication.WebApi.Tests
                     .NotBeNull()
                     .And
                     .BeOfType<NotFoundResult>();
-            }
 
-            _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+                _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+            }
         }
 
         [Fact]
         public async Task GetSalesOrderHeader_ShouldReturnOkResult()
         {
             // Arrange
+            SalesOrderSearchModel model = new SalesOrderSearchModel();
+
             _mapper
                 .Setup(x => x.Map<PagedResponse<List<SalesOrderHeaderVm>>>(It.IsAny<PagedResponse<List<SalesOrderHeaderEntity>>>()))
                 .Returns(new PagedResponse<List<SalesOrderHeaderVm>>());
@@ -169,7 +172,7 @@ namespace AssessmentApplication.WebApi.Tests
                 });
 
             // Act
-            ActionResult<PagedResponse<List<SalesOrderHeaderVm>>> response = await _salesController.GetSalesOrderHeader();
+            ActionResult<PagedResponse<List<SalesOrderHeaderVm>>> response = await _salesController.GetSalesOrderHeader(model);
 
             // Assert
             using (new AssertionScope())
@@ -190,6 +193,8 @@ namespace AssessmentApplication.WebApi.Tests
         public async Task GetSalesOrderHeader_ShouldReturnNotFoundResult_WhenQueryResultNotFound()
         {
             // Arrange
+            SalesOrderSearchModel model = new SalesOrderSearchModel();
+
             _mapper
                 .Setup(x => x.Map<PagedResponse<List<SalesOrderHeaderVm>>>(It.IsAny<PagedResponse<List<SalesOrderHeaderEntity>>>()))
                 .Returns(new PagedResponse<List<SalesOrderHeaderVm>>());
@@ -199,7 +204,7 @@ namespace AssessmentApplication.WebApi.Tests
                 .ReturnsAsync(new PagedResponse<List<SalesOrderHeaderEntity>>());
 
             // Act
-            ActionResult<PagedResponse<List<SalesOrderHeaderVm>>> response = await _salesController.GetSalesOrderHeader();
+            ActionResult<PagedResponse<List<SalesOrderHeaderVm>>> response = await _salesController.GetSalesOrderHeader(model);
 
             // Assert
             using (new AssertionScope())
@@ -213,9 +218,9 @@ namespace AssessmentApplication.WebApi.Tests
                     .NotBeNull()
                     .And
                     .BeOfType<NotFoundResult>();
-            }
 
-            _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+                _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+            }
         }
     }
 }

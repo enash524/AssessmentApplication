@@ -5,6 +5,7 @@ using AssessmentApplication.Application.Queries.Sales.SalesOrderDetail;
 using AssessmentApplication.Application.Queries.Sales.SalesOrderHeader;
 using AssessmentApplication.Domain.Common;
 using AssessmentApplication.Domain.Entities;
+using AssessmentApplication.Models.SalesOrder;
 using AssessmentApplication.WebApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,9 +46,9 @@ namespace AssessmentApplication.WebApi.Controllers
         [HttpGet("SalesOrderHeader")]
         [ProducesResponseType(typeof(PagedResponse<List<SalesOrderHeaderVm>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<PagedResponse<List<SalesOrderHeaderVm>>>> GetSalesOrderHeader()
+        public async Task<ActionResult<PagedResponse<List<SalesOrderHeaderVm>>>> GetSalesOrderHeader([FromQuery] SalesOrderSearchModel model)
         {
-            GetSalesOrderHeaderQuery query = new GetSalesOrderHeaderQuery();
+            GetSalesOrderHeaderQuery query = Mapper.Map<GetSalesOrderHeaderQuery>(model);
             PagedResponse<List<SalesOrderHeaderEntity>> entity = await Mediator.Send(query);
 
             if (entity.Data == null || entity.Data.Count == 0)

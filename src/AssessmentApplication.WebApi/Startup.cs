@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -24,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace AssessmentApplication.WebApi
 {
@@ -44,9 +46,9 @@ namespace AssessmentApplication.WebApi
         {
             services
                 .AddAutoMapper(
-                    typeof(SalesOrderDetailVmProfile),
-                    typeof(SalesOrderDetailProfile),
-                    typeof(SalesOrderHeaderProfile))
+                    typeof(ApplicationMappingProfile),
+                    typeof(DataMappingProfile),
+                    typeof(ApiMappingProfile))
                 .AddLogging(config =>
                 {
                     config
@@ -55,6 +57,18 @@ namespace AssessmentApplication.WebApi
                         {
                             config.TimestampFormat = "yyyy-MM-dd hh:mm:ss tt ";
                         });
+                })
+                .AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc(
+                        "v1",
+                        new OpenApiInfo
+                        {
+                            Title = "",
+                            Version = "v1"
+                        });
+
+                    c.IncludeXmlComments(GetXmlPath());
                 })
                 .AddApplication()
                 .AddData(Configuration)
@@ -80,26 +94,28 @@ namespace AssessmentApplication.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMiddleware<ExceptionMiddleware>();
-
-            app.UseSwagger();
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapVersion("/version");
-                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+            app
+                .UseMiddleware<ExceptionMiddleware>()
+                .UseSwagger()
+                .UseHttpsRedirection()
+                .UseRouting()
+                .UseAuthorization()
+                .UseEndpoints(endpoints =>
                 {
-                    Predicate = _ => true,
-                    ResponseWriter = WriteResponse
+                    endpoints.MapVersion("/version");
+                    endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                    {
+                        Predicate = _ => true,
+                        ResponseWriter = WriteResponse
+                    });
+                    endpoints.MapControllers();
                 });
-                endpoints.MapControllers();
-            });
+        }
+
+        private static string GetXmlPath()
+        {
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+            return Path.Combine(basePath, "AssessmentApplication.WebApi.xml");
         }
 
         private static Task WriteResponse(HttpContext context, HealthReport result)

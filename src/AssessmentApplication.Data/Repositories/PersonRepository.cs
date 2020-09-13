@@ -10,31 +10,19 @@ using Microsoft.Extensions.Logging;
 
 namespace AssessmentApplication.Data.Repositories
 {
-    public class PersonRepository : IPersonRepository
+    public class PersonRepository : BaseRepository, IPersonRepository
     {
-        private readonly IDbConnection _dbConnection;
-        private readonly ILogger<PersonRepository> _logger;
-        private readonly IMapper _mapper;
-
         public PersonRepository(IDbConnection dbConnection, ILogger<PersonRepository> logger, IMapper mapper)
-        {
-            _dbConnection = dbConnection;
-            _logger = logger;
-            _mapper = mapper;
-        }
+            : base(dbConnection, logger, mapper)
+        { }
 
         public async Task<PersonEntity> GetPersonByIdAsync(int businessEntityId, CancellationToken cancellationToken)
         {
-            PersonDto dto;
             DynamicParameters parms = new DynamicParameters();
             parms.Add("@businessEntityId", businessEntityId);
 
-            using (_dbConnection)
-            {
-                dto = await _dbConnection.QueryFirstOrDefaultAsync<PersonDto>("SELECT * FROM Person.Person WHERE BusinessEntityID = @businessEntityId", parms, commandType: CommandType.Text);
-            }
-
-            PersonEntity entity = _mapper.Map<PersonEntity>(dto);
+            PersonDto dto = await QuerySingleOrDefaultAsync<PersonDto>("SELECT * FROM Person.Person WHERE BusinessEntityID = @businessEntityId", parms, CommandType.Text);
+            PersonEntity entity = Mapper.Map<PersonEntity>(dto);
 
             return entity;
         }
