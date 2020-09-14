@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AssessmentApplication.Application.Models;
 using AssessmentApplication.Domain.Common;
 using AssessmentApplication.Domain.Entities;
 using MediatR;
@@ -9,7 +10,7 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderHeader
     /// <summary>
     /// GetSalesOrderHeaderQuery input parameters
     /// </summary>
-    public class GetSalesOrderHeaderQuery : IRequest<PagedResponse<List<SalesOrderHeaderEntity>>>
+    public class GetSalesOrderHeaderQuery : IRequest<QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>>
     {
         /// <summary>
         /// Order date start

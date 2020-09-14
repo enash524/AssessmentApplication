@@ -15,9 +15,9 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderDetail
     /// </summary>
     public class GetSalesOrderDetailQueryHandler : IRequestHandler<GetSalesOrderDetailQuery, QueryResult<SalesOrderDetailEntity>>
     {
-        private ILogger<GetSalesOrderDetailQueryHandler> _logger;
-        private ISalesRepository _salesOrderDetailRepository;
-        private IValidator<GetSalesOrderDetailQuery> _validator;
+        private readonly ILogger<GetSalesOrderDetailQueryHandler> _logger;
+        private readonly ISalesRepository _salesOrderDetailRepository;
+        private readonly IValidator<GetSalesOrderDetailQuery> _validator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetSalesOrderDetailQueryHandler`1"/> class.

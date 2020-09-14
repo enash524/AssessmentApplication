@@ -12,6 +12,7 @@ using AssessmentApplication.WebApi.Models;
 using AutoMapper;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,19 +25,26 @@ namespace AssessmentApplication.WebApi.Tests
 {
     public class SalesControllerTests
     {
-        private readonly Mock<ILogger<BaseController>> _logger = new Mock<ILogger<BaseController>>();
-        private readonly Mock<IMapper> _mapper = new Mock<IMapper>();
-        private readonly Mock<IMediator> _mediator = new Mock<IMediator>();
+        private readonly Mock<ILogger<BaseController>> _logger;
+        private readonly Mock<IMapper> _mapper;
+        private readonly Mock<IMediator> _mediator;
         private readonly SalesController _salesController;
+        private readonly IValidator<GetSalesOrderHeaderQuery> _validator;
 
         public SalesControllerTests()
         {
+            _logger = new Mock<ILogger<BaseController>>();
+            _mapper = new Mock<IMapper>();
+            _mediator = new Mock<IMediator>();
+            _validator = new GetSalesOrderHeaderQueryValidator();
+
             Mock<IHttpContextAccessor> httpContextAccessorMock = new Mock<IHttpContextAccessor>();
             ServiceCollection services = new ServiceCollection();
 
             services.AddScoped(x => _logger.Object);
             services.AddScoped(x => _mapper.Object);
             services.AddScoped(x => _mediator.Object);
+            services.AddScoped(x => _validator);
 
             httpContextAccessorMock
                 .Setup(x => x.HttpContext)
@@ -52,41 +60,6 @@ namespace AssessmentApplication.WebApi.Tests
                     HttpContext = httpContextAccessorMock.Object.HttpContext
                 }
             };
-        }
-
-        [Fact]
-        public async Task GetSalesOrderDetail_ShouldReturnOkResult()
-        {
-            // Arrange
-            _mapper
-                .Setup(x => x.Map<SalesOrderDetailVm>(It.IsAny<SalesOrderDetailEntity>()))
-                .Returns(new SalesOrderDetailVm());
-
-            _mediator
-                .Setup(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new QueryResult<SalesOrderDetailEntity>
-                {
-                    Result = new SalesOrderDetailEntity()
-                });
-
-            // Act
-            ActionResult<SalesOrderDetailVm> response = await _salesController.GetSalesOrderDetail(1);
-
-            // Assert
-            using (new AssertionScope())
-            {
-                response
-                    .Should()
-                    .NotBeNull();
-
-                response.Result
-                    .Should()
-                    .NotBeNull()
-                    .And
-                    .BeOfType<OkObjectResult>();
-
-                _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()), Times.Once());
-            }
         }
 
         [Fact]
@@ -152,22 +125,54 @@ namespace AssessmentApplication.WebApi.Tests
         }
 
         [Fact]
-        public async Task GetSalesOrderHeader_ShouldReturnOkResult()
+        public async Task GetSalesOrderDetail_ShouldReturnOkResult()
+        {
+            // Arrange
+            _mapper
+                .Setup(x => x.Map<SalesOrderDetailVm>(It.IsAny<SalesOrderDetailEntity>()))
+                .Returns(new SalesOrderDetailVm());
+
+            _mediator
+                .Setup(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new QueryResult<SalesOrderDetailEntity>
+                {
+                    Result = new SalesOrderDetailEntity()
+                });
+
+            // Act
+            ActionResult<SalesOrderDetailVm> response = await _salesController.GetSalesOrderDetail(1);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                response
+                    .Should()
+                    .NotBeNull();
+
+                response.Result
+                    .Should()
+                    .NotBeNull()
+                    .And
+                    .BeOfType<OkObjectResult>();
+
+                _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+            }
+        }
+
+        [Fact]
+        public async Task GetSalesOrderHeader_Should_Return_BadRequestResult_When_Query_Is_Invalid()
         {
             // Arrange
             SalesOrderSearchModel model = new SalesOrderSearchModel();
 
-            _mapper
-                .Setup(x => x.Map<PagedResponse<List<SalesOrderHeaderVm>>>(It.IsAny<PagedResponse<List<SalesOrderHeaderEntity>>>()))
-                .Returns(new PagedResponse<List<SalesOrderHeaderVm>>());
-
             _mediator
                 .Setup(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new PagedResponse<List<SalesOrderHeaderEntity>>
+                .ReturnsAsync(new QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>
                 {
-                    Data = new List<SalesOrderHeaderEntity>
+                    QueryResultType = QueryResultType.Invalid,
+                    Result = new PagedResponse<List<SalesOrderHeaderEntity>>
                     {
-                        new SalesOrderHeaderEntity()
+                        Data = null
                     }
                 });
 
@@ -185,7 +190,9 @@ namespace AssessmentApplication.WebApi.Tests
                     .Should()
                     .NotBeNull()
                     .And
-                    .BeOfType<OkObjectResult>();
+                    .BeOfType<BadRequestResult>();
+
+                _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()), Times.Once());
             }
         }
 
@@ -201,7 +208,7 @@ namespace AssessmentApplication.WebApi.Tests
 
             _mediator
                 .Setup(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new PagedResponse<List<SalesOrderHeaderEntity>>());
+                .ReturnsAsync(new QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>());
 
             // Act
             ActionResult<PagedResponse<List<SalesOrderHeaderVm>>> response = await _salesController.GetSalesOrderHeader(model);
@@ -220,6 +227,48 @@ namespace AssessmentApplication.WebApi.Tests
                     .BeOfType<NotFoundResult>();
 
                 _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()), Times.Once());
+            }
+        }
+
+        [Fact]
+        public async Task GetSalesOrderHeader_ShouldReturnOkResult()
+        {
+            // Arrange
+            SalesOrderSearchModel model = new SalesOrderSearchModel();
+
+            _mapper
+                .Setup(x => x.Map<PagedResponse<List<SalesOrderHeaderVm>>>(It.IsAny<PagedResponse<List<SalesOrderHeaderEntity>>>()))
+                .Returns(new PagedResponse<List<SalesOrderHeaderVm>>());
+
+            _mediator
+                .Setup(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>
+                {
+                    QueryResultType = QueryResultType.Success,
+                    Result = new PagedResponse<List<SalesOrderHeaderEntity>>
+                    {
+                        Data = new List<SalesOrderHeaderEntity>
+                        {
+                            new SalesOrderHeaderEntity()
+                        }
+                    }
+                });
+
+            // Act
+            ActionResult<PagedResponse<List<SalesOrderHeaderVm>>> response = await _salesController.GetSalesOrderHeader(model);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                response
+                    .Should()
+                    .NotBeNull();
+
+                response.Result
+                    .Should()
+                    .NotBeNull()
+                    .And
+                    .BeOfType<OkObjectResult>();
             }
         }
     }

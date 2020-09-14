@@ -6,6 +6,7 @@ using AssessmentApplication.Data.Interfaces;
 using AssessmentApplication.Domain.Entities;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -17,7 +18,7 @@ namespace AssessmentApplication.Application.Tests.Queries.Person
         private readonly GetPersonByIdQueryHandler _handler;
         private readonly Mock<ILogger<GetPersonByIdQueryHandler>> _logger;
         private readonly Mock<IPersonRepository> _repository;
-        private readonly GetPersonByIdQueryValidator _validator;
+        private readonly IValidator<GetPersonByIdQuery> _validator;
 
         public GetPersonByIdQueryHandlerTests()
         {
@@ -34,9 +35,11 @@ namespace AssessmentApplication.Application.Tests.Queries.Person
         public async Task Request_With_Invalid_BusinessEntityId_Should_Return_Invalid_Result()
         {
             // Arrange
+            GetPersonByIdQuery query = new GetPersonByIdQuery();
+            CancellationToken cancellationToken = new CancellationToken();
 
             // Act
-            QueryResult<PersonEntity> actual = await _handler.Handle(new GetPersonByIdQuery(), new CancellationToken());
+            QueryResult<PersonEntity> actual = await _handler.Handle(query, cancellationToken);
 
             using (new AssertionScope())
             {
@@ -55,6 +58,11 @@ namespace AssessmentApplication.Application.Tests.Queries.Person
         public async Task Should_Call_GetPersonByIdAsync_In_Repository()
         {
             // Arrange
+            CancellationToken cancellationToken = new CancellationToken();
+            GetPersonByIdQuery query = new GetPersonByIdQuery
+            {
+                BusinessEntityId = 1
+            };
             QueryResult<PersonEntity> expected = new QueryResult<PersonEntity>
             {
                 Result = new PersonEntity(),
@@ -66,7 +74,7 @@ namespace AssessmentApplication.Application.Tests.Queries.Person
                 .ReturnsAsync(new PersonEntity());
 
             // Act
-            QueryResult<PersonEntity> actual = await _handler.Handle(new GetPersonByIdQuery() { BusinessEntityId = 1 }, new CancellationToken());
+            QueryResult<PersonEntity> actual = await _handler.Handle(query, cancellationToken);
 
             // Assert
             using (new AssertionScope())
@@ -84,12 +92,18 @@ namespace AssessmentApplication.Application.Tests.Queries.Person
         public async Task Should_Return_NotFound_If_No_Entity_Exists()
         {
             // Arrange
+            CancellationToken cancellationToken = new CancellationToken();
+            GetPersonByIdQuery query = new GetPersonByIdQuery
+            {
+                BusinessEntityId = 1
+            };
+
             _repository
                 .Setup(x => x.GetPersonByIdAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync((PersonEntity)null);
 
             // Act
-            QueryResult<PersonEntity> actual = await _handler.Handle(new GetPersonByIdQuery() { BusinessEntityId = 1 }, new CancellationToken());
+            QueryResult<PersonEntity> actual = await _handler.Handle(query, cancellationToken);
 
             // Assert
             using (new AssertionScope())
