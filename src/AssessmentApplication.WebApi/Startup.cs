@@ -12,7 +12,6 @@ using AssessmentApplication.Data.Profiles;
 using AssessmentApplication.WebApi.Extensions;
 using AssessmentApplication.WebApi.Middleware;
 using AssessmentApplication.WebApi.Profiles;
-using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
