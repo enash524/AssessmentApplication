@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SalesOrderComponent } from './sales-order.component';
 import { SearchComponent } from './search/search.component';
-import { DetailsComponent } from './details/details.component';
+import { DetailComponent } from './detail/detail.component';
 
 
 
 @NgModule({
-  declarations: [
-    SearchComponent,
-    DetailsComponent
-  ],
+  declarations: [SalesOrderComponent, SearchComponent, DetailComponent],
   imports: [
     CommonModule
   ]
