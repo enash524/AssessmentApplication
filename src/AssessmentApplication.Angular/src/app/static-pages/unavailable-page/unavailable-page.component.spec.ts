@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SalesOrderComponent } from './sales-order.component';
+import { UnavailablePageComponent } from './unavailable-page.component';
 
-describe('SalesOrderComponent', () => {
-  let component: SalesOrderComponent;
-  let fixture: ComponentFixture<SalesOrderComponent>;
+describe('UnavailablePageComponent', () => {
+  let component: UnavailablePageComponent;
+  let fixture: ComponentFixture<UnavailablePageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SalesOrderComponent ]
+      declarations: [ UnavailablePageComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SalesOrderComponent);
+    fixture = TestBed.createComponent(UnavailablePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
