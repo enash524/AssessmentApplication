@@ -11,6 +11,10 @@ const routes: Routes = [
     component: SalesOrderComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'search'
+      },
+      {
         path: 'search',
         component: SearchComponent
       },

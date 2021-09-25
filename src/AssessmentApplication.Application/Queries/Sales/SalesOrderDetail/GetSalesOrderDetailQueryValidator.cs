@@ -12,8 +12,8 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderDetail
         /// </summary>
         public GetSalesOrderDetailQueryValidator()
         {
-            RuleFor(x => x.SalesOrderDetailId).GreaterThan(0);
             RuleFor(x => x.SalesOrderDetailId).NotNull();
+            RuleFor(x => x.SalesOrderDetailId).GreaterThan(0);
         }
     }
 }

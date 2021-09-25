@@ -51,8 +51,7 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderHeader
 
             if (!validationResult.IsValid)
             {
-                // TODO - PROPERLY LOG ERROR!!!
-                _logger.LogError("Handle Error");
+                _logger.LogError(validationResult.ToString());
 
                 return new QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>
                 {

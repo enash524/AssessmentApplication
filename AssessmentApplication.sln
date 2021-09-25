@@ -13,9 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssessmentApplication.DataC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{BDB6A58B-C3C4-437F-A216-CF16325F634C}"
 	ProjectSection(SolutionItems) = preProject
-		AssessmentApplication.sql = AssessmentApplication.sql
+		src\sql\AssessmentApplication.sql = src\sql\AssessmentApplication.sql
 		README.md = README.md
-		SalesOrderSearch.sql = SalesOrderSearch.sql
+		src\sql\Sales.uspGetSalesOrderDetail.sql = src\sql\Sales.uspGetSalesOrderDetail.sql
+		src\sql\Sales.uspGetSalesOrderHeader.sql = src\sql\Sales.uspGetSalesOrderHeader.sql
+		src\sql\Sales.uspSearchSalesOrderHeader.sql = src\sql\Sales.uspSearchSalesOrderHeader.sql
+		src\sql\SalesOrderSearch.sql = src\sql\SalesOrderSearch.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C5A22FB1-0DCD-454E-99EB-2F2DAD26B020}"
