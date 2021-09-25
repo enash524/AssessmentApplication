@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ErrorHttpInterceptor } from 'src/shared/interceptors/error.interceptor';
@@ -22,6 +22,7 @@ import { HomePageComponent } from './home-page/home-page.component';
     FontAwesomeModule,
   ],
   providers: [
+    Title,
     {
       provide: APP_INITIALIZER,
       useFactory: (envService: EnvService) => () => envService.init(),
