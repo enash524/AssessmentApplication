@@ -1,1 +1,83 @@
-<p>search works!</p>
+<h2>Sales Order</h2>
+
+<form novalidate (submit)="onSubmit()" [formGroup]="searchForm">
+  <div class="row">
+    <dl class="col-md-3">
+      <dt>Order Date</dt>
+      <dd>
+        <p-calendar formControlName="orderDateStart" placeholder="Order Date Start" [showIcon]="true"></p-calendar>
+      </dd>
+      <dd>
+        <p-calendar formControlName="orderDateEnd" placeholder="Order Date End" [showIcon]="true"></p-calendar>
+      </dd>
+    </dl>
+
+    <dl class="col-md-3">
+      <dt>Due Date</dt>
+      <dd>
+        <p-calendar formControlName="dueDateStart" placeholder="Due Date Start" [showIcon]="true"></p-calendar>
+      </dd>
+      <dd>
+        <p-calendar formControlName="dueDateEnd" placeholder="Due Date End" [showIcon]="true"></p-calendar>
+      </dd>
+    </dl>
+
+    <dl class="col-md-3">
+      <dt>Ship Date</dt>
+      <dd>
+        <p-calendar formControlName="shipDateStart" placeholder="Ship Date Start" [showIcon]="true"></p-calendar>
+      </dd>
+      <dd>
+        <p-calendar formControlName="shipDateEnd" placeholder="Ship Date End" [showIcon]="true"></p-calendar>
+      </dd>
+    </dl>
+
+    <dl class="col-md-3">
+      <dt>Customer Name</dt>
+      <dd>
+        <input type="text" pInputText formControlName="customerName" placeholder="Customer Name">
+      </dd>
+    </dl>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button pButton type="submit" icon="fa fa-search" iconPos="left" label="Search"></button>
+      <button pButton type="button" icon="fa fa-sync-alt" label="Reset" class="p-button-secondary ms-3"
+        (click)="onReset()"></button>
+    </div>
+  </div>
+</form>
+
+<div class="row mt-3">
+  <div class="col-md-12">
+    <p-table [value]="salesOrderHeader" [columns]="columns" [rows]="10" [paginator]="true" [autoLayout]="true">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{ col.header }}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="columns.length">
+            No records found
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
