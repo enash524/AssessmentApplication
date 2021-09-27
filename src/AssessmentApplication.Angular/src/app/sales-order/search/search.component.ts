@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ColumnModel } from 'src/shared';
 import { SalesOrderHeaderModel } from '..';
+import { DateRangeValidator } from 'src/shared/validators/date-range.validator';
 
 @Component({
   selector: 'app-search',
@@ -45,15 +46,30 @@ export class SearchComponent implements OnInit {
     }
   ];
 
-  public salesOrderHeader: SalesOrderHeaderModel[] = [];
+  public salesOrderHeader: SalesOrderHeaderModel[] | null = null;
 
   public searchForm: FormGroup = this.formBuilder.group({
-    orderDateStart: null,
-    orderDateEnd: null,
-    dueDateStart: null,
-    dueDateEnd: null,
-    shipDateStart: null,
-    shipDateEnd: null,
+    orderDate: this.formBuilder.group({
+      orderDateStart: null,
+      orderDateEnd: null
+    },
+    {
+      validators: DateRangeValidator('orderDateStart', 'orderDateEnd')
+    }),
+    dueDate: this.formBuilder.group({
+      dueDateStart: null,
+      dueDateEnd: null
+    },
+    {
+      validators: DateRangeValidator('dueDateStart', 'dueDateEnd')
+    }),
+    shipDate: this.formBuilder.group({
+      shipDateStart: null,
+      shipDateEnd: null
+    },
+    {
+      validators: DateRangeValidator('shipDateStart', 'shipDateEnd')
+    }),
     customerName: null
   });
 
@@ -67,10 +83,19 @@ export class SearchComponent implements OnInit {
 
   public onReset() {
     this.searchForm.reset();
+    // TODO - FOR TESTING PURPOSES ONLY!!!
+    this.salesOrderHeader = null;
   }
 
   public onSubmit() {
     console.log(this.searchForm.value);
+
+    if (this.searchForm.valid) {
+      alert('form is valid');
+      this.salesOrderHeader = [];
+    } else {
+      alert('form is invalid');
+    }
   }
 
 }
