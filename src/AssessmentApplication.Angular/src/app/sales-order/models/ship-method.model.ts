@@ -1,9 +1,4 @@
 export class ShipMethodModel {
-    public shipMethodId: number | null;
-    public name: string | null;
-
-    constructor() {
-        this.shipMethodId = null;
-        this.name = null;
-    }
+    public shipMethodId: number | null = null;
+    public name: string | null = null;
 }

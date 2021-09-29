@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { ErrorHttpInterceptor } from 'src/shared/interceptors/error.interceptor';
+import { ErrorHttpInterceptor } from '@shared/interceptors/error.interceptor';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { SalesOrderComponent } from './sales-order/sales-order.component';

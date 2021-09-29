@@ -1,16 +1,9 @@
 export class AddressModel {
-    public addressId: number | null;
-    public address1: string | null;
+    public addressId: number | null = null;
+    public address1: string | null = null;
     public address2?: string;
-    public city: string | null;
-    public stateOrProvinceCode: string | null;
-    public postalCode: string | null;
+    public city: string | null = null;
+    public stateOrProvinceCode: string | null = null;
+    public postalCode: string | null = null;
 
-    constructor() {
-        this.addressId = null;
-        this.address1 = null;
-        this.city = null;
-        this.stateOrProvinceCode = null;
-        this.postalCode = null;
-    }
 }

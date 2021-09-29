@@ -7,12 +7,16 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
+import { DateRangeComponent } from './widgets/date-range/date-range.component';
+import { InputTextboxComponent } from './widgets/input-textbox/input-textbox.component';
 
 
 @NgModule({
   declarations: [
     SearchComponent,
     DetailsComponent,
+    DateRangeComponent,
+    InputTextboxComponent,
   ],
   imports: [
     ButtonModule,
