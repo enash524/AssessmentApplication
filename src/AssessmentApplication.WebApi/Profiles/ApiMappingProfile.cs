@@ -1,4 +1,5 @@
-﻿using AssessmentApplication.Application.Queries.Sales.SalesOrderHeader;
+﻿using System.Collections.Generic;
+using AssessmentApplication.Application.Queries.Sales.SalesOrderHeader;
 using AssessmentApplication.Domain.Common;
 using AssessmentApplication.Domain.Entities;
 using AssessmentApplication.Models.SalesOrder;
@@ -20,8 +21,38 @@ namespace AssessmentApplication.WebApi.Profiles
             CreateMap(typeof(PagedResponse<>), typeof(PagedResponse<>));
             CreateMap<PersonEntity, PersonVm>();
             CreateMap<SalesOrderDetailEntity, SalesOrderDetailVm>();
-            CreateMap<SalesOrderHeaderEntity, SalesOrderHeaderVm>();
             CreateMap<SalesOrderSearchModel, GetSalesOrderHeaderQuery>();
+            CreateMap<SalesOrderHeaderEntity, SalesOrderHeaderVm>()
+                .ForMember(dest => dest.Person,
+                    opts => opts.MapFrom(
+                        src => new PersonVm
+                        {
+                            BusinessEntityId = src.BusinessEntityId,
+                            Title = src.Title,
+                            FirstName = src.FirstName,
+                            MiddleName = src.MiddleName,
+                            LastName = src.LastName,
+                            Suffix = src.Suffix,
+                            FullName = src.FullName
+                        }))
+                .ForMember(dest => dest.ShipMethod,
+                    opts => opts.MapFrom(
+                        src => new ShipMethodVm
+                        {
+                            ShipMethodId = src.ShipMethodId,
+                            ShipMethodName = src.ShipMethodName
+                        }))
+                .ForMember(dest => dest.ShipToAddress,
+                    opts => opts.MapFrom(
+                        src => new AddressVm
+                        {
+                            AddressId = src.AddressId,
+                            Address1 = src.AddressLine1,
+                            Address2 = src.AddressLine2,
+                            City = src.City,
+                            StateOrProvinceCode = src.StateProvinceCode,
+                            PostalCode = src.PostalCode
+                        }));
         }
     }
 }

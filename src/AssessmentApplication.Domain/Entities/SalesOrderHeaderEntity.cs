@@ -32,6 +32,8 @@ namespace AssessmentApplication.Domain.Entities
 
         public string PostalCode { get; set; }
 
+        public int ShipMethodId { get; set; }
+
         public string ShipMethodName { get; set; }
 
         public decimal SubTotal { get; set; }

@@ -10,7 +10,7 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderHeader
     /// <summary>
     /// GetSalesOrderHeaderQuery input parameters
     /// </summary>
-    public class GetSalesOrderHeaderQuery : IRequest<QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>>
+    public class GetSalesOrderHeaderQuery : PagedRequest, IRequest<QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>>
     {
         /// <summary>
         /// Order date start

@@ -48,8 +48,8 @@ namespace AssessmentApplication.Data.Repositories
                 parms.Add("@customerName", request.CustomerName);
             }
 
-            parms.Add("@limit", request.PageSize);
-            parms.Add("@offset", request.CurrentPage);
+            parms.Add("@limit", Convert.ToInt32(request.PageSize), DbType.Int32);
+            parms.Add("@offset", Convert.ToInt32(request.CurrentPage), DbType.Int32);
             parms.Add("@sortBy", request.SortBy);
             parms.Add("@sortDirection", request.SortDirection);
             parms.Add("@recordCount", dbType: DbType.Int32, direction: ParameterDirection.Output, size: int.MaxValue);
@@ -59,8 +59,9 @@ namespace AssessmentApplication.Data.Repositories
             List<SalesOrderHeaderEntity> entity = Mapper.Map<List<SalesOrderHeaderEntity>>(dto);
             PagedResponse<List<SalesOrderHeaderEntity>> response = new PagedResponse<List<SalesOrderHeaderEntity>>()
             {
+                CurrentPage = request.CurrentPage,
                 Data = entity,
-                PageSize = Convert.ToUInt32(request.PageSize),
+                PageSize = request.PageSize,
                 RecordCount = recordCount,
                 SortBy = request.SortBy,
                 SortDirection = request.SortDirection

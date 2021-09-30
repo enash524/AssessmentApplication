@@ -18,6 +18,8 @@
 
         public string Suffix { get; set; }
 
+        public string FullName { get; set; }
+
         public int EmailPromotion { get; set; }
 
         public string AdditionalContactInfo { get; set; }

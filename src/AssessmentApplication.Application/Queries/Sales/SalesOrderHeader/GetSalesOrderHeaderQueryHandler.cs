@@ -65,12 +65,13 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderHeader
 
             SalesOrderHeaderRequest dataRequest = _mapper.Map<SalesOrderHeaderRequest>(request);
             PagedResponse<List<SalesOrderHeaderEntity>> entity = await _salesOrderDetailRepository.GetSalesOrderHeaderAsync(dataRequest, cancellationToken);
-
-            return new QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>
+            QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>> result = new QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>
             {
                 QueryResultType = QueryResultType.Success,
                 Result = entity
             };
+
+            return result;
         }
     }
 }

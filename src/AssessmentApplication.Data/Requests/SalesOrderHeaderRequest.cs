@@ -1,4 +1,5 @@
 ﻿using System;
+using AssessmentApplication.Domain.Common;
 
 namespace AssessmentApplication.Data.Requests
 {

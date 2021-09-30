@@ -1,9 +1,15 @@
 ﻿using System;
+using AssessmentApplication.Domain.Common;
 
 namespace AssessmentApplication.Models.SalesOrder
 {
-    public class SalesOrderSearchModel
+    public class SalesOrderSearchModel : PagedRequest
     {
+        public SalesOrderSearchModel()
+        {
+            SortBy = "SalesOrderId";
+        }
+
         public string CustomerName { get; set; }
 
         public DateTime? DueDateEnd { get; set; }

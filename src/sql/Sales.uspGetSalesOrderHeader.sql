@@ -1,16 +1,17 @@
 USE [AdventureWorks2017]
 GO
 
-/****** Object:  StoredProcedure [Sales].[uspGetSalesOrderHeader]    Script Date: 3/13/2020 4:49:02 PM ******/
+/****** Object:  StoredProcedure [Sales].[uspGetSalesOrderHeader]    Script Date: 9/30/2021 12:26:52 AM ******/
 DROP PROCEDURE [Sales].[uspGetSalesOrderHeader]
 GO
 
-/****** Object:  StoredProcedure [Sales].[uspGetSalesOrderHeader]    Script Date: 3/13/2020 4:49:02 PM ******/
+/****** Object:  StoredProcedure [Sales].[uspGetSalesOrderHeader]    Script Date: 9/30/2021 12:26:52 AM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 -- =============================================
 -- Author:		<Author,,Name>
@@ -78,30 +79,30 @@ BEGIN
 	INSERT INTO @tempSalesOrderHeaderTable
 		SELECT
 			soh.SalesOrderID
-			,p.BusinessEntityID
-			,p.Title
-			,p.FirstName
-			,p.MiddleName
-			,p.LastName
-			,p.Suffix
-			,soh.AccountNumber
-			,a.AddressID
-			,a.AddressLine1
-			,a.AddressLine2
-			,a.City
-			,sp.StateProvinceCode
-			,a.PostalCode
-			,sm.ShipMethodID
-			,sm.[Name]
-			,soh.SubTotal
-			,soh.TaxAmt
-			,soh.Freight
-			,soh.TotalDue
-			,soh.OrderDate
-			,soh.DueDate
-			,soh.ShipDate
-			,LTRIM(RTRIM(REPLACE(CONCAT(p.Title, ' ', p.FirstName, ' ', p.MiddleName, ' ', p.LastName, ' ', p.Suffix), '  ', ' ')))
-			,CASE WHEN @sortBy = 'BusinessEntityID' THEN CAST(p.BusinessEntityID AS sql_variant)
+		   ,p.BusinessEntityID
+		   ,p.Title
+		   ,p.FirstName
+		   ,p.MiddleName
+		   ,p.LastName
+		   ,p.Suffix
+		   ,soh.AccountNumber
+		   ,a.AddressID
+		   ,a.AddressLine1
+		   ,a.AddressLine2
+		   ,a.City
+		   ,sp.StateProvinceCode
+		   ,a.PostalCode
+		   ,sm.ShipMethodID
+		   ,sm.[Name]
+		   ,soh.SubTotal
+		   ,soh.TaxAmt
+		   ,soh.Freight
+		   ,soh.TotalDue
+		   ,soh.OrderDate
+		   ,soh.DueDate
+		   ,soh.ShipDate
+		   ,CONCAT_WS(' ', Title, FirstName, MiddleName, LastName, Suffix)
+		   ,CASE WHEN @sortBy = 'BusinessEntityID' THEN CAST(p.BusinessEntityID AS sql_variant)
 				  WHEN @sortBy = 'Title' THEN CAST(p.Title AS sql_variant)
 				  WHEN @sortBy = 'FirstName' THEN CAST(p.FirstName AS sql_variant)
 				  WHEN @sortBy = 'MiddleName' THEN CAST(p.MiddleName AS sql_variant)
@@ -141,7 +142,7 @@ BEGIN
 		DELETE FROM
 			@tempSalesOrderHeaderTable
 		WHERE
-			OrderDate > @orderDateStart
+			OrderDate < @orderDateStart
 	END
 
 	IF @orderDateEnd IS NOT NULL
@@ -149,7 +150,7 @@ BEGIN
 		DELETE FROM
 			@tempSalesOrderHeaderTable
 		WHERE
-			@orderDateEnd < OrderDate
+			OrderDate > @orderDateEnd
 	END
 
 	IF @dueDateStart IS NOT NULL
@@ -157,7 +158,7 @@ BEGIN
 		DELETE FROM
 			@tempSalesOrderHeaderTable
 		WHERE
-			DueDate > @dueDateStart
+			DueDate < @dueDateStart
 	END
 
 	IF @dueDateEnd IS NOT NULL
@@ -165,7 +166,7 @@ BEGIN
 		DELETE FROM
 			@tempSalesOrderHeaderTable
 		WHERE
-			@dueDateEnd < DueDate
+			DueDate > @dueDateEnd
 	END
 
 	IF @shipDateStart IS NOT NULL
@@ -174,7 +175,7 @@ BEGIN
 			@tempSalesOrderHeaderTable
 		WHERE
 			ShipDate IS NULL
-			OR ShipDate > @shipDateStart
+			OR ShipDate < @shipDateStart
 	END
 
 	IF @shipDateEnd IS NOT NULL
@@ -183,7 +184,7 @@ BEGIN
 			@tempSalesOrderHeaderTable
 		WHERE
 			ShipDate IS NULL
-			OR @shipDateEnd < ShipDate
+			OR ShipDate > @shipDateEnd
 	END
 
 	IF @customerName IS NOT NULL
