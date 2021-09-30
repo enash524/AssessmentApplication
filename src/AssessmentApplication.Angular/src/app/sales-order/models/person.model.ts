@@ -5,8 +5,5 @@ export class PersonModel {
     public middleName: string | null = null;
     public lastName: string | null = null;
     public suffix: string | null = null;
-
-    get fullName(): string {
-        return [this.title, this.firstName, this.middleName, this.lastName, this.suffix].join(' ');
-    }
+    public fullName: string | null = null;
 }

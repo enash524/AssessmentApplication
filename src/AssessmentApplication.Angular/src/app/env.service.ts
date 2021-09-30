@@ -14,7 +14,7 @@ export class EnvService {
 
     public init(): Promise<void> {
         return new Promise(resolve => {
-            this._api = '';
+            this._api = 'https://localhost:5001/api/';
             resolve();
         });
     }
