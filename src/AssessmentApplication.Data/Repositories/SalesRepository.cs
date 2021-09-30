@@ -51,7 +51,7 @@ namespace AssessmentApplication.Data.Repositories
             parms.Add("@limit", Convert.ToInt32(request.PageSize), DbType.Int32);
             parms.Add("@offset", Convert.ToInt32(request.CurrentPage), DbType.Int32);
             parms.Add("@sortBy", request.SortBy);
-            parms.Add("@sortDirection", request.SortDirection);
+            parms.Add("@sortDirection", request.SortDirection.ToString());
             parms.Add("@recordCount", dbType: DbType.Int32, direction: ParameterDirection.Output, size: int.MaxValue);
 
             IEnumerable<SalesOrderHeaderDto> dto = await QueryAsync<SalesOrderHeaderDto>("[Sales].[uspGetSalesOrderHeader]", parms, CommandType.StoredProcedure);

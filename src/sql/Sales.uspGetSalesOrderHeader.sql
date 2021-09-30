@@ -1,11 +1,7 @@
 USE [AdventureWorks2017]
 GO
 
-/****** Object:  StoredProcedure [Sales].[uspGetSalesOrderHeader]    Script Date: 9/30/2021 12:26:52 AM ******/
-DROP PROCEDURE [Sales].[uspGetSalesOrderHeader]
-GO
-
-/****** Object:  StoredProcedure [Sales].[uspGetSalesOrderHeader]    Script Date: 9/30/2021 12:26:52 AM ******/
+/****** Object:  StoredProcedure [Sales].[uspGetSalesOrderHeader]    Script Date: 9/30/2021 10:57:12 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -18,7 +14,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE [Sales].[uspGetSalesOrderHeader]
+CREATE OR ALTER PROCEDURE [Sales].[uspGetSalesOrderHeader]
 (
 	@orderDateStart DATETIME = NULL
    ,@orderDateEnd	DATETIME = NULL
@@ -47,7 +43,12 @@ BEGIN
 		SET @offset = 0
 	END
 
-	DECLARE @tempSalesOrderHeaderTable TABLE
+	IF OBJECT_ID('tempdb..#tempSalesOrderHeaderTable') IS NOT NULL
+	BEGIN
+		DROP TABLE #tempSalesOrderHeaderTable
+	END
+
+	CREATE TABLE #tempSalesOrderHeaderTable
 	(
 		SalesOrderID		INT NOT NULL
 	   ,BusinessEntityID	INT NOT NULL
@@ -76,71 +77,77 @@ BEGIN
 	   ,SortBy				SQL_VARIANT NULL
 	)
 
-	INSERT INTO @tempSalesOrderHeaderTable
+	INSERT INTO #tempSalesOrderHeaderTable
 		SELECT
-			soh.SalesOrderID
-		   ,p.BusinessEntityID
-		   ,p.Title
-		   ,p.FirstName
-		   ,p.MiddleName
-		   ,p.LastName
-		   ,p.Suffix
-		   ,soh.AccountNumber
-		   ,a.AddressID
-		   ,a.AddressLine1
-		   ,a.AddressLine2
-		   ,a.City
-		   ,sp.StateProvinceCode
-		   ,a.PostalCode
-		   ,sm.ShipMethodID
-		   ,sm.[Name]
-		   ,soh.SubTotal
-		   ,soh.TaxAmt
-		   ,soh.Freight
-		   ,soh.TotalDue
-		   ,soh.OrderDate
-		   ,soh.DueDate
-		   ,soh.ShipDate
-		   ,CONCAT_WS(' ', Title, FirstName, MiddleName, LastName, Suffix)
-		   ,CASE WHEN @sortBy = 'BusinessEntityID' THEN CAST(p.BusinessEntityID AS sql_variant)
-				  WHEN @sortBy = 'Title' THEN CAST(p.Title AS sql_variant)
-				  WHEN @sortBy = 'FirstName' THEN CAST(p.FirstName AS sql_variant)
-				  WHEN @sortBy = 'MiddleName' THEN CAST(p.MiddleName AS sql_variant)
-				  WHEN @sortBy = 'LastName' THEN CAST(p.LastName AS sql_variant)
-				  WHEN @sortBy = 'Suffix' THEN CAST(p.Suffix AS sql_variant)
-				  WHEN @sortBy = 'AccountNumber' THEN CAST(soh.AccountNumber AS sql_variant)
-				  WHEN @sortBy = 'AddressLine1' THEN CAST(a.AddressLine1 AS sql_variant)
-				  WHEN @sortBy = 'AddressLine2' THEN CAST(a.AddressLine2 AS sql_variant)
-				  WHEN @sortBy = 'City' THEN CAST(a.City AS sql_variant)
-				  WHEN @sortBy = 'StateProvinceCode' THEN CAST(sp.StateProvinceCode AS sql_variant)
-				  WHEN @sortBy = 'PostalCode' THEN CAST(a.PostalCode AS sql_variant)
-				  WHEN @sortBy = 'ShipMethod' THEN CAST(sm.[Name] AS sql_variant)
-				  WHEN @sortBy = 'SubTotal' THEN CAST(soh.SubTotal AS sql_variant)
-				  WHEN @sortBy = 'TaxAmt' THEN CAST(soh.TaxAmt AS sql_variant)
-				  WHEN @sortBy = 'Freight' THEN CAST(soh.Freight AS sql_variant)
-				  WHEN @sortBy = 'TotalDue' THEN CAST(soh.TotalDue AS sql_variant)
-				  WHEN @sortBy = 'OrderDate' THEN CAST(soh.OrderDate AS sql_variant)
-				  WHEN @sortBy = 'DueDate' THEN CAST(soh.DueDate AS sql_variant)
-				  WHEN @sortBy = 'ShipDate' THEN CAST(soh.ShipDate AS sql_variant)
-				  ELSE CAST(soh.SalesOrderID AS sql_variant)
-			 END
+			*
+		   ,CASE WHEN @sortBy = 'BusinessEntityID' THEN CAST(BusinessEntityID AS sql_variant)
+				 WHEN @sortBy = 'Title' THEN CAST(Title AS sql_variant)
+				 WHEN @sortBy = 'FirstName' THEN CAST(FirstName AS sql_variant)
+				 WHEN @sortBy = 'MiddleName' THEN CAST(MiddleName AS sql_variant)
+				 WHEN @sortBy = 'LastName' THEN CAST(LastName AS sql_variant)
+				 WHEN @sortBy = 'Suffix' THEN CAST(Suffix AS sql_variant)
+				 WHEN @sortBy = 'AccountNumber' THEN CAST(AccountNumber AS sql_variant)
+				 WHEN @sortBy = 'AddressLine1' THEN CAST(AddressLine1 AS sql_variant)
+				 WHEN @sortBy = 'AddressLine2' THEN CAST(AddressLine2 AS sql_variant)
+				 WHEN @sortBy = 'City' THEN CAST(City AS sql_variant)
+				 WHEN @sortBy = 'StateProvinceCode' THEN CAST(StateProvinceCode AS sql_variant)
+				 WHEN @sortBy = 'PostalCode' THEN CAST(PostalCode AS sql_variant)
+				 WHEN @sortBy = 'ShipMethod' THEN CAST([Name] AS sql_variant)
+				 WHEN @sortBy = 'SubTotal' THEN CAST(SubTotal AS sql_variant)
+				 WHEN @sortBy = 'TaxAmt' THEN CAST(TaxAmt AS sql_variant)
+				 WHEN @sortBy = 'Freight' THEN CAST(Freight AS sql_variant)
+				 WHEN @sortBy = 'TotalDue' THEN CAST(TotalDue AS sql_variant)
+				 WHEN @sortBy = 'OrderDate' THEN CAST(OrderDate AS sql_variant)
+				 WHEN @sortBy = 'DueDate' THEN CAST(DueDate AS sql_variant)
+				 WHEN @sortBy = 'ShipDate' THEN CAST(ShipDate AS sql_variant)
+				 WHEN @sortBy = 'FullName' THEN CAST(FullName AS sql_variant)
+				 ELSE CAST(SalesOrderID AS sql_variant)
+			END 'SortBy'
 		FROM
-			Sales.SalesOrderHeader soh
-		JOIN
-			Sales.Customer c ON c.CustomerID = soh.CustomerID
-		JOIN
-			Person.Person p ON p.BusinessEntityID = c.PersonID
-		JOIN
-			Person.[Address] a ON a.AddressID = soh.ShipToAddressID
-		JOIN
-			Person.StateProvince sp ON sp.StateProvinceID = a.StateProvinceID
-		JOIN
-			Purchasing.ShipMethod sm ON sm.ShipMethodID = soh.ShipMethodID
+		(
+			SELECT
+				soh.SalesOrderID
+			   ,p.BusinessEntityID
+			   ,p.Title
+			   ,p.FirstName
+			   ,p.MiddleName
+			   ,p.LastName
+			   ,p.Suffix
+			   ,soh.AccountNumber
+			   ,a.AddressID
+			   ,a.AddressLine1
+			   ,a.AddressLine2
+			   ,a.City
+			   ,sp.StateProvinceCode
+			   ,a.PostalCode
+			   ,sm.ShipMethodID
+			   ,sm.[Name]
+			   ,soh.SubTotal
+			   ,soh.TaxAmt
+			   ,soh.Freight
+			   ,soh.TotalDue
+			   ,soh.OrderDate
+			   ,soh.DueDate
+			   ,soh.ShipDate
+			   ,CONCAT_WS(' ', Title, FirstName, MiddleName, LastName, Suffix) AS 'FullName'
+			FROM
+				Sales.SalesOrderHeader soh
+			JOIN
+				Sales.Customer c ON c.CustomerID = soh.CustomerID
+			JOIN
+				Person.Person p ON p.BusinessEntityID = c.PersonID
+			JOIN
+				Person.[Address] a ON a.AddressID = soh.ShipToAddressID
+			JOIN
+				Person.StateProvince sp ON sp.StateProvinceID = a.StateProvinceID
+			JOIN
+				Purchasing.ShipMethod sm ON sm.ShipMethodID = soh.ShipMethodID
+		) AS HeaderInfo
 
 	IF @orderDateStart IS NOT NULL
 	BEGIN
 		DELETE FROM
-			@tempSalesOrderHeaderTable
+			#tempSalesOrderHeaderTable
 		WHERE
 			OrderDate < @orderDateStart
 	END
@@ -148,7 +155,7 @@ BEGIN
 	IF @orderDateEnd IS NOT NULL
 	BEGIN
 		DELETE FROM
-			@tempSalesOrderHeaderTable
+			#tempSalesOrderHeaderTable
 		WHERE
 			OrderDate > @orderDateEnd
 	END
@@ -156,7 +163,7 @@ BEGIN
 	IF @dueDateStart IS NOT NULL
 	BEGIN
 		DELETE FROM
-			@tempSalesOrderHeaderTable
+			#tempSalesOrderHeaderTable
 		WHERE
 			DueDate < @dueDateStart
 	END
@@ -164,7 +171,7 @@ BEGIN
 	IF @dueDateEnd IS NOT NULL
 	BEGIN
 		DELETE FROM
-			@tempSalesOrderHeaderTable
+			#tempSalesOrderHeaderTable
 		WHERE
 			DueDate > @dueDateEnd
 	END
@@ -172,7 +179,7 @@ BEGIN
 	IF @shipDateStart IS NOT NULL
 	BEGIN
 		DELETE FROM
-			@tempSalesOrderHeaderTable
+			#tempSalesOrderHeaderTable
 		WHERE
 			ShipDate IS NULL
 			OR ShipDate < @shipDateStart
@@ -181,7 +188,7 @@ BEGIN
 	IF @shipDateEnd IS NOT NULL
 	BEGIN
 		DELETE FROM
-			@tempSalesOrderHeaderTable
+			#tempSalesOrderHeaderTable
 		WHERE
 			ShipDate IS NULL
 			OR ShipDate > @shipDateEnd
@@ -190,7 +197,7 @@ BEGIN
 	IF @customerName IS NOT NULL
 	BEGIN
 		DELETE FROM
-			@tempSalesOrderHeaderTable
+			#tempSalesOrderHeaderTable
 		WHERE
 			FullName NOT LIKE '%' + @customerName + '%'
 	END
@@ -198,17 +205,22 @@ BEGIN
 	SELECT
 		@recordCount = COUNT(1)
 	FROM
-		@tempSalesOrderHeaderTable
+		#tempSalesOrderHeaderTable
 
 	SELECT
 		*
 	FROM
-		@tempSalesOrderHeaderTable
+		#tempSalesOrderHeaderTable
 	ORDER BY
 		CASE WHEN @sortDirection = 'DESC' THEN SortBy END DESC
 	   ,CASE WHEN @sortDirection = 'ASC' THEN SortBy END ASC
 	OFFSET @offset ROWS
 	FETCH NEXT @limit ROWS ONLY
+
+	IF OBJECT_ID('tempdb..#tempSalesOrderHeaderTable') IS NOT NULL
+	BEGIN
+		DROP TABLE #tempSalesOrderHeaderTable
+	END
 END
 GO
 
