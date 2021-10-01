@@ -30,6 +30,9 @@ namespace AssessmentApplication.WebApi
 {
     public class Startup
     {
+
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
@@ -52,7 +55,7 @@ namespace AssessmentApplication.WebApi
                 {
                     config
                         .AddConfiguration(Configuration.GetSection("Logging"))
-                        .AddConsole(config =>
+                        .AddSimpleConsole(config =>
                         {
                             config.TimestampFormat = "yyyy-MM-dd hh:mm:ss tt ";
                         });
@@ -68,6 +71,15 @@ namespace AssessmentApplication.WebApi
                         });
 
                     c.IncludeXmlComments(GetXmlPath());
+                })
+                .AddCors(options =>
+                {
+                    options.AddPolicy(name: MyAllowSpecificOrigins,
+                        builder =>
+                        {
+                            // TODO - NEED TO MAKE THIS DYNAMIC!!!
+                            builder.WithOrigins("http://localhost:4200");
+                        });
                 })
                 .AddApplication()
                 .AddData(Configuration)
@@ -98,6 +110,7 @@ namespace AssessmentApplication.WebApi
                 .UseSwagger()
                 .UseHttpsRedirection()
                 .UseRouting()
+                .UseCors(MyAllowSpecificOrigins)
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
@@ -107,7 +120,8 @@ namespace AssessmentApplication.WebApi
                         Predicate = _ => true,
                         ResponseWriter = WriteResponse
                     });
-                    endpoints.MapControllers();
+                    endpoints.MapControllers()
+                        .RequireCors(MyAllowSpecificOrigins); ;
                 });
         }
 

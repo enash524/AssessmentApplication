@@ -2,9 +2,9 @@
 {
     public abstract class PagedRequest
     {
-        public uint CurrentPage { get; set; } = 1;
-
-        public uint PageSize { get; set; } = 10;
+        public uint Limit { get; set; } = 10;
+        
+        public uint Offset { get; set; } = 0;
 
         public string SortBy { get; set; }
 

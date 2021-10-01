@@ -5,11 +5,11 @@ namespace AssessmentApplication.Domain.Common
     public struct PagedResponse<T> : IEquatable<PagedResponse<T>>
         where T : class
     {
-        public uint CurrentPage { get; set; }
-
         public T Data { get; set; }
 
-        public uint PageSize { get; set; }
+        public uint Limit { get; set; }
+
+        public uint Offset { get; set; }
 
         public uint RecordCount { get; set; }
 
@@ -49,9 +49,9 @@ namespace AssessmentApplication.Domain.Common
 
         public bool Equals(PagedResponse<T> value)
         {
-            return Equals(CurrentPage, value.CurrentPage) &&
+            return Equals(Limit, value.Limit) &&
+                Equals(Offset, value.Offset) &&
                 Equals(RecordCount, value.RecordCount) &&
-                Equals(PageSize, value.PageSize) &&
                 Data == value.Data;
         }
 
@@ -61,9 +61,9 @@ namespace AssessmentApplication.Domain.Common
             {
                 int hash = 17;
 
-                hash = (hash * 23) * CurrentPage.GetHashCode();
+                hash = (hash * 23) * Limit.GetHashCode();
+                hash = (hash * 23) ^ Offset.GetHashCode();
                 hash = (hash * 23) ^ RecordCount.GetHashCode();
-                hash = (hash * 23) ^ PageSize.GetHashCode();
                 hash = (hash * 23) ^ (!string.IsNullOrWhiteSpace(SortBy) ? SortBy.GetHashCode() : 0);
                 hash = (hash * 23) ^ SortDirection.GetHashCode();
                 hash = (hash * 23) ^ (Data is object ? Data.GetHashCode() : 0);
