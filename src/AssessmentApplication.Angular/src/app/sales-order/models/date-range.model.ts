@@ -1,4 +1,4 @@
-export class DateRangeModel {
-    public fromDate: Date | null = null;
-    public toDate: Date | null = null;
+export interface DateRangeModel {
+    fromDate: Date | null;
+    toDate: Date | null;
 }

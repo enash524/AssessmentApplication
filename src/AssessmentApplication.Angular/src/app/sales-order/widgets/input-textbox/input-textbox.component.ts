@@ -26,7 +26,6 @@ export interface InputTextboxValues {
 export class InputTextboxComponent implements ControlValueAccessor, OnDestroy {
 
   public inputTextboxForm: FormGroup;
-  public value: InputTextboxValues | null = null;
 
   private _label: string = '';
   private _onChange: Function = () => { };
@@ -46,6 +45,20 @@ export class InputTextboxComponent implements ControlValueAccessor, OnDestroy {
 
   get placeholder() {
     return this._placeholder;
+  }
+
+  get textboxControl() {
+    return this.inputTextboxForm.controls.textboxValue;
+  }
+
+  get value(): InputTextboxValues {
+    return this.inputTextboxForm.value;
+  }
+
+  set value(value: InputTextboxValues) {
+    this.inputTextboxForm.setValue(value);
+    this._onChange(value);
+    this._onTouched();
   }
 
   constructor(private formBuilder: FormBuilder) {

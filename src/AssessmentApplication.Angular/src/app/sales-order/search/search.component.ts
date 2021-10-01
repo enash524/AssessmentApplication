@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ColumnModel } from '@shared/models';
+import { ColumnModel, PagedResponseModel } from '@shared/models';
 import { Subscription } from 'rxjs';
-import { SalesOrderHeaderModel } from '..';
+import { SalesOrderHeaderModel, SalesOrderSearchModel, SalesOrderSearchService } from '..';
 import { DateRangeFormValues } from '../widgets/date-range/date-range.component';
 
 export interface SearchFormValues {
@@ -21,11 +21,11 @@ export class SearchComponent implements OnDestroy {
 
     public columns: ColumnModel[] = [
         {
-            field: '',
+            field: 'person.fullName',
             header: 'Customer Name'
         },
         {
-            field: '',
+            field: 'accountNumber',
             header: 'Account Number'
         },
         {
@@ -33,23 +33,23 @@ export class SearchComponent implements OnDestroy {
             header: 'Ship To Address'
         },
         {
-            field: '',
+            field: 'shipMethod.shipMethodName',
             header: 'Ship Method'
         },
         {
-            field: '',
+            field: 'subTotal',
             header: 'Sub Total'
         },
         {
-            field: '',
+            field: 'taxAmt',
             header: 'Tax'
         },
         {
-            field: '',
+            field: 'freight',
             header: 'Freight'
         },
         {
-            field: '',
+            field: 'totalDue',
             header: 'Total'
         }
     ];
@@ -58,9 +58,15 @@ export class SearchComponent implements OnDestroy {
     public onChange: Function = () => { };
     public onTouched: Function = () => { };
     public searchForm: FormGroup;
+    public totalRecords: number = 0;
+
+    private _salesOrderSearchModel: PagedResponseModel<SalesOrderHeaderModel[]> | null = null;
     private _subscriptions: Subscription[] = [];
 
-    constructor(private formBuilder: FormBuilder) {
+    constructor(
+        private formBuilder: FormBuilder,
+        private salesOrderSearch: SalesOrderSearchService
+    ) {
         this.searchForm = this.formBuilder.group({
             orderDate: [],
             dueDate: [],
@@ -80,12 +86,65 @@ export class SearchComponent implements OnDestroy {
         this._subscriptions.forEach((s: Subscription) => s.unsubscribe());
     }
 
+    public onPage(event: any) {
+        // TODO - IMPLEMENT ME!!!
+        // event.first - record number to start at - record number / rows = current page - 0 based
+        // event.rows - number of rows per page
+        console.log('onPage', event);
+    }
+
     public onReset() {
         this.salesOrderHeader = null;
         this.searchForm.reset();
     }
 
+    public onSort(event: any) {
+        // TODO - IMPLEMENT ME!!!
+        // event.field - from columns value
+        // event.order - 1 == asc, -1 == desc
+        console.log('onSort', event);
+    }
+
     public onSubmit() {
-        this.salesOrderHeader = [];
+        if (this.searchForm.invalid) {
+            return;
+        }
+
+        const searchModel: SalesOrderSearchModel = this.getSearchModel();
+        this.salesOrderSearch.search(searchModel).subscribe({
+            next: (result) => {
+                console.log('next', result)
+                this._salesOrderSearchModel = result;
+                this.salesOrderHeader = result.data;
+                this.totalRecords = result.recordCount
+            },
+            error: (error) => {
+                console.log('error', error)
+            },
+            complete: () => {
+                console.log('complete')
+            }
+        });
+    }
+
+    private getSearchModel() {
+        const searchModel: SalesOrderSearchModel = new SalesOrderSearchModel();
+
+        searchModel.customerName = this.searchForm.controls.customerName.value?.textboxValue;
+        searchModel.dueDateEnd = this.searchForm.controls.dueDate.value?.toDate;
+        searchModel.dueDateStart = this.searchForm.controls.dueDate.value?.fromDate;
+        searchModel.orderDateEnd = this.searchForm.controls.orderDate.value?.toDate;
+        searchModel.orderDateStart = this.searchForm.controls.orderDate.value?.fromDate;
+        searchModel.shipDateEnd = this.searchForm.controls.shipDate.value?.toDate;
+        searchModel.shipDateStart = this.searchForm.controls.shipDate.value?.fromDate;
+
+        if (this._salesOrderSearchModel) {
+            searchModel.limit = this._salesOrderSearchModel.limit;
+            searchModel.offset = this._salesOrderSearchModel.offset;
+            searchModel.sortBy = this._salesOrderSearchModel.sortBy;
+            searchModel.sortDirection = this._salesOrderSearchModel.sortDirection;
+        }
+
+        return searchModel;
     }
 }

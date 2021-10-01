@@ -2,11 +2,11 @@
     <dt>{{ label }}</dt>
 
     <dd>
-        <p-calendar formControlName="fromDate" [placeholder]="placeholderFrom" [showIcon]="true"></p-calendar>
+        <p-calendar formControlName="fromDate" [placeholder]="placeholderFrom" [selectOtherMonths]="true" [showIcon]="true"></p-calendar>
     </dd>
 
     <dd>
-        <p-calendar formControlName="toDate" [placeholder]="placeholderTo" [showIcon]="true"></p-calendar>
+        <p-calendar formControlName="toDate" [placeholder]="placeholderTo" [selectOtherMonths]="true" [showIcon]="true"></p-calendar>
     </dd>
 
     <dd *ngIf="dateRangeForm.invalid" class="error-message fw-bold small">

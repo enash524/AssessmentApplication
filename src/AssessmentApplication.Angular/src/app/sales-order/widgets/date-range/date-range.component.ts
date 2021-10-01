@@ -27,13 +27,12 @@ export interface DateRangeFormValues {
 })
 export class DateRangeComponent implements ControlValueAccessor, OnDestroy {
 
-  public dateRange: DateRangeFormValues | null = null;
   public dateRangeForm: FormGroup;
-  public onChange: Function = () => { };
-  public onTouched: Function = () => { };
 
   private _errorMessage: string = '';
   private _label: string = '';
+  private _onChange: Function = () => { };
+  private _onTouched: Function = () => { };
   private _placeholderFrom: string = '';
   private _placeholderTo: string = '';
   private _subscriptions: Subscription[] = [];
@@ -54,12 +53,30 @@ export class DateRangeComponent implements ControlValueAccessor, OnDestroy {
     return this._errorMessage;
   }
 
+  get fromDateControl() {
+    return this.dateRangeForm.controls.fromDate;
+  }
+
   get placeholderFrom() {
     return this._placeholderFrom;
   }
 
   get placeholderTo() {
     return this._placeholderTo;
+  }
+
+  get toDateControl() {
+    return this.dateRangeForm.controls.toDate;
+  }
+
+  get value(): DateRangeFormValues {
+    return this.dateRangeForm.value;
+  }
+
+  set value(value: DateRangeFormValues) {
+    this.dateRangeForm.setValue(value);
+    this._onChange(value);
+    this._onTouched();
   }
 
   constructor(private formBuilder: FormBuilder) {
@@ -73,8 +90,8 @@ export class DateRangeComponent implements ControlValueAccessor, OnDestroy {
 
     this._subscriptions.push(
       this.dateRangeForm.valueChanges.subscribe(value => {
-        this.onChange(value);
-        this.onTouched();
+        this._onChange(value);
+        this._onTouched();
       })
     )
   }
@@ -84,12 +101,12 @@ export class DateRangeComponent implements ControlValueAccessor, OnDestroy {
   }
 
   public registerOnChange(fn: any) {
-    this.onChange = fn;
+    this._onChange = fn;
   }
 
   public writeValue(value: DateRangeFormValues) {
     if (value) {
-      this.dateRange = value;
+      this.value = value;
     }
 
     if (value === null) {
@@ -98,7 +115,7 @@ export class DateRangeComponent implements ControlValueAccessor, OnDestroy {
   }
 
   public registerOnTouched(fn: any) {
-    this.onTouched = fn;
+    this._onTouched = fn;
   }
 
   // communicate the inner form validation to the parent form

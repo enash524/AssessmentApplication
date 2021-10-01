@@ -29,7 +29,8 @@
 
 <div class="row mt-3" *ngIf="salesOrderHeader">
   <div class="col-md-12">
-    <p-table [value]="salesOrderHeader" [columns]="columns" [rows]="10" [paginator]="true" [autoLayout]="true">
+    <p-table [value]="salesOrderHeader" [columns]="columns" [rows]="10" [paginator]="true" [autoLayout]="true" [totalRecords]="totalRecords"
+      [lazy]="true" [lazyLoadOnInit]="false" (onPage)="onPage($event)" (onSort)="onSort($event)">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -47,14 +48,39 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>
+            <a [routerLink]="['/sales', 'detail', rowData.salesOrderId]">
+              {{ rowData.person.fullName }}
+            </a>
+          </td>
+
+          <td>
+            {{ rowData.accountNumber }}
+          </td>
+
+          <td>
+            TODO - SHIP TO ADDRESS!!!
+          </td>
+
+          <td>
+            {{ rowData.shipMethod.shipMethodName }}
+          </td>
+
+          <td>
+            {{ rowData.subTotal | currency }}
+          </td>
+
+          <td>
+            {{ rowData.taxAmt | currency }}
+          </td>
+
+          <td>
+            {{ rowData.freight | currency }}
+          </td>
+
+          <td>
+            {{ rowData.totalDue | currency }}
+          </td>
         </tr>
       </ng-template>
     </p-table>

@@ -1,7 +1,7 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { ErrorHttpInterceptor } from '@shared/interceptors/error.interceptor';
@@ -23,6 +23,7 @@ import { HomePageComponent } from './home-page/home-page.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     FontAwesomeModule,
+    HttpClientModule,
     ReactiveFormsModule,
   ],
   providers: [

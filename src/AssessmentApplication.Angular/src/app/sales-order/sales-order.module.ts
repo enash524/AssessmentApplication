@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { SearchComponent } from './search/search.component';
 import { DetailsComponent } from './details/details.component';
 import { ButtonModule } from 'primeng/button';
@@ -21,6 +22,7 @@ import { InputTextboxComponent } from './widgets/input-textbox/input-textbox.com
   imports: [
     ButtonModule,
     CommonModule,
+    RouterModule,
     CalendarModule,
     InputTextModule,
     ReactiveFormsModule,

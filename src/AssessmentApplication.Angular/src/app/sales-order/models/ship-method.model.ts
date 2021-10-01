@@ -1,4 +1,4 @@
-export class ShipMethodModel {
-    public shipMethodId: number | null = null;
-    public shipMethodName: string | null = null;
+export interface ShipMethodModel {
+    shipMethodId: number | null;
+    shipMethodName: string | null;
 }
