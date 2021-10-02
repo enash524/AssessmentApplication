@@ -1,3 +1,4 @@
+import { SortDirection } from '@shared/models';
 import { PagedRequestModel } from '@shared/models/paged-request.model';
 
 export class SalesOrderSearchModel extends PagedRequestModel {
@@ -8,4 +9,5 @@ export class SalesOrderSearchModel extends PagedRequestModel {
     public shipDateStart: Date | null = null;
     public shipDateEnd: Date | null = null;
     public customerName: string | null = null;
+    [key: string]: Date | number | string | SortDirection | null | undefined
 }

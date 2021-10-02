@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EnvService } from '@app/env.service';
-import { PagedResponseModel } from '@shared/models';
-import { PagedRequestModel } from '@shared/models/paged-request.model';
+import { PagedResponseModel, SortDirection } from '@shared/models';
 import { Observable } from 'rxjs';
 import { SalesOrderHeaderModel, SalesOrderSearchModel } from '.';
 
@@ -27,15 +26,24 @@ export class SalesOrderSearchService {
     return this.http.get<PagedResponseModel<SalesOrderHeaderModel[]>>(endpoint);
   }
 
-  private generateQueryString(pagedRequest: PagedRequestModel) {
-    // TODO - NEED TO ADD REMAINING SEARCH PARAMETERS!!!
-    const queryString: string[] = [
-      `limit=${ pagedRequest.limit }`,
-      `offset=${ pagedRequest.offset }`,
-      `sortBy=${ pagedRequest.sortBy || 'SalesOrderId' }`,
-      `sortDirection=${ pagedRequest.sortDirection || 'Asc' }`
-    ];
-    return queryString.join('&');
+  private generateQueryString(searchModel: SalesOrderSearchModel) {
+    const str: string[] = [];
+
+    Object.keys(searchModel).forEach((key: string) => {
+      let value = searchModel[key];
+      if (value === null || value === undefined) {
+        return;
+      }
+      if (value instanceof Date) {
+        value = value.toISOString();
+      }
+      if (key === 'sortDirection') {
+        value = value === SortDirection.Asc ? 'Asc' : 'Desc';
+      }
+      str.push(`${key}=${value}`);
+    });
+
+    return str.join('&');
   }
 
 }

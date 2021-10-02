@@ -30,7 +30,7 @@
 <div class="row mt-3" *ngIf="salesOrderHeader">
   <div class="col-md-12">
     <p-table [value]="salesOrderHeader" [columns]="columns" [rows]="10" [paginator]="true" [autoLayout]="true" [totalRecords]="totalRecords"
-      [lazy]="true" [lazyLoadOnInit]="false" (onPage)="onPage($event)" (onSort)="onSort($event)">
+      [lazy]="true" [lazyLoadOnInit]="false" [alwaysShowPaginator]="false" (onPage)="onPage($event)" (onSort)="onSort($event)">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -39,6 +39,7 @@
           </th>
         </tr>
       </ng-template>
+
       <ng-template pTemplate="emptymessage" let-columns>
         <tr>
           <td [attr.colspan]="columns.length">
@@ -46,6 +47,7 @@
           </td>
         </tr>
       </ng-template>
+
       <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr>
           <td>
