@@ -57,11 +57,6 @@ namespace AssessmentApplication.WebApi.Controllers
                 return BadRequest();
             }
 
-            if (entity.Result.Data == null || entity.Result.Data.Count == 0)
-            {
-                return NotFound();
-            }
-
             PagedResponse<List<SalesOrderHeaderVm>> vm = Mapper.Map<PagedResponse<List<SalesOrderHeaderVm>>>(entity.Result);
 
             return Ok(vm);
