@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { DateRangeComponent } from './widgets/date-range/date-range.component';
 import { InputTextboxComponent } from './widgets/input-textbox/input-textbox.component';
+import { SalesOrderInfoComponent } from './widgets/sales-order-info/sales-order-info.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { InputTextboxComponent } from './widgets/input-textbox/input-textbox.com
     DetailsComponent,
     DateRangeComponent,
     InputTextboxComponent,
+    SalesOrderInfoComponent,
   ],
   imports: [
     ButtonModule,

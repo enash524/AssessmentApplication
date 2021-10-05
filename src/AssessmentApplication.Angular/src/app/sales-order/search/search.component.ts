@@ -21,7 +21,7 @@ export class SearchComponent implements OnDestroy {
 
     public columns: ColumnModel[] = [
         {
-            field: 'person.fullName',
+            field: 'fullName',
             header: 'Customer Name'
         },
         {
@@ -29,11 +29,11 @@ export class SearchComponent implements OnDestroy {
             header: 'Account Number'
         },
         {
-            field: '',
+            field: 'address',
             header: 'Ship To Address'
         },
         {
-            field: 'shipMethod.shipMethodName',
+            field: 'shipMethodName',
             header: 'Ship Method'
         },
         {

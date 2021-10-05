@@ -1,4 +1,4 @@
-<h2>Sales Order</h2>
+<h2>Sales Order Search</h2>
 
 <form novalidate (submit)="onSubmit()" [formGroup]="searchForm">
   <div class="row">
@@ -51,7 +51,7 @@
       <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr>
           <td>
-            <a [routerLink]="['/sales', 'detail', rowData.salesOrderId]">
+            <a [routerLink]="['/sales-order', 'detail', rowData.salesOrderId]">
               {{ rowData.person.fullName }}
             </a>
           </td>

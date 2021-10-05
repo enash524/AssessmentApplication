@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EnvService } from '@app/env.service';
 import { PagedResponseModel, SortDirection } from '@shared/models';
-import { Observable } from 'rxjs';
-import { SalesOrderHeaderModel, SalesOrderSearchModel } from '.';
+import { Observable, of } from 'rxjs';
+import { SalesOrderDetail, SalesOrderHeaderModel, SalesOrderSearchModel } from '.';
 
 
 @Injectable({
@@ -18,6 +18,11 @@ export class SalesOrderSearchService {
     private http: HttpClient,
   ) {
     this.url = `${this.env.api}/sales/`;
+  }
+
+  public get(id: number): Observable<SalesOrderDetail[]> {
+    const endpoint: string = `${this.url}detail/${id}`;
+    return this.http.get<SalesOrderDetail[]>(endpoint);
   }
 
   public search(searchModel: SalesOrderSearchModel): Observable<PagedResponseModel<SalesOrderHeaderModel[]>> {
