@@ -25,19 +25,14 @@ namespace AssessmentApplication.WebApi.Controllers
             {
                 SalesOrderDetailId = id
             };
-            QueryResult<SalesOrderDetailEntity> entity = await Mediator.Send(query);
+            QueryResult<List<SalesOrderDetailEntity>> entity = await Mediator.Send(query);
 
             if (entity.QueryResultType == QueryResultType.Invalid)
             {
                 return BadRequest();
             }
 
-            if (entity.Result == null || entity.QueryResultType == QueryResultType.NotFound)
-            {
-                return NotFound();
-            }
-
-            SalesOrderDetailVm vm = Mapper.Map<SalesOrderDetailVm>(entity.Result);
+            List<SalesOrderDetailVm> vm = Mapper.Map<List<SalesOrderDetailVm>>(entity.Result);
 
             return Ok(vm);
         }

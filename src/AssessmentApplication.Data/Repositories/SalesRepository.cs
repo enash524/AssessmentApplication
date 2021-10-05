@@ -21,15 +21,15 @@ namespace AssessmentApplication.Data.Repositories
             : base(dbConnection, logger, mapper)
         { }
 
-        public async Task<SalesOrderDetailEntity> GetSalesOrderDetailAsync(int salesOrderId, CancellationToken cancellationToken)
+        public async Task<List<SalesOrderDetailEntity>> GetSalesOrderDetailAsync(int salesOrderId, CancellationToken cancellationToken)
         {
             DynamicParameters parms = new DynamicParameters();
             parms.Add("@salesOrderId", salesOrderId);
 
-            SalesOrderDetailDto dto = await QuerySingleOrDefaultAsync<SalesOrderDetailDto>("[Sales].[uspGetSalesOrderDetail]", parms, CommandType.StoredProcedure);
-            SalesOrderDetailEntity entity = Mapper.Map<SalesOrderDetailEntity>(dto);
+            IEnumerable<SalesOrderDetailDto> dto = await QueryAsync<SalesOrderDetailDto>("[Sales].[uspGetSalesOrderDetail]", parms, CommandType.StoredProcedure);
+            List<SalesOrderDetailEntity> entities = Mapper.Map<List<SalesOrderDetailEntity>>(dto);
 
-            return entity;
+            return entities;
         }
 
         public async Task<PagedResponse<List<SalesOrderHeaderEntity>>> GetSalesOrderHeaderAsync(SalesOrderHeaderRequest request, CancellationToken cancellationToken)

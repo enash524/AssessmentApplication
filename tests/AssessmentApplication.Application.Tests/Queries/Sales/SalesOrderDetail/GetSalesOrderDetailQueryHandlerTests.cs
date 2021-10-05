@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AssessmentApplication.Application.Models;
@@ -40,7 +41,7 @@ namespace AssessmentApplication.Application.Tests.Queries.Sales.SalesOrderDetail
             CancellationToken cancellationToken = new CancellationToken();
 
             // Act
-            QueryResult<SalesOrderDetailEntity> actual = await _handler.Handle(query, cancellationToken);
+            QueryResult<List<SalesOrderDetailEntity>> actual = await _handler.Handle(query, cancellationToken);
 
             // Assert
             using (new AssertionScope())
@@ -84,10 +85,10 @@ namespace AssessmentApplication.Application.Tests.Queries.Sales.SalesOrderDetail
             };
             _salesRepository
                 .Setup(x => x.GetSalesOrderDetailAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new SalesOrderDetailEntity());
+                .ReturnsAsync(new List<SalesOrderDetailEntity>());
 
             // Act
-            QueryResult<SalesOrderDetailEntity> actual = await _handler.Handle(query, cancellationToken);
+            QueryResult<List<SalesOrderDetailEntity>> actual = await _handler.Handle(query, cancellationToken);
 
             // Assert
             using (new AssertionScope())
@@ -120,10 +121,10 @@ namespace AssessmentApplication.Application.Tests.Queries.Sales.SalesOrderDetail
 
             _salesRepository
                 .Setup(x => x.GetSalesOrderDetailAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((SalesOrderDetailEntity)null);
+                .ReturnsAsync((List<SalesOrderDetailEntity>)null);
 
             // Act
-            QueryResult<SalesOrderDetailEntity> actual = await _handler.Handle(query, cancellationToken);
+            QueryResult<List<SalesOrderDetailEntity>> actual = await _handler.Handle(query, cancellationToken);
 
             // Assert
             using (new AssertionScope())

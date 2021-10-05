@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AssessmentApplication.Application.Models;
 using AssessmentApplication.Data.Interfaces;
@@ -13,7 +14,7 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderDetail
     /// <summary>
     /// Contains methods for handling the GetSalesOrderDetail query
     /// </summary>
-    public class GetSalesOrderDetailQueryHandler : IRequestHandler<GetSalesOrderDetailQuery, QueryResult<SalesOrderDetailEntity>>
+    public class GetSalesOrderDetailQueryHandler : IRequestHandler<GetSalesOrderDetailQuery, QueryResult<List<SalesOrderDetailEntity>>>
     {
         private readonly ILogger<GetSalesOrderDetailQueryHandler> _logger;
         private readonly ISalesRepository _salesOrderDetailRepository;
@@ -38,7 +39,7 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderDetail
         /// <param name="request">The GetSalesOrderDetail query input parameters</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>Task representing the SalesOrderDetailEntity wrapped in a QueryResult</returns>
-        public async Task<QueryResult<SalesOrderDetailEntity>> Handle(GetSalesOrderDetailQuery request, CancellationToken cancellationToken)
+        public async Task<QueryResult<List<SalesOrderDetailEntity>>> Handle(GetSalesOrderDetailQuery request, CancellationToken cancellationToken)
         {
             ValidationResult validationResult = _validator.Validate(request);
 
@@ -49,27 +50,27 @@ namespace AssessmentApplication.Application.Queries.Sales.SalesOrderDetail
                     request.SalesOrderDetailId,
                     validationResult.ToString());
 
-                return new QueryResult<SalesOrderDetailEntity>
+                return new QueryResult<List<SalesOrderDetailEntity>>
                 {
                     QueryResultType = QueryResultType.Invalid,
                     Result = null
                 };
             }
 
-            SalesOrderDetailEntity entity = await _salesOrderDetailRepository.GetSalesOrderDetailAsync(request.SalesOrderDetailId, cancellationToken);
+            List<SalesOrderDetailEntity> entity = await _salesOrderDetailRepository.GetSalesOrderDetailAsync(request.SalesOrderDetailId, cancellationToken);
 
             if (entity == null)
             {
                 _logger.LogError("GetSalesOrderDetailQuery with SalesOrderDetailId: {SalesOrderDetailId} was not found.", request.SalesOrderDetailId);
 
-                return new QueryResult<SalesOrderDetailEntity>
+                return new QueryResult<List<SalesOrderDetailEntity>>
                 {
                     QueryResultType = QueryResultType.NotFound,
                     Result = null
                 };
             }
 
-            return new QueryResult<SalesOrderDetailEntity>
+            return new QueryResult<List<SalesOrderDetailEntity>>
             {
                 Result = entity,
                 QueryResultType = QueryResultType.Success
