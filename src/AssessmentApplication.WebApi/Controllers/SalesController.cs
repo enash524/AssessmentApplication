@@ -18,7 +18,6 @@ namespace AssessmentApplication.WebApi.Controllers
         [HttpGet("Detail/{id:int}")]
         [ProducesResponseType(typeof(SalesOrderDetailVm), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<SalesOrderDetailVm>> GetSalesOrderDetail(int id)
         {
             GetSalesOrderDetailQuery query = new GetSalesOrderDetailQuery
@@ -41,7 +40,6 @@ namespace AssessmentApplication.WebApi.Controllers
         [HttpGet("SalesOrderHeader")]
         [ProducesResponseType(typeof(PagedResponse<List<SalesOrderHeaderVm>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PagedResponse<List<SalesOrderHeaderVm>>>> GetSalesOrderHeader([FromQuery] SalesOrderSearchModel model)
         {
             GetSalesOrderHeaderQuery query = Mapper.Map<GetSalesOrderHeaderQuery>(model);

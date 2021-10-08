@@ -1,7 +1,7 @@
 USE [AdventureWorks2017]
 GO
 
-/****** Object:  StoredProcedure [Sales].[uspGetSalesOrderHeader]    Script Date: 9/30/2021 10:57:12 AM ******/
+/****** Object:  StoredProcedure [Sales].[uspGetSalesOrderHeader]    Script Date: 10/7/2021 10:51:27 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -74,6 +74,7 @@ BEGIN
 	   ,DueDate				DATETIME NOT NULL
 	   ,ShipDate			DATETIME NULL
 	   ,FullName			NVARCHAR(168) NOT NULL
+	   ,FullAddress			NVARCHAR(175) NOT NULL
 	   ,SortBy				SQL_VARIANT NULL
 	)
 
@@ -101,6 +102,7 @@ BEGIN
 				 WHEN @sortBy = 'DueDate' THEN CAST(DueDate AS sql_variant)
 				 WHEN @sortBy = 'ShipDate' THEN CAST(ShipDate AS sql_variant)
 				 WHEN @sortBy = 'FullName' THEN CAST(FullName AS sql_variant)
+				 WHEN @sortBy = 'Address' THEN CAST(FullAddress AS sql_variant)
 				 ELSE CAST(SalesOrderID AS sql_variant)
 			END 'SortBy'
 		FROM
@@ -130,6 +132,7 @@ BEGIN
 			   ,soh.DueDate
 			   ,soh.ShipDate
 			   ,CONCAT_WS(' ', Title, FirstName, MiddleName, LastName, Suffix) AS 'FullName'
+			   ,CONCAT_WS(' ', StateProvinceCode, City, PostalCode, AddressLine1, AddressLine2) AS 'FullAddress'
 			FROM
 				Sales.SalesOrderHeader soh
 			JOIN
