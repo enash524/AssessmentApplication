@@ -18,18 +18,18 @@ export class PageLoadHttpInterceptor implements HttpInterceptor {
     constructor (
         private ngxService: NgxUiLoaderService,
         private router: Router,
-    ) {}
+    ) { }
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         if (this.defaultConfig.excludeRequest) {
-            if (this.defaultConfig.excludeRequest.findIndex(url => request.url.toLowerCase().endsWith(url)) > -1 {
+            if (this.defaultConfig.excludeRequest.findIndex(url => request.url.toLowerCase().endsWith(url)) > -1) {
                 return next.handle(request);
             }
         }
 
         if (this.defaultConfig.excludeRoute) {
-            if (this.defaultConfig.excludeRoute.findIndex(url => this.router.url.toLowerCase().endsWith(url)) > -1 {
+            if (this.defaultConfig.excludeRoute.findIndex(url => this.router.url.toLowerCase().endsWith(url)) > -1) {
                 return next.handle(request);
             }
         }

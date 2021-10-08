@@ -9,14 +9,17 @@ import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { SalesOrderComponent } from './sales-order/sales-order.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
-import { EnvService } from './env.service';
+import { EnvService } from '@shared/services/env.service';
 import { HomePageComponent } from './home-page/home-page.component';
+import { NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
+import { MessageService } from 'primeng/api';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     SalesOrderComponent,
-    HomePageComponent
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,9 +27,14 @@ import { HomePageComponent } from './home-page/home-page.component';
     AppRoutingModule,
     FontAwesomeModule,
     HttpClientModule,
+    NgxUiLoaderModule.forRoot({ 'fgsType': 'rectangle-bounce' }),
+    NgxUiLoaderHttpModule.forRoot({ 'showForeground': true }),
+    NgxUiLoaderRouterModule,
     ReactiveFormsModule,
+    SharedModule,
   ],
   providers: [
+    MessageService,
     Title,
     {
       provide: APP_INITIALIZER,

@@ -84,16 +84,16 @@ export class DateRangeComponent implements ControlValueAccessor, OnDestroy {
       fromDate: [],
       toDate: []
     },
-      {
-        validator: DateRangeValidator('fromDate', 'toDate')
-      });
+    {
+      validators: DateRangeValidator('fromDate', 'toDate')
+    });
 
     this._subscriptions.push(
       this.dateRangeForm.valueChanges.subscribe(value => {
         this._onChange(value);
         this._onTouched();
       })
-    )
+    );
   }
 
   public ngOnDestroy() {

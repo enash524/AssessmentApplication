@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { SalesOrderDetail, SalesOrderSearchService } from '..';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
 
   public salesOrderDetails: SalesOrderDetail[] | null = null;
   private _subscriptions: Subscription[] = [];
@@ -17,7 +17,7 @@ export class DetailsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private salesOrderService: SalesOrderSearchService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.pipe(
@@ -27,6 +27,10 @@ export class DetailsComponent implements OnInit {
       }),
       switchMap(id => id ? this.salesOrderService.get(id) : of([])),
     ).subscribe(details => this.salesOrderDetails = details);
+  }
+
+  ngOnDestroy(): void {
+    this._subscriptions.forEach((s: Subscription) => s.unsubscribe());
   }
 
 }

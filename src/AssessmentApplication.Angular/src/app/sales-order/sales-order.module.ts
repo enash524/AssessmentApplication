@@ -11,6 +11,7 @@ import { TableModule } from 'primeng/table';
 import { DateRangeComponent } from './widgets/date-range/date-range.component';
 import { InputTextboxComponent } from './widgets/input-textbox/input-textbox.component';
 import { SalesOrderInfoComponent } from './widgets/sales-order-info/sales-order-info.component';
+import { SharedModule } from '@shared/shared.module';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { SalesOrderInfoComponent } from './widgets/sales-order-info/sales-order-
     InputTextModule,
     ReactiveFormsModule,
     TableModule,
+    SharedModule,
   ]
 })
 export class SalesOrderModule { }

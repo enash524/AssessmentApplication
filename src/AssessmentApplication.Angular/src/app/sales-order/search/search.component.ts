@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ColumnModel, PagedResponseModel } from '@shared/models';
+import { ColumnModel, PagedResponseModel, SortDirection } from '@shared/models';
 import { Subscription } from 'rxjs';
 import { SalesOrderHeaderModel, SalesOrderSearchModel, SalesOrderSearchService } from '..';
 import { DateRangeFormValues } from '../widgets/date-range/date-range.component';
@@ -60,6 +60,7 @@ export class SearchComponent implements OnDestroy {
     public searchForm: FormGroup;
     public totalRecords: number = 0;
 
+    private _previousSearchModel: SalesOrderSearchModel = new SalesOrderSearchModel();
     private _salesOrderSearchModel: PagedResponseModel<SalesOrderHeaderModel[]> | null = null;
     private _subscriptions: Subscription[] = [];
 
@@ -87,10 +88,9 @@ export class SearchComponent implements OnDestroy {
     }
 
     public onPage(event: any) {
-        // TODO - IMPLEMENT ME!!!
-        // event.first - record number to start at - record number / rows = current page - 0 based
-        // event.rows - number of rows per page
-        console.log('onPage', event);
+        this._previousSearchModel.offset = event.first;
+        this._previousSearchModel.limit = event.rows;
+        this.search(this._previousSearchModel);
     }
 
     public onReset() {
@@ -99,10 +99,9 @@ export class SearchComponent implements OnDestroy {
     }
 
     public onSort(event: any) {
-        // TODO - IMPLEMENT ME!!!
-        // event.field - from columns value
-        // event.order - 1 == asc, -1 == desc
-        console.log('onSort', event);
+        this._previousSearchModel.sortBy = event.field;
+        this._previousSearchModel.sortDirection = event.order === 1 ? SortDirection.Asc : SortDirection.Desc;
+        this.search(this._previousSearchModel);
     }
 
     public onSubmit() {
@@ -110,21 +109,8 @@ export class SearchComponent implements OnDestroy {
             return;
         }
 
-        const searchModel: SalesOrderSearchModel = this.getSearchModel();
-        this.salesOrderSearch.search(searchModel).subscribe({
-            next: (result) => {
-                console.log('next', result)
-                this._salesOrderSearchModel = result;
-                this.salesOrderHeader = result.data;
-                this.totalRecords = result.recordCount
-            },
-            error: (error) => {
-                console.log('error', error)
-            },
-            complete: () => {
-                console.log('complete')
-            }
-        });
+        this._previousSearchModel = this.getSearchModel();
+        this.search(this._previousSearchModel);
     }
 
     private getSearchModel() {
@@ -146,5 +132,18 @@ export class SearchComponent implements OnDestroy {
         }
 
         return searchModel;
+    }
+
+    private search(searchModel: SalesOrderSearchModel) {
+        this.salesOrderSearch.search(searchModel).subscribe({
+            next: (result) => {
+                this._salesOrderSearchModel = result;
+                this.salesOrderHeader = result.data;
+                this.totalRecords = result.recordCount
+            },
+            error: (error) => {
+                console.log('error', error)
+            },
+        });
     }
 }

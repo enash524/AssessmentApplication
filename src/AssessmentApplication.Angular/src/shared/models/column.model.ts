@@ -1,4 +1,4 @@
-export class ColumnModel {
-    public field: string | null = null;
-    public header: string | null = null;
+export interface ColumnModel {
+    field: string | null;
+    header: string | null;
 }

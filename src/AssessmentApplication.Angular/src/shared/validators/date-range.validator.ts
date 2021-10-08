@@ -1,14 +1,14 @@
-import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 export function DateRangeValidator(
     fromDate: string,
     toDate: string
 ) {
-    return (formGroup: FormGroup) : ValidationErrors | null => {
-        const fromDateControl: AbstractControl = formGroup.controls[fromDate];
-        const toDateControl: AbstractControl = formGroup.controls[toDate];
+    return (formGroup: AbstractControl) : ValidationErrors | null => {
+        const fromDateControl: AbstractControl | null = formGroup.get(fromDate);
+        const toDateControl: AbstractControl | null = formGroup.get(toDate);
 
-        if (fromDateControl.value == null || toDateControl.value == null) {
+        if (fromDateControl?.value == null || toDateControl?.value == null) {
             return null;
         }
 
