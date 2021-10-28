@@ -68,7 +68,7 @@ namespace AssessmentApplication.WebApi.Tests
             // Arrange
             _mediator
                 .Setup(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new QueryResult<SalesOrderDetailEntity>
+                .ReturnsAsync(new QueryResult<List<SalesOrderDetailEntity>>
                 {
                     QueryResultType = QueryResultType.Invalid
                 });
@@ -94,12 +94,12 @@ namespace AssessmentApplication.WebApi.Tests
         }
 
         [Fact]
-        public async Task GetSalesOrderDetail_ShouldReturnNotFoundRequest_WhenQueryResultNotFound()
+        public async Task GetSalesOrderDetail_ShouldReturnOkRequest_WhenQueryResultNotFound()
         {
             // Arrange
             _mediator
                 .Setup(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new QueryResult<SalesOrderDetailEntity>
+                .ReturnsAsync(new QueryResult<List<SalesOrderDetailEntity>>
                 {
                     QueryResultType = QueryResultType.NotFound
                 });
@@ -118,7 +118,7 @@ namespace AssessmentApplication.WebApi.Tests
                     .Should()
                     .NotBeNull()
                     .And
-                    .BeOfType<NotFoundResult>();
+                    .BeOfType<OkObjectResult>();
 
                 _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()), Times.Once());
             }
@@ -134,9 +134,9 @@ namespace AssessmentApplication.WebApi.Tests
 
             _mediator
                 .Setup(x => x.Send(It.IsAny<GetSalesOrderDetailQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new QueryResult<SalesOrderDetailEntity>
+                .ReturnsAsync(new QueryResult<List<SalesOrderDetailEntity>>
                 {
-                    Result = new SalesOrderDetailEntity()
+                    Result = new List<SalesOrderDetailEntity>()
                 });
 
             // Act
@@ -197,40 +197,6 @@ namespace AssessmentApplication.WebApi.Tests
         }
 
         [Fact]
-        public async Task GetSalesOrderHeader_ShouldReturnNotFoundResult_WhenQueryResultNotFound()
-        {
-            // Arrange
-            SalesOrderSearchModel model = new SalesOrderSearchModel();
-
-            _mapper
-                .Setup(x => x.Map<PagedResponse<List<SalesOrderHeaderVm>>>(It.IsAny<PagedResponse<List<SalesOrderHeaderEntity>>>()))
-                .Returns(new PagedResponse<List<SalesOrderHeaderVm>>());
-
-            _mediator
-                .Setup(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>());
-
-            // Act
-            ActionResult<PagedResponse<List<SalesOrderHeaderVm>>> response = await _salesController.GetSalesOrderHeader(model);
-
-            // Assert
-            using (new AssertionScope())
-            {
-                response
-                    .Should()
-                    .NotBeNull();
-
-                response.Result
-                    .Should()
-                    .NotBeNull()
-                    .And
-                    .BeOfType<NotFoundResult>();
-
-                _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()), Times.Once());
-            }
-        }
-
-        [Fact]
         public async Task GetSalesOrderHeader_ShouldReturnOkResult()
         {
             // Arrange
@@ -269,6 +235,40 @@ namespace AssessmentApplication.WebApi.Tests
                     .NotBeNull()
                     .And
                     .BeOfType<OkObjectResult>();
+            }
+        }
+
+        [Fact]
+        public async Task GetSalesOrderHeader_ShouldReturnOkResult_WhenQueryResultNotFound()
+        {
+            // Arrange
+            SalesOrderSearchModel model = new SalesOrderSearchModel();
+
+            _mapper
+                .Setup(x => x.Map<PagedResponse<List<SalesOrderHeaderVm>>>(It.IsAny<PagedResponse<List<SalesOrderHeaderEntity>>>()))
+                .Returns(new PagedResponse<List<SalesOrderHeaderVm>>());
+
+            _mediator
+                .Setup(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new QueryResult<PagedResponse<List<SalesOrderHeaderEntity>>>());
+
+            // Act
+            ActionResult<PagedResponse<List<SalesOrderHeaderVm>>> response = await _salesController.GetSalesOrderHeader(model);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                response
+                    .Should()
+                    .NotBeNull();
+
+                response.Result
+                    .Should()
+                    .NotBeNull()
+                    .And
+                    .BeOfType<OkObjectResult>();
+
+                _mediator.Verify(x => x.Send(It.IsAny<GetSalesOrderHeaderQuery>(), It.IsAny<CancellationToken>()), Times.Once());
             }
         }
     }
