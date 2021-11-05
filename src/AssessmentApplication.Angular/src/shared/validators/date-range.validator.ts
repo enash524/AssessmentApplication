@@ -4,7 +4,7 @@ export function DateRangeValidator(
     fromDate: string,
     toDate: string
 ) {
-    return (formGroup: AbstractControl) : ValidationErrors | null => {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
         const fromDateControl: AbstractControl | null = formGroup.get(fromDate);
         const toDateControl: AbstractControl | null = formGroup.get(toDate);
 
