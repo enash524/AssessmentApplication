@@ -11,7 +11,7 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
     constructor (
         private messageService: MessageService,
         private ngxService: NgxUiLoaderService,
-    ) { }
+    ) {}
 
     public intercept(req: HttpRequest<any>, next: HttpHandler) {
         return next.handle(req.clone()).pipe(tap(() => {},

@@ -33,4 +33,4 @@ import { SharedModule } from '@shared/shared.module';
     SharedModule,
   ]
 })
-export class SalesOrderModule { }
+export class SalesOrderModule {}

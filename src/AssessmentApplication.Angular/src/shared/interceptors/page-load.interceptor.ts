@@ -18,7 +18,7 @@ export class PageLoadHttpInterceptor implements HttpInterceptor {
     constructor (
         private ngxService: NgxUiLoaderService,
         private router: Router,
-    ) { }
+    ) {}
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 

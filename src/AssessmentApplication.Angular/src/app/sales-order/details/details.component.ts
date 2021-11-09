@@ -17,7 +17,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private salesOrderService: SalesOrderSearchService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.pipe(

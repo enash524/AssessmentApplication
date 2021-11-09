@@ -31,8 +31,8 @@ export class DateRangeComponent implements ControlValueAccessor, OnDestroy {
 
   private _errorMessage: string = '';
   private _label: string = '';
-  private _onChange: Function = () => { };
-  private _onTouched: Function = () => { };
+  private _onChange: Function = () => {};
+  private _onTouched: Function = () => {};
   private _placeholderFrom: string = '';
   private _placeholderTo: string = '';
   private _subscriptions: Subscription[] = [];

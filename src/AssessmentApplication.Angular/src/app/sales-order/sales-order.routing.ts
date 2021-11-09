@@ -35,4 +35,4 @@ const routes: Routes = [
     RouterModule,
   ],
 })
-export class SalesOrderRouting { }
+export class SalesOrderRouting {}

@@ -1,15 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-unavailable-page',
   templateUrl: './unavailable-page.component.html',
   styleUrls: ['./unavailable-page.component.scss']
 })
-export class UnavailablePageComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class UnavailablePageComponent {}

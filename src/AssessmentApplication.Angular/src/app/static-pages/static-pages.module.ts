@@ -16,4 +16,4 @@ import { UnavailablePageComponent } from './unavailable-page/unavailable-page.co
     CommonModule
   ]
 })
-export class StaticPagesModule { }
+export class StaticPagesModule {}

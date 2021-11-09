@@ -28,8 +28,8 @@ export class InputTextboxComponent implements ControlValueAccessor, OnDestroy {
   public inputTextboxForm: FormGroup;
 
   private _label: string = '';
-  private _onChange: Function = () => { };
-  private _onTouched: Function = () => { };
+  private _onChange: Function = () => {};
+  private _onTouched: Function = () => {};
   private _placeholder: string = '';
   private _subscriptions: Subscription[] = [];
 

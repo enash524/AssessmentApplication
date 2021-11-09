@@ -14,4 +14,4 @@ import { FullAddressPipe } from './pipes/full-address.pipe';
     FullAddressPipe,
   ]
 })
-export class SharedModule { }
+export class SharedModule {}
