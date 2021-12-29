@@ -55,8 +55,8 @@ export class SearchComponent implements OnDestroy {
     ];
 
     public salesOrderHeader: SalesOrderHeaderModel[] | null = null;
-    public onChange: Function = () => {};
-    public onTouched: Function = () => {};
+    public onChange: Function = () => { };
+    public onTouched: Function = () => { };
     public searchForm: FormGroup;
     public totalRecords: number = 0;
 
