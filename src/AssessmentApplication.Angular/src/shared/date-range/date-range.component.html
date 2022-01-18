@@ -1,0 +1,19 @@
+<dl [formGroup]="dateRangeForm">
+  <dt>{{ label }}</dt>
+
+  <dd>
+    <p-calendar [formControl]="dateRangeForm.fromDate" [placeholder]="placeholderFrom" [selectOtherMonths]="true"
+      [showIcon]="true">
+    </p-calendar>
+  </dd>
+
+  <dd>
+    <p-calendar [formControl]="dateRangeForm.toDate" [placeholder]="placeholderTo" [selectOtherMonths]="true"
+      [showIcon]="true">
+    </p-calendar>
+  </dd>
+
+  <dd *ngIf="dateRangeForm?.invalid" class="error-message fw-bold small">
+    {{ errorMessage }}
+  </dd>
+</dl>

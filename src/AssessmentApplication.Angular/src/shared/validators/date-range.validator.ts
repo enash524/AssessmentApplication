@@ -1,21 +1,17 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import * as moment from "moment";
 
-export function DateRangeValidator(
-    fromDate: string,
-    toDate: string
-) {
+export function dateRangeValidator(fromDatePath: string, toDatePath: string): ValidatorFn {
     return (formGroup: AbstractControl): ValidationErrors | null => {
-        const fromDateControl: AbstractControl | null = formGroup.get(fromDate);
-        const toDateControl: AbstractControl | null = formGroup.get(toDate);
+        const fromDate: Date = formGroup.get(fromDatePath)?.value;
+        const toDate: Date = formGroup.get(toDatePath)?.value;
 
-        if (fromDateControl?.value == null || toDateControl?.value == null) {
-            return null;
+        if (fromDate && toDate) {
+            const invalid: boolean = moment(fromDate).isSameOrAfter(toDate);
+
+            return invalid ? { invalidRange: { fromDate: fromDate, toDate: toDate } } : null;
         }
 
-        const startDateValue: Date = new Date(fromDateControl.value);
-        const endDateValue: Date = new Date(toDateControl.value);
-        const invalid: boolean = startDateValue > endDateValue;
-
-        return invalid ? { invalidRange: { startDateValue, endDateValue } } : null;
+        return null;
     }
 }

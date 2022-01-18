@@ -9,6 +9,6 @@ import { SalesOrderDetail } from '@app/sales-order/models';
 export class SalesOrderInfoComponent {
 
   @Input()
-  public salesOrderDetail: SalesOrderDetail | null = null;
-  
+  public salesOrderDetail: SalesOrderDetail;
+
 }

@@ -1,0 +1,7 @@
+<dl *ngIf="control">
+  <dt>{{ label }}</dt>
+
+  <dd>
+    <input type="text" pInputText [formControl]="control" [placeholder]="label">
+  </dd>
+</dl>

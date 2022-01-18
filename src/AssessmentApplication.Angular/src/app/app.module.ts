@@ -2,7 +2,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ErrorHttpInterceptor } from '@shared/interceptors/error.interceptor';
 import { AppRoutingModule } from './app.routing';
@@ -14,6 +14,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
 import { MessageService } from 'primeng/api';
 import { SharedModule } from '@shared/shared.module';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -26,12 +27,14 @@ import { SharedModule } from '@shared/shared.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     FontAwesomeModule,
+    FormsModule,
     HttpClientModule,
     NgxUiLoaderModule.forRoot({ 'fgsType': 'rectangle-bounce' }),
     NgxUiLoaderHttpModule.forRoot({ 'showForeground': true }),
     NgxUiLoaderRouterModule,
     ReactiveFormsModule,
     SharedModule,
+    TableModule,
   ],
   providers: [
     MessageService,
@@ -52,4 +55,4 @@ import { SharedModule } from '@shared/shared.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

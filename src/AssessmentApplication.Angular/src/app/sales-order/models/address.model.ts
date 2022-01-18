@@ -1,8 +1,8 @@
 export interface AddressModel {
-    addressId: number | null;
-    address1: string | null;
+    addressId: number;
+    address1: string;
     address2?: string;
-    city: string | null;
-    stateOrProvinceCode: string | null;
-    postalCode: string | null;
+    city: string;
+    stateOrProvinceCode: string;
+    postalCode: string;
 }

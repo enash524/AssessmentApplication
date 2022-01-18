@@ -1,16 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ColumnModel, PagedResponseModel, SortDirection } from '@shared/models';
 import { Subscription } from 'rxjs';
+import { SearchForm, SearchModel } from '.';
 import { SalesOrderHeaderModel, SalesOrderSearchModel, SalesOrderSearchService } from '..';
-import { DateRangeFormValues } from '../widgets/date-range/date-range.component';
-
-export interface SearchFormValues {
-    orderDate: DateRangeFormValues,
-    dueDate: DateRangeFormValues,
-    shipDate: DateRangeFormValues,
-    customerName: string
-}
 
 @Component({
     selector: 'app-search',
@@ -54,34 +47,18 @@ export class SearchComponent implements OnDestroy {
         }
     ];
 
-    public salesOrderHeader: SalesOrderHeaderModel[] | null = null;
-    public onChange: Function = () => { };
-    public onTouched: Function = () => { };
-    public searchForm: FormGroup;
+    public salesOrderHeader: SalesOrderHeaderModel[];
+    public searchForm: SearchForm = new SearchForm({} as SearchModel, this.formBuilder);
     public totalRecords: number = 0;
 
     private _previousSearchModel: SalesOrderSearchModel = new SalesOrderSearchModel();
-    private _salesOrderSearchModel: PagedResponseModel<SalesOrderHeaderModel[]> | null = null;
+    private _salesOrderSearchModel: PagedResponseModel<SalesOrderHeaderModel[]>;
     private _subscriptions: Subscription[] = [];
 
     constructor(
         private formBuilder: FormBuilder,
         private salesOrderSearch: SalesOrderSearchService
-    ) {
-        this.searchForm = this.formBuilder.group({
-            orderDate: [],
-            dueDate: [],
-            shipDate: [],
-            customerName: []
-        });
-
-        this._subscriptions.push(
-            this.searchForm.valueChanges.subscribe(value => {
-                this.onChange(value);
-                this.onTouched();
-            })
-        );
-    }
+    ) { }
 
     public ngOnDestroy() {
         this._subscriptions.forEach((s: Subscription) => s.unsubscribe());

@@ -11,13 +11,13 @@ import { SalesOrderDetail, SalesOrderSearchService } from '..';
 })
 export class DetailsComponent implements OnInit, OnDestroy {
 
-  public salesOrderDetails: SalesOrderDetail[] | null = null;
+  public salesOrderDetails: SalesOrderDetail[];
   private _subscriptions: Subscription[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private salesOrderService: SalesOrderSearchService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.pipe(

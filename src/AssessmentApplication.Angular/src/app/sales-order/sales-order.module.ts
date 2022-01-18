@@ -6,10 +6,8 @@ import { DetailsComponent } from './details/details.component';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
-import { DateRangeComponent } from './widgets/date-range/date-range.component';
-import { InputTextboxComponent } from './widgets/input-textbox/input-textbox.component';
 import { SalesOrderInfoComponent } from './widgets/sales-order-info/sales-order-info.component';
 import { SharedModule } from '@shared/shared.module';
 
@@ -18,8 +16,6 @@ import { SharedModule } from '@shared/shared.module';
   declarations: [
     SearchComponent,
     DetailsComponent,
-    DateRangeComponent,
-    InputTextboxComponent,
     SalesOrderInfoComponent,
   ],
   imports: [
@@ -27,10 +23,11 @@ import { SharedModule } from '@shared/shared.module';
     CommonModule,
     RouterModule,
     CalendarModule,
+    FormsModule,
     InputTextModule,
     ReactiveFormsModule,
-    TableModule,
     SharedModule,
+    TableModule,
   ]
 })
-export class SalesOrderModule {}
+export class SalesOrderModule { }
