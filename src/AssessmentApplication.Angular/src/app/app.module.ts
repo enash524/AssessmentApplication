@@ -8,20 +8,20 @@ import { ErrorHttpInterceptor } from '@shared/interceptors/error.interceptor';
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { SalesOrderComponent } from './sales-order/sales-order.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EnvService } from '@shared/services/env.service';
 import { HomePageComponent } from './home-page/home-page.component';
-import { NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
+import {
+  NgxUiLoaderHttpModule,
+  NgxUiLoaderModule,
+  NgxUiLoaderRouterModule,
+} from 'ngx-ui-loader';
 import { MessageService } from 'primeng/api';
 import { SharedModule } from '@shared/shared.module';
 import { TableModule } from 'primeng/table';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SalesOrderComponent,
-    HomePageComponent,
-  ],
+  declarations: [AppComponent, SalesOrderComponent, HomePageComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -29,8 +29,8 @@ import { TableModule } from 'primeng/table';
     FontAwesomeModule,
     FormsModule,
     HttpClientModule,
-    NgxUiLoaderModule.forRoot({ 'fgsType': 'rectangle-bounce' }),
-    NgxUiLoaderHttpModule.forRoot({ 'showForeground': true }),
+    NgxUiLoaderModule.forRoot({ fgsType: 'rectangle-bounce' }),
+    NgxUiLoaderHttpModule.forRoot({ showForeground: true }),
     NgxUiLoaderRouterModule,
     ReactiveFormsModule,
     SharedModule,
@@ -42,9 +42,7 @@ import { TableModule } from 'primeng/table';
     {
       provide: APP_INITIALIZER,
       useFactory: (envService: EnvService) => () => envService.init(),
-      deps: [
-        EnvService,
-      ],
+      deps: [EnvService],
       multi: true,
     },
     {
@@ -53,6 +51,6 @@ import { TableModule } from 'primeng/table';
       multi: true,
     },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

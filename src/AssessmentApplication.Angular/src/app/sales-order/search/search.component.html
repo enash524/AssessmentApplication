@@ -3,27 +3,46 @@
 <form novalidate (submit)="onSubmit()" [formGroup]="searchForm">
   <div class="row">
     <div class="col-md-3">
-      <shared-date-range [dateRangeForm]="searchForm.orderDate" label="Order Date"></shared-date-range>
+      <shared-date-range
+        [dateRangeForm]="searchForm.orderDate"
+        label="Order Date"></shared-date-range>
     </div>
 
     <div class="col-md-3">
-      <shared-date-range [dateRangeForm]="searchForm.dueDate" label="Due Date"></shared-date-range>
+      <shared-date-range
+        [dateRangeForm]="searchForm.dueDate"
+        label="Due Date"></shared-date-range>
     </div>
 
     <div class="col-md-3">
-      <shared-date-range [dateRangeForm]="searchForm.shipDate" label="Ship Date"></shared-date-range>
+      <shared-date-range
+        [dateRangeForm]="searchForm.shipDate"
+        label="Ship Date"></shared-date-range>
     </div>
 
     <div class="col-md-3">
-      <shared-input-textbox [control]="searchForm.customerName" label="Customer Name"></shared-input-textbox>
+      <shared-input-textbox
+        [control]="searchForm.customerName"
+        label="Customer Name"></shared-input-textbox>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <button pButton type="submit" icon="fa fa-search" iconPos="left" label="search"
+      <button
+        pButton
+        type="submit"
+        icon="fa fa-search"
+        iconPos="left"
+        label="search"
         [disabled]="searchForm.invalid"></button>
-      <button pButton type="button" icon="fa fa-sync-alt" iconPos="left" label="Reset" class="p-button-secondary ms-3"
+      <button
+        pButton
+        type="button"
+        icon="fa fa-sync-alt"
+        iconPos="left"
+        label="Reset"
+        class="p-button-secondary ms-3"
         (click)="onReset()"></button>
     </div>
   </div>
@@ -31,9 +50,18 @@
 
 <div class="row mt-3" *ngIf="salesOrderHeader">
   <div class="col-md-12">
-    <p-table [value]="salesOrderHeader" [columns]="columns" [rows]="10" [paginator]="true" [autoLayout]="true"
-      [totalRecords]="totalRecords" [lazy]="true" [lazyLoadOnInit]="false" [alwaysShowPaginator]="false"
-      (onPage)="onPage($event)" (onSort)="onSort($event)">
+    <p-table
+      [value]="salesOrderHeader"
+      [columns]="columns"
+      [rows]="10"
+      [paginator]="true"
+      [autoLayout]="true"
+      [totalRecords]="totalRecords"
+      [lazy]="true"
+      [lazyLoadOnInit]="false"
+      [alwaysShowPaginator]="false"
+      (onPage)="onPage($event)"
+      (onSort)="onSort($event)">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -45,9 +73,7 @@
 
       <ng-template pTemplate="emptymessage" let-columns>
         <tr>
-          <td [attr.colspan]="columns.length">
-            No records found
-          </td>
+          <td [attr.colspan]="columns.length">No records found</td>
         </tr>
       </ng-template>
 
@@ -64,8 +90,14 @@
           </td>
 
           <td
-            [innerHtml]="rowData.shipToAddress.address1 | fullAddress: rowData.shipToAddress.city : rowData.shipToAddress.stateOrProvinceCode : rowData.shipToAddress.postalCode : rowData.shipToAddress.address2">
-          </td>
+            [innerHtml]="
+              rowData.shipToAddress.address1
+                | fullAddress
+                  : rowData.shipToAddress.city
+                  : rowData.shipToAddress.stateOrProvinceCode
+                  : rowData.shipToAddress.postalCode
+                  : rowData.shipToAddress.address2
+            "></td>
 
           <td>
             {{ rowData.shipMethod.shipMethodName }}

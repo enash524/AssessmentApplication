@@ -9,39 +9,38 @@ const routes: Routes = [
   {
     path: 'forbidden',
     pathMatch: 'full',
-    component: ForbiddenPageComponent
+    component: ForbiddenPageComponent,
   },
   {
     path: 'not-found',
     pathMatch: 'full',
-    component: NotFoundPageComponent
+    component: NotFoundPageComponent,
   },
   {
     path: 'unavailable',
     pathMatch: 'full',
-    component: UnavailablePageComponent
+    component: UnavailablePageComponent,
   },
   {
     path: 'sales-order',
-    loadChildren: () => import('./sales-order/sales-order.routing').then(m => m.SalesOrderRouting)
+    loadChildren: () =>
+      import('./sales-order/sales-order.routing').then(
+        (m) => m.SalesOrderRouting
+      ),
   },
   {
     path: '',
     pathMatch: 'full',
-    component: HomePageComponent
+    component: HomePageComponent,
   },
   {
     path: '**',
-    redirectTo: 'not-found'
-  }
+    redirectTo: 'not-found',
+  },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes)
-  ],
-  exports: [
-    RouterModule
-  ],
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

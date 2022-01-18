@@ -8,9 +8,8 @@ describe('ForbiddenPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ForbiddenPageComponent ]
-    })
-    .compileComponents();
+      declarations: [ForbiddenPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

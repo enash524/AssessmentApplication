@@ -12,27 +12,22 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'search'
+        redirectTo: 'search',
       },
       {
         path: 'search',
-        component: SearchComponent
+        component: SearchComponent,
       },
       {
         path: 'detail/:id',
-        component: DetailsComponent
+        component: DetailsComponent,
       },
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes),
-    SalesOrderModule,
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forChild(routes), SalesOrderModule],
+  exports: [RouterModule],
 })
 export class SalesOrderRouting {}

@@ -1,4 +1,4 @@
 export interface ShipMethodModel {
-    shipMethodId: number;
-    shipMethodName: string;
+  shipMethodId: number;
+  shipMethodName: string;
 }

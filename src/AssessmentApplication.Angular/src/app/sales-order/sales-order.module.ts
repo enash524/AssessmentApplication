@@ -11,13 +11,8 @@ import { TableModule } from 'primeng/table';
 import { SalesOrderInfoComponent } from './widgets/sales-order-info/sales-order-info.component';
 import { SharedModule } from '@shared/shared.module';
 
-
 @NgModule({
-  declarations: [
-    SearchComponent,
-    DetailsComponent,
-    SalesOrderInfoComponent,
-  ],
+  declarations: [SearchComponent, DetailsComponent, SalesOrderInfoComponent],
   imports: [
     ButtonModule,
     CommonModule,
@@ -28,6 +23,6 @@ import { SharedModule } from '@shared/shared.module';
     ReactiveFormsModule,
     SharedModule,
     TableModule,
-  ]
+  ],
 })
-export class SalesOrderModule { }
+export class SalesOrderModule {}

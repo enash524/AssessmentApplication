@@ -3,20 +3,19 @@ import { Injectable } from '@angular/core';
 import { EnvService } from '@shared/services';
 import { PagedResponseModel, SortDirection } from '@shared/models';
 import { Observable } from 'rxjs';
-import { SalesOrderDetail, SalesOrderHeaderModel, SalesOrderSearchModel } from '.';
-
+import {
+  SalesOrderDetail,
+  SalesOrderHeaderModel,
+  SalesOrderSearchModel,
+} from '.';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SalesOrderSearchService {
-
   private readonly url: string;
 
-  constructor(
-    private env: EnvService,
-    private http: HttpClient,
-  ) {
+  constructor(private env: EnvService, private http: HttpClient) {
     this.url = `${this.env.api}/sales/`;
   }
 
@@ -25,7 +24,9 @@ export class SalesOrderSearchService {
     return this.http.get<SalesOrderDetail[]>(endpoint);
   }
 
-  public search(searchModel: SalesOrderSearchModel): Observable<PagedResponseModel<SalesOrderHeaderModel[]>> {
+  public search(
+    searchModel: SalesOrderSearchModel
+  ): Observable<PagedResponseModel<SalesOrderHeaderModel[]>> {
     const qs: string = this.generateQueryString(searchModel);
     const endpoint: string = `${this.url}SalesOrderHeader?${qs}`;
     return this.http.get<PagedResponseModel<SalesOrderHeaderModel[]>>(endpoint);
@@ -50,5 +51,4 @@ export class SalesOrderSearchService {
 
     return str.join('&');
   }
-
 }
