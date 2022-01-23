@@ -7,7 +7,7 @@ export function dateRangeValidator(fromDatePath: string, toDatePath: string): Va
         const toDate: Date = formGroup.get(toDatePath)?.value;
 
         if (fromDate && toDate) {
-            const invalid: boolean = moment(fromDate).isSameOrAfter(toDate);
+            const invalid: boolean = moment(fromDate).isAfter(toDate);
 
             return invalid ? { invalidRange: { fromDate: fromDate, toDate: toDate } } : null;
         }
