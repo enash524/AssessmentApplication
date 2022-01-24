@@ -4,25 +4,25 @@
   <div class="row">
     <div class="col-md-3">
       <shared-date-range
-        [dateRangeForm]="searchForm.orderDate"
+        formControlName="orderDate"
         label="Order Date"></shared-date-range>
     </div>
 
     <div class="col-md-3">
       <shared-date-range
-        [dateRangeForm]="searchForm.dueDate"
+        formControlName="dueDate"
         label="Due Date"></shared-date-range>
     </div>
 
     <div class="col-md-3">
       <shared-date-range
-        [dateRangeForm]="searchForm.shipDate"
+        formControlName="shipDate"
         label="Ship Date"></shared-date-range>
     </div>
 
     <div class="col-md-3">
       <shared-input-textbox
-        [control]="searchForm.customerName"
+        formControlName="customerName"
         label="Customer Name"></shared-input-textbox>
     </div>
   </div>

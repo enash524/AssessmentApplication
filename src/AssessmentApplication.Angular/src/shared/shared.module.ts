@@ -7,13 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextboxComponent } from './input-textbox/input-textbox.component';
 
-
 @NgModule({
-  declarations: [
-    DateRangeComponent,
-    FullAddressPipe,
-    InputTextboxComponent,
-  ],
+  declarations: [DateRangeComponent, FullAddressPipe, InputTextboxComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -21,10 +16,6 @@ import { InputTextboxComponent } from './input-textbox/input-textbox.component';
     ButtonModule,
     CalendarModule,
   ],
-  exports: [
-    DateRangeComponent,
-    FullAddressPipe,
-    InputTextboxComponent,
-  ]
+  exports: [DateRangeComponent, FullAddressPipe, InputTextboxComponent],
 })
-export class SharedModule { }
+export class SharedModule {}

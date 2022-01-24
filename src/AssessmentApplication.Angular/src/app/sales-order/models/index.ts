@@ -3,4 +3,5 @@ export * from './person.model';
 export * from './sales-order-detail.model';
 export * from './sales-order-header.model';
 export * from './sales-order-search.model';
+export * from './search.model';
 export * from './ship-method.model';

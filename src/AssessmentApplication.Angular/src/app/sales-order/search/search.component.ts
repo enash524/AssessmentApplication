@@ -1,13 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ColumnModel, PagedResponseModel, SortDirection } from '@shared/models';
-import { Subscription } from 'rxjs';
-import { SearchForm, SearchModel } from '.';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {
   SalesOrderHeaderModel,
   SalesOrderSearchModel,
-  SalesOrderSearchService,
-} from '..';
+} from '@app/sales-order/models';
+import { ColumnModel, PagedResponseModel, SortDirection } from '@shared/models';
+import { SalesOrderSearchService } from '@app/sales-order';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -51,10 +50,9 @@ export class SearchComponent implements OnDestroy {
   ];
 
   public salesOrderHeader: SalesOrderHeaderModel[];
-  public searchForm: SearchForm = new SearchForm(
-    {} as SearchModel,
-    this.formBuilder
-  );
+  public onChange: Function = () => {};
+  public onTouched: Function = () => {};
+  public searchForm: FormGroup;
   public totalRecords: number = 0;
 
   private _previousSearchModel: SalesOrderSearchModel =
@@ -65,7 +63,21 @@ export class SearchComponent implements OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private salesOrderSearch: SalesOrderSearchService
-  ) {}
+  ) {
+    this.searchForm = this.formBuilder.group({
+      orderDate: new FormControl({ fromDate: '', toDate: '' }),
+      dueDate: new FormControl({ fromDate: '', toDate: '' }),
+      shipDate: new FormControl({ fromDate: '', toDate: '' }),
+      customerName: new FormControl(''),
+    });
+
+    this._subscriptions.push(
+      this.searchForm.valueChanges.subscribe((value) => {
+        this.onChange(value);
+        this.onTouched();
+      })
+    );
+  }
 
   public ngOnDestroy() {
     this._subscriptions.forEach((s: Subscription) => s.unsubscribe());
@@ -102,15 +114,18 @@ export class SearchComponent implements OnDestroy {
     const searchModel: SalesOrderSearchModel = new SalesOrderSearchModel();
 
     searchModel.customerName =
-      this.searchForm.controls.customerName.value?.textboxValue;
-    searchModel.dueDateEnd = this.searchForm.controls.dueDate.value?.toDate;
-    searchModel.dueDateStart = this.searchForm.controls.dueDate.value?.fromDate;
-    searchModel.orderDateEnd = this.searchForm.controls.orderDate.value?.toDate;
+      this.searchForm.controls['customerName'].value?.textboxValue;
+    searchModel.dueDateEnd = this.searchForm.controls['dueDate'].value?.toDate;
+    searchModel.dueDateStart =
+      this.searchForm.controls['dueDate'].value?.fromDate;
+    searchModel.orderDateEnd =
+      this.searchForm.controls['orderDate'].value?.toDate;
     searchModel.orderDateStart =
-      this.searchForm.controls.orderDate.value?.fromDate;
-    searchModel.shipDateEnd = this.searchForm.controls.shipDate.value?.toDate;
+      this.searchForm.controls['orderDate'].value?.fromDate;
+    searchModel.shipDateEnd =
+      this.searchForm.controls['shipDate'].value?.toDate;
     searchModel.shipDateStart =
-      this.searchForm.controls.shipDate.value?.fromDate;
+      this.searchForm.controls['shipDate'].value?.fromDate;
 
     if (this._salesOrderSearchModel) {
       searchModel.limit = this._salesOrderSearchModel.limit;

@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { SalesOrderDetail, SalesOrderSearchService } from '..';
+import { SalesOrderDetail } from '@app/sales-order/models';
+import { SalesOrderSearchService } from '@app/sales-order';
 
 @Component({
   selector: 'app-details',

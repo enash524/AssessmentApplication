@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
 
-
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class EnvService {
+  private _api: string = '';
 
-    private _api: string = '';
+  public get api(): string {
+    return this._api;
+  }
 
-    public get api(): string {
-        return this._api;
-    }
-
-    public init(): Promise<void> {
-        return new Promise(resolve => {
-            this._api = 'https://localhost:5001/api';
-            resolve();
-        });
-    }
-
+  public init(): Promise<void> {
+    return new Promise((resolve) => {
+      this._api = 'https://localhost:5001/api';
+      resolve();
+    });
+  }
 }
