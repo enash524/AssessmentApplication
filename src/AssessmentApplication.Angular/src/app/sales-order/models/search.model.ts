@@ -1,4 +1,4 @@
-import { DateRangeModel } from '@shared/models';
+import { DateRangeModel } from "@shared/models";
 
 export interface SearchModel {
   orderDate: DateRangeModel;

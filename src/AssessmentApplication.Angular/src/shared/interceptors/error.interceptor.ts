@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   HttpErrorResponse,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-} from '@angular/common/http';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { tap } from 'rxjs/operators';
-import { MessageService } from 'primeng/api';
+} from "@angular/common/http";
+import { NgxUiLoaderService } from "ngx-ui-loader";
+import { tap } from "rxjs/operators";
+import { MessageService } from "primeng/api";
 
 @Injectable()
 export class ErrorHttpInterceptor implements HttpInterceptor {
@@ -22,8 +22,8 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
         () => {},
         (httpErrorResponse: HttpErrorResponse) => {
           this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
+            severity: "error",
+            summary: "Error",
             detail: httpErrorResponse.message,
             sticky: true,
           });

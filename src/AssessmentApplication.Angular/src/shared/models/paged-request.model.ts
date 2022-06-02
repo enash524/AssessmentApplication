@@ -1,4 +1,4 @@
-import { SortDirection } from '.';
+import { SortDirection } from ".";
 
 export abstract class PagedRequestModel {
   public limit: number = 10;

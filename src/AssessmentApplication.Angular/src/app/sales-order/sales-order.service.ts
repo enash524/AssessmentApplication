@@ -1,16 +1,16 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { EnvService } from '@shared/services';
-import { PagedResponseModel, SortDirection } from '@shared/models';
-import { Observable } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { EnvService } from "@shared/services";
+import { PagedResponseModel, SortDirection } from "@shared/models";
+import { Observable } from "rxjs";
 import {
   SalesOrderDetail,
   SalesOrderHeaderModel,
   SalesOrderSearchModel,
-} from '.';
+} from ".";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class SalesOrderSearchService {
   private readonly url: string;
@@ -43,12 +43,12 @@ export class SalesOrderSearchService {
       if (value instanceof Date) {
         value = value.toISOString();
       }
-      if (key === 'sortDirection') {
-        value = value === SortDirection.Asc ? 'Asc' : 'Desc';
+      if (key === "sortDirection") {
+        value = value === SortDirection.Asc ? "Asc" : "Desc";
       }
       str.push(`${key}=${value}`);
     });
 
-    return str.join('&');
+    return str.join("&");
   }
 }

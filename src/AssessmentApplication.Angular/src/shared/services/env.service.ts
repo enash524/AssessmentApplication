@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class EnvService {
-  private _api: string = '';
+  private _api: string = "";
 
   public get api(): string {
     return this._api;
@@ -12,7 +12,7 @@ export class EnvService {
 
   public init(): Promise<void> {
     return new Promise((resolve) => {
-      this._api = 'https://localhost:5001/api';
+      this._api = "https://localhost:5001/api";
       resolve();
     });
   }

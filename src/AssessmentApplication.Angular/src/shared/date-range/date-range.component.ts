@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnDestroy } from '@angular/core';
+import { Component, forwardRef, Input, OnDestroy } from "@angular/core";
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -8,15 +8,15 @@ import {
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   Validator,
-} from '@angular/forms';
-import { dateRangeValidator } from '@shared/validators';
-import { Subscription } from 'rxjs';
-import { DateRangeModel } from '@shared/models';
+} from "@angular/forms";
+import { dateRangeValidator } from "@shared/validators";
+import { Subscription } from "rxjs";
+import { DateRangeModel } from "@shared/models";
 
 @Component({
-  selector: 'shared-date-range',
-  templateUrl: './date-range.component.html',
-  styleUrls: ['./date-range.component.scss'],
+  selector: "shared-date-range",
+  templateUrl: "./date-range.component.html",
+  styleUrls: ["./date-range.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -35,12 +35,12 @@ export class DateRangeComponent
 {
   public dateRangeForm: FormGroup;
 
-  private _errorMessage: string = '';
-  private _label: string = '';
+  private _errorMessage: string = "";
+  private _label: string = "";
   private _onChange: Function = () => {};
   private _onTouched: Function = () => {};
-  private _placeholderFrom: string = '';
-  private _placeholderTo: string = '';
+  private _placeholderFrom: string = "";
+  private _placeholderTo: string = "";
   private _subscriptions: Subscription[] = [];
 
   @Input()
@@ -60,7 +60,7 @@ export class DateRangeComponent
   }
 
   get fromDateControl() {
-    return this.dateRangeForm.controls['fromDate'];
+    return this.dateRangeForm.controls["fromDate"];
   }
 
   get placeholderFrom() {
@@ -72,7 +72,7 @@ export class DateRangeComponent
   }
 
   get toDateControl() {
-    return this.dateRangeForm.controls['toDate'];
+    return this.dateRangeForm.controls["toDate"];
   }
 
   get value(): DateRangeModel {
@@ -88,11 +88,11 @@ export class DateRangeComponent
   constructor(private formBuilder: FormBuilder) {
     this.dateRangeForm = this.formBuilder.group(
       {
-        fromDate: new FormControl(''),
-        toDate: new FormControl(''),
+        fromDate: new FormControl(""),
+        toDate: new FormControl(""),
       },
       {
-        validators: [dateRangeValidator('fromDate', 'toDate')],
+        validators: [dateRangeValidator("fromDate", "toDate")],
       }
     );
 

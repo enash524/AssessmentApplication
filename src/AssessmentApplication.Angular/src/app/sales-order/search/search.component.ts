@@ -1,51 +1,51 @@
-import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnDestroy } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import {
   SalesOrderHeaderModel,
   SalesOrderSearchModel,
-} from '@app/sales-order/models';
-import { ColumnModel, PagedResponseModel, SortDirection } from '@shared/models';
-import { SalesOrderSearchService } from '@app/sales-order';
-import { Subscription } from 'rxjs';
+} from "@app/sales-order/models";
+import { ColumnModel, PagedResponseModel, SortDirection } from "@shared/models";
+import { SalesOrderSearchService } from "@app/sales-order";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
+  selector: "app-search",
+  templateUrl: "./search.component.html",
+  styleUrls: ["./search.component.scss"],
 })
 export class SearchComponent implements OnDestroy {
   public columns: ColumnModel[] = [
     {
-      field: 'fullName',
-      header: 'Customer Name',
+      field: "fullName",
+      header: "Customer Name",
     },
     {
-      field: 'accountNumber',
-      header: 'Account Number',
+      field: "accountNumber",
+      header: "Account Number",
     },
     {
-      field: 'address',
-      header: 'Ship To Address',
+      field: "address",
+      header: "Ship To Address",
     },
     {
-      field: 'shipMethodName',
-      header: 'Ship Method',
+      field: "shipMethodName",
+      header: "Ship Method",
     },
     {
-      field: 'subTotal',
-      header: 'Sub Total',
+      field: "subTotal",
+      header: "Sub Total",
     },
     {
-      field: 'taxAmt',
-      header: 'Tax',
+      field: "taxAmt",
+      header: "Tax",
     },
     {
-      field: 'freight',
-      header: 'Freight',
+      field: "freight",
+      header: "Freight",
     },
     {
-      field: 'totalDue',
-      header: 'Total',
+      field: "totalDue",
+      header: "Total",
     },
   ];
 
@@ -65,10 +65,10 @@ export class SearchComponent implements OnDestroy {
     private salesOrderSearch: SalesOrderSearchService
   ) {
     this.searchForm = this.formBuilder.group({
-      orderDate: new FormControl({ fromDate: '', toDate: '' }),
-      dueDate: new FormControl({ fromDate: '', toDate: '' }),
-      shipDate: new FormControl({ fromDate: '', toDate: '' }),
-      customerName: new FormControl(''),
+      orderDate: new FormControl({ fromDate: "", toDate: "" }),
+      dueDate: new FormControl({ fromDate: "", toDate: "" }),
+      shipDate: new FormControl({ fromDate: "", toDate: "" }),
+      customerName: new FormControl(""),
     });
 
     this._subscriptions.push(
@@ -114,18 +114,18 @@ export class SearchComponent implements OnDestroy {
     const searchModel: SalesOrderSearchModel = new SalesOrderSearchModel();
 
     searchModel.customerName =
-      this.searchForm.controls['customerName'].value?.textboxValue;
-    searchModel.dueDateEnd = this.searchForm.controls['dueDate'].value?.toDate;
+      this.searchForm.controls["customerName"].value?.textboxValue;
+    searchModel.dueDateEnd = this.searchForm.controls["dueDate"].value?.toDate;
     searchModel.dueDateStart =
-      this.searchForm.controls['dueDate'].value?.fromDate;
+      this.searchForm.controls["dueDate"].value?.fromDate;
     searchModel.orderDateEnd =
-      this.searchForm.controls['orderDate'].value?.toDate;
+      this.searchForm.controls["orderDate"].value?.toDate;
     searchModel.orderDateStart =
-      this.searchForm.controls['orderDate'].value?.fromDate;
+      this.searchForm.controls["orderDate"].value?.fromDate;
     searchModel.shipDateEnd =
-      this.searchForm.controls['shipDate'].value?.toDate;
+      this.searchForm.controls["shipDate"].value?.toDate;
     searchModel.shipDateStart =
-      this.searchForm.controls['shipDate'].value?.fromDate;
+      this.searchForm.controls["shipDate"].value?.fromDate;
 
     if (this._salesOrderSearchModel) {
       searchModel.limit = this._salesOrderSearchModel.limit;
@@ -145,7 +145,7 @@ export class SearchComponent implements OnDestroy {
         this.totalRecords = result.recordCount;
       },
       error: (error) => {
-        console.log('error', error);
+        console.log("error", error);
       },
     });
   }

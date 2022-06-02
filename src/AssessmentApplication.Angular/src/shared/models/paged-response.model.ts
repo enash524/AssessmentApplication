@@ -1,4 +1,4 @@
-import { SortDirection } from '.';
+import { SortDirection } from ".";
 
 export class PagedResponseModel<T> {
   public data: T;

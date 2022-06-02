@@ -1,25 +1,25 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { DetailsComponent } from './details/details.component';
-import { SalesOrderComponent } from './sales-order.component';
-import { SalesOrderModule } from './sales-order.module';
-import { SearchComponent } from './search/search.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { DetailsComponent } from "./details/details.component";
+import { SalesOrderComponent } from "./sales-order.component";
+import { SalesOrderModule } from "./sales-order.module";
+import { SearchComponent } from "./search/search.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: SalesOrderComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'search',
+        path: "",
+        redirectTo: "search",
       },
       {
-        path: 'search',
+        path: "search",
         component: SearchComponent,
       },
       {
-        path: 'detail/:id',
+        path: "detail/:id",
         component: DetailsComponent,
       },
     ],

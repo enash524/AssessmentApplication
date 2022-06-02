@@ -1,5 +1,5 @@
-import { SortDirection } from '@shared/models';
-import { PagedRequestModel } from '@shared/models/paged-request.model';
+import { SortDirection } from "@shared/models";
+import { PagedRequestModel } from "@shared/models/paged-request.model";
 
 export class SalesOrderSearchModel extends PagedRequestModel {
   public orderDateStart: Date;

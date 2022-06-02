@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { SalesOrderDetail } from '@app/sales-order/models';
-import { SalesOrderSearchService } from '@app/sales-order';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription, of } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
+import { SalesOrderDetail } from "@app/sales-order/models";
+import { SalesOrderSearchService } from "@app/sales-order";
 
 @Component({
-  selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss'],
+  selector: "app-details",
+  templateUrl: "./details.component.html",
+  styleUrls: ["./details.component.scss"],
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   public salesOrderDetails: SalesOrderDetail[];
@@ -23,7 +23,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.activatedRoute.paramMap
       .pipe(
         map((params) => {
-          const param = params.get('id');
+          const param = params.get("id");
           return param ? +param : null;
         }),
         switchMap((id) => (id ? this.salesOrderService.get(id) : of([])))

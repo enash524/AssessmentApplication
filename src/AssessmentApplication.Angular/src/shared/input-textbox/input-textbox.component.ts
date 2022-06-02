@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnDestroy } from '@angular/core';
+import { Component, forwardRef, Input, OnDestroy } from "@angular/core";
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -8,14 +8,14 @@ import {
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   Validator,
-} from '@angular/forms';
-import { InputTextboxModel } from '@shared/models';
-import { Subscription } from 'rxjs';
+} from "@angular/forms";
+import { InputTextboxModel } from "@shared/models";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'shared-input-textbox',
-  templateUrl: './input-textbox.component.html',
-  styleUrls: ['./input-textbox.component.scss'],
+  selector: "shared-input-textbox",
+  templateUrl: "./input-textbox.component.html",
+  styleUrls: ["./input-textbox.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -34,10 +34,10 @@ export class InputTextboxComponent
 {
   public inputTextboxForm: FormGroup;
 
-  private _label: string = '';
+  private _label: string = "";
   private _onChange: Function = () => {};
   private _onTouched: Function = () => {};
-  private _placeholder: string = '';
+  private _placeholder: string = "";
   private _subscriptions: Subscription[] = [];
 
   @Input()
@@ -55,7 +55,7 @@ export class InputTextboxComponent
   }
 
   get textboxControl() {
-    return this.inputTextboxForm.controls['textboxValue'];
+    return this.inputTextboxForm.controls["textboxValue"];
   }
 
   get value(): InputTextboxModel {
@@ -70,7 +70,7 @@ export class InputTextboxComponent
 
   constructor(private formBuilder: FormBuilder) {
     this.inputTextboxForm = this.formBuilder.group({
-      textboxValue: new FormControl(''),
+      textboxValue: new FormControl(""),
     });
 
     this._subscriptions.push(

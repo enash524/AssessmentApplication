@@ -1,6 +1,6 @@
-import { AddressModel } from '.';
-import { PersonModel } from '.';
-import { ShipMethodModel } from '.';
+import { AddressModel } from ".";
+import { PersonModel } from ".";
+import { ShipMethodModel } from ".";
 
 export interface SalesOrderHeaderModel {
   salesOrderId: number;
