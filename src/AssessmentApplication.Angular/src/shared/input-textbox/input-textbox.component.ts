@@ -30,13 +30,12 @@ import { Subscription } from "rxjs";
   ],
 })
 export class InputTextboxComponent
-  implements ControlValueAccessor, OnDestroy, Validator
-{
+  implements ControlValueAccessor, OnDestroy, Validator {
   public inputTextboxForm: FormGroup;
 
   private _label: string = "";
-  private _onChange: Function = () => {};
-  private _onTouched: Function = () => {};
+  private _onChange: Function = () => { };
+  private _onTouched: Function = () => { };
   private _placeholder: string = "";
   private _subscriptions: Subscription[] = [];
 
@@ -70,7 +69,7 @@ export class InputTextboxComponent
 
   constructor(private formBuilder: FormBuilder) {
     this.inputTextboxForm = this.formBuilder.group({
-      textboxValue: new FormControl(""),
+      textboxValue: new FormControl<string>(""),
     });
 
     this._subscriptions.push(

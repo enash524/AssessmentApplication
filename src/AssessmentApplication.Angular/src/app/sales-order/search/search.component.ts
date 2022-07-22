@@ -4,7 +4,12 @@ import {
   SalesOrderHeaderModel,
   SalesOrderSearchModel,
 } from "@app/sales-order/models";
-import { ColumnModel, PagedResponseModel, SortDirection } from "@shared/models";
+import {
+  ColumnModel,
+  DateRangeModel,
+  PagedResponseModel,
+  SortDirection,
+} from "@shared/models";
 import { SalesOrderSearchService } from "@app/sales-order";
 import { Subscription } from "rxjs";
 
@@ -65,10 +70,19 @@ export class SearchComponent implements OnDestroy {
     private salesOrderSearch: SalesOrderSearchService
   ) {
     this.searchForm = this.formBuilder.group({
-      orderDate: new FormControl({ fromDate: "", toDate: "" }),
-      dueDate: new FormControl({ fromDate: "", toDate: "" }),
-      shipDate: new FormControl({ fromDate: "", toDate: "" }),
-      customerName: new FormControl(""),
+      orderDate: new FormControl<DateRangeModel>({
+        fromDate: null,
+        toDate: null,
+      }),
+      dueDate: new FormControl<DateRangeModel>({
+        fromDate: null,
+        toDate: null,
+      }),
+      shipDate: new FormControl<DateRangeModel>({
+        fromDate: null,
+        toDate: null,
+      }),
+      customerName: new FormControl<string | null>(null),
     });
 
     this._subscriptions.push(

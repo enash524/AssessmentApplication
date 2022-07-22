@@ -31,14 +31,13 @@ import { DateRangeModel } from "@shared/models";
   ],
 })
 export class DateRangeComponent
-  implements ControlValueAccessor, OnDestroy, Validator
-{
+  implements ControlValueAccessor, OnDestroy, Validator {
   public dateRangeForm: FormGroup;
 
   private _errorMessage: string = "";
   private _label: string = "";
-  private _onChange: Function = () => {};
-  private _onTouched: Function = () => {};
+  private _onChange: Function = () => { };
+  private _onTouched: Function = () => { };
   private _placeholderFrom: string = "";
   private _placeholderTo: string = "";
   private _subscriptions: Subscription[] = [];
@@ -88,8 +87,8 @@ export class DateRangeComponent
   constructor(private formBuilder: FormBuilder) {
     this.dateRangeForm = this.formBuilder.group(
       {
-        fromDate: new FormControl(""),
-        toDate: new FormControl(""),
+        fromDate: new FormControl<Date | null>(null),
+        toDate: new FormControl<Date | null>(null),
       },
       {
         validators: [dateRangeValidator("fromDate", "toDate")],
