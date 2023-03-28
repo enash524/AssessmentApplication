@@ -17,7 +17,7 @@ namespace AssessmentApplication.Application
 
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
             return services;
         }
     }
