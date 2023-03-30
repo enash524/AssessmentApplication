@@ -12,6 +12,7 @@ using AssessmentApplication.Data.Profiles;
 using AssessmentApplication.WebApi.Extensions;
 using AssessmentApplication.WebApi.Middleware;
 using AssessmentApplication.WebApi.Profiles;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -25,18 +26,14 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 string _policyName = "CorsPolicy";
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
-{
-    IHostEnvironment env = hostingContext.HostingEnvironment;
-
-    config
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
-});
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json");
 
 // Add services to the container.
+
 builder.Services
     .AddAutoMapper(
         typeof(ApplicationMappingProfile),
@@ -44,13 +41,12 @@ builder.Services
         typeof(ApiMappingProfile))
     .AddLogging(config =>
     {
-        config
-            .AddConfiguration(builder.Configuration.GetSection("Logging"))
-            .AddSimpleConsole(config =>
-            {
-                config.TimestampFormat = "yyyy-MM-dd hh:mm:ss tt ";
-            });
+        config.AddConfiguration(builder.Configuration.GetSection("Logging")).AddSimpleConsole(config =>
+        {
+            config.TimestampFormat = "yyyy-MM-dd hh:mm:ss tt ";
+        });
     })
+
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(c =>
@@ -83,8 +79,12 @@ builder.Services
         // remove formatter that turns nulls into 204 - No Content responses
         // this formatter breaks Angular's Http response JSON parsing
         opt.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
-    })
-    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetSalesOrderDetailQueryValidator>());
+    });
+
+builder.Services
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssemblyContaining<GetSalesOrderDetailQueryValidator>();
 
 builder.Services
     .AddHealthChecks()
@@ -97,8 +97,9 @@ app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app
+        .UseSwagger()
+        .UseSwaggerUI();
 }
 
 app
