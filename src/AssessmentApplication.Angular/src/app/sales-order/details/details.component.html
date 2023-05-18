@@ -1,11 +1,11 @@
 <h2>Sales Order Detail</h2>
 
 <div class="row" *ngIf="salesOrderDetails">
-  <div class="col-md-4" *ngFor="let detail of salesOrderDetails">
+  <div class="col col-md-4" *ngFor="let detail of salesOrderDetails">
     <app-sales-order-info [salesOrderDetail]="detail"></app-sales-order-info>
   </div>
 </div>
 
 <div class="row" *ngIf="!salesOrderDetails">
-  <div class="col-md-12">No records found</div>
+  <div class="col col-md-12">No records found</div>
 </div>

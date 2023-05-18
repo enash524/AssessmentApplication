@@ -6,7 +6,10 @@
       formControlName="fromDate"
       [placeholder]="placeholderFrom"
       [selectOtherMonths]="true"
-      [showIcon]="true">
+      [showIcon]="true"
+      (onBlur)="handleOnTouched()"
+      [id]="id + '-fromDate'"
+      [name]="id + '-fromDate'">
     </p-calendar>
   </dd>
 
@@ -15,7 +18,10 @@
       formControlName="toDate"
       [placeholder]="placeholderTo"
       [selectOtherMonths]="true"
-      [showIcon]="true">
+      [showIcon]="true"
+      (onBlur)="handleOnTouched()"
+      [id]="id + '-toDate'"
+      [name]="id + '-toDate'">
     </p-calendar>
   </dd>
 

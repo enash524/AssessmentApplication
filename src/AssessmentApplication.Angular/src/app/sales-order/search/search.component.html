@@ -1,34 +1,36 @@
 <h2>Sales Order Search</h2>
 
-<form novalidate (submit)="onSubmit()" [formGroup]="searchForm">
+<form
+  novalidate
+  (submit)="onSubmit()"
+  (reset)="onReset()"
+  [formGroup]="searchForm">
   <div class="row">
-    <div class="col-md-3">
-      <shared-date-range
-        formControlName="orderDate"
-        label="Order Date"></shared-date-range>
+    <div class="col col-md-3">
+      <shared-date-range formControlName="orderDate" label="Order Date">
+      </shared-date-range>
     </div>
 
-    <div class="col-md-3">
-      <shared-date-range
-        formControlName="dueDate"
-        label="Due Date"></shared-date-range>
+    <div class="col col-md-3">
+      <shared-date-range formControlName="dueDate" label="Due Date">
+      </shared-date-range>
     </div>
 
-    <div class="col-md-3">
-      <shared-date-range
-        formControlName="shipDate"
-        label="Ship Date"></shared-date-range>
+    <div class="col col-md-3">
+      <shared-date-range formControlName="shipDate" label="Ship Date">
+      </shared-date-range>
     </div>
 
-    <div class="col-md-3">
+    <div class="col col-md-3">
       <shared-input-textbox
         formControlName="customerName"
-        label="Customer Name"></shared-input-textbox>
+        label="Customer Name">
+      </shared-input-textbox>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="col col-md-12">
       <button
         pButton
         type="submit"
@@ -38,18 +40,23 @@
         [disabled]="searchForm.invalid"></button>
       <button
         pButton
-        type="button"
+        type="reset"
         icon="fa fa-sync-alt"
         iconPos="left"
         label="Reset"
-        class="p-button-secondary ms-3"
-        (click)="onReset()"></button>
+        class="p-button-secondary ms-3"></button>
     </div>
   </div>
 </form>
 
+<div class="row mt-3">
+  <div class="col col-md-12">{{ searchForm.value | json }}</div>
+  <div class="col col-md-12">Form Valid: {{ searchForm.valid }}</div>
+  <div class="col col-md-12">Form Touched: {{ searchForm.touched }}</div>
+</div>
+
 <div class="row mt-3" *ngIf="salesOrderHeader">
-  <div class="col-md-12">
+  <div class="col col-md-12">
     <p-table
       [value]="salesOrderHeader"
       [columns]="columns"

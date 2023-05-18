@@ -2,15 +2,14 @@ import { Component, forwardRef, Input, OnDestroy } from "@angular/core";
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormBuilder,
   FormControl,
   FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  ValidationErrors,
   Validator,
 } from "@angular/forms";
-import { InputTextboxModel } from "@shared/models";
-import { Subscription } from "rxjs";
+import { debounceTime, Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "shared-input-textbox",
@@ -28,16 +27,24 @@ import { Subscription } from "rxjs";
       multi: true,
     },
   ],
+  host: {
+    "[id]": "id",
+  },
 })
 export class InputTextboxComponent
-  implements ControlValueAccessor, OnDestroy, Validator {
-  public inputTextboxForm: FormGroup;
+  implements ControlValueAccessor, OnDestroy, Validator
+{
+  static nextId = 0;
+  id = `input-textbox-${InputTextboxComponent.nextId++}`;
+  public inputTextboxForm: FormGroup<InputTextboxForm> =
+    new FormGroup<InputTextboxForm>({
+      textboxValue: new FormControl<string | null>(null),
+    });
 
+  private _destroyed$: Subject<void> = new Subject();
   private _label: string = "";
-  private _onChange: Function = () => { };
-  private _onTouched: Function = () => { };
+  private _onTouched: Function = () => {};
   private _placeholder: string = "";
-  private _subscriptions: Subscription[] = [];
 
   @Input()
   set label(value: string) {
@@ -53,57 +60,44 @@ export class InputTextboxComponent
     return this._placeholder;
   }
 
-  get textboxControl() {
-    return this.inputTextboxForm.controls["textboxValue"];
+  public ngOnDestroy(): void {
+    this._destroyed$.next();
+    this._destroyed$.complete();
   }
 
-  get value(): InputTextboxModel {
-    return this.inputTextboxForm.value;
-  }
-
-  set value(value: InputTextboxModel) {
-    this.inputTextboxForm.setValue(value);
-    this._onChange(value);
-    this._onTouched();
-  }
-
-  constructor(private formBuilder: FormBuilder) {
-    this.inputTextboxForm = this.formBuilder.group({
-      textboxValue: new FormControl<string>(""),
-    });
-
-    this._subscriptions.push(
-      this.inputTextboxForm.valueChanges.subscribe((value) => {
-        this._onChange(value);
-        this._onTouched();
-      })
+  writeValue(value: string): void {
+    this.inputTextboxForm.patchValue(
+      { textboxValue: value },
+      { emitEvent: false }
     );
   }
 
-  public ngOnDestroy() {
-    this._subscriptions.forEach((s: Subscription) => s.unsubscribe());
+  registerOnChange(fn: (val: string) => void): void {
+    this.inputTextboxForm.valueChanges
+      .pipe(debounceTime(500), takeUntil(this._destroyed$))
+      .subscribe((value) => {
+        fn(value.textboxValue);
+      });
   }
 
-  public registerOnChange(fn: any) {
-    this._onChange = fn;
-  }
-
-  public writeValue(value: InputTextboxModel) {
-    if (value) {
-      this.value = value;
-    }
-
-    if (value === null) {
-      this.inputTextboxForm.reset();
-    }
-  }
-
-  public registerOnTouched(fn: any) {
+  registerOnTouched(fn: () => void): void {
     this._onTouched = fn;
   }
 
   // communicate the inner form validation to the parent form
-  public validate(_: AbstractControl) {
-    return this.inputTextboxForm.valid ? null : { inputText: { valid: false } };
+  validate(_: AbstractControl<string>): ValidationErrors | null {
+    return this.inputTextboxForm.valid
+      ? null
+      : { inputText: { invalid: true } };
+  }
+
+  public handleOnTouched(): void {
+    if (this._onTouched) {
+      this._onTouched();
+    }
   }
 }
+
+export type InputTextboxForm = {
+  textboxValue: FormControl<string | null>;
+};

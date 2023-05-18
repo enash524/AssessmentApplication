@@ -2,15 +2,15 @@ import { Component, forwardRef, Input, OnDestroy } from "@angular/core";
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormBuilder,
   FormControl,
   FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  ValidationErrors,
   Validator,
 } from "@angular/forms";
 import { dateRangeValidator } from "@shared/validators";
-import { Subscription } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 import { DateRangeModel } from "@shared/models";
 
 @Component({
@@ -29,18 +29,31 @@ import { DateRangeModel } from "@shared/models";
       multi: true,
     },
   ],
+  host: {
+    "[id]": "id",
+  },
 })
 export class DateRangeComponent
-  implements ControlValueAccessor, OnDestroy, Validator {
-  public dateRangeForm: FormGroup;
+  implements ControlValueAccessor, OnDestroy, Validator
+{
+  static nextId = 0;
+  id = `date-range-${DateRangeComponent.nextId++}`;
+  public dateRangeForm: FormGroup = new FormGroup<DateRangeForm>(
+    {
+      fromDate: new FormControl<Date | null>(null),
+      toDate: new FormControl<Date | null>(null),
+    },
+    {
+      validators: [dateRangeValidator()],
+    }
+  );
 
+  private _destroyed$: Subject<void> = new Subject();
   private _errorMessage: string = "";
   private _label: string = "";
-  private _onChange: Function = () => { };
-  private _onTouched: Function = () => { };
+  private _onTouched: () => void = () => {};
   private _placeholderFrom: string = "";
   private _placeholderTo: string = "";
-  private _subscriptions: Subscription[] = [];
 
   @Input()
   set label(value: string) {
@@ -74,59 +87,50 @@ export class DateRangeComponent
     return this.dateRangeForm.controls["toDate"];
   }
 
-  get value(): DateRangeModel {
-    return this.dateRangeForm.value;
+  ngOnDestroy(): void {
+    this._destroyed$.next();
+    this._destroyed$.complete();
   }
 
-  set value(value: DateRangeModel) {
-    this.dateRangeForm.setValue(value);
-    this._onChange(value);
-    this._onTouched();
+  writeValue(value: Partial<DateRangeModel> | null): void {
+    const dateRange = this.createDateRange(value);
+    this.dateRangeForm.patchValue(dateRange);
   }
 
-  constructor(private formBuilder: FormBuilder) {
-    this.dateRangeForm = this.formBuilder.group(
-      {
-        fromDate: new FormControl<Date | null>(null),
-        toDate: new FormControl<Date | null>(null),
-      },
-      {
-        validators: [dateRangeValidator("fromDate", "toDate")],
-      }
-    );
-
-    this._subscriptions.push(
-      this.dateRangeForm.valueChanges.subscribe((value) => {
-        this._onChange(value);
-        this._onTouched();
-      })
-    );
+  registerOnChange(fn: (val: Partial<DateRangeModel> | null) => void): void {
+    this.dateRangeForm.valueChanges
+      .pipe(takeUntil(this._destroyed$))
+      .subscribe((value) => {
+        const dateRange = this.createDateRange(value);
+        fn(dateRange);
+      });
   }
 
-  public ngOnDestroy() {
-    this._subscriptions.forEach((s: Subscription) => s.unsubscribe());
-  }
-
-  public registerOnChange(fn: any) {
-    this._onChange = fn;
-  }
-
-  public writeValue(value: DateRangeModel) {
-    if (value) {
-      this.value = value;
-    }
-
-    if (value === null) {
-      this.dateRangeForm.reset();
-    }
-  }
-
-  public registerOnTouched(fn: any) {
+  registerOnTouched(fn: () => void): void {
     this._onTouched = fn;
   }
 
   // communicate the inner form validation to the parent form
-  public validate(_: AbstractControl) {
-    return this.dateRangeForm.valid ? null : { dateRange: { valid: false } };
+  validate(
+    control: AbstractControl<DateRangeModel | null>
+  ): ValidationErrors | null {
+    return control.value?.isValid() ? null : { dateRange: { invalid: true } };
+  }
+
+  public handleOnTouched(): void {
+    if (this._onTouched) {
+      this._onTouched();
+    }
+  }
+
+  private createDateRange(
+    value: Partial<DateRangeModel> | null
+  ): DateRangeModel {
+    return new DateRangeModel(value?.fromDate, value?.toDate);
   }
 }
+
+export type DateRangeForm = {
+  fromDate: FormControl<Date | null>;
+  toDate: FormControl<Date | null>;
+};

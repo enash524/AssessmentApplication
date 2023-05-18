@@ -1,22 +1,21 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
-import * as moment from "moment";
+import { DateRangeModel } from "..";
 
-export function dateRangeValidator(
-  fromDatePath: string,
-  toDatePath: string
-): ValidatorFn {
-  return (formGroup: AbstractControl): ValidationErrors | null => {
-    const fromDate: Date = formGroup.get(fromDatePath)?.value;
-    const toDate: Date = formGroup.get(toDatePath)?.value;
-
-    if (fromDate && toDate) {
-      const invalid: boolean = moment(fromDate).isAfter(toDate);
-
-      return invalid
-        ? { invalidRange: { fromDate: fromDate, toDate: toDate } }
-        : null;
-    }
-
-    return null;
+export function dateRangeValidator(): ValidatorFn {
+  return (
+    control: AbstractControl<DateRangeModel | null>
+  ): ValidationErrors | null => {
+    const model: DateRangeModel = new DateRangeModel(
+      control.value?.fromDate,
+      control.value?.toDate
+    );
+    return model.isValid()
+      ? null
+      : {
+          invalidRange: {
+            fromDate: control.value?.fromDate,
+            toDate: control.value?.toDate,
+          },
+        };
   };
 }

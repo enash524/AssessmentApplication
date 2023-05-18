@@ -3,9 +3,12 @@
 
   <dd>
     <input
+      [id]="id + '-input'"
+      [name]="id + '-input'"
       type="text"
       pInputText
       formControlName="textboxValue"
-      [placeholder]="label" />
+      [placeholder]="label"
+      (blur)="handleOnTouched()" />
   </dd>
 </dl>
