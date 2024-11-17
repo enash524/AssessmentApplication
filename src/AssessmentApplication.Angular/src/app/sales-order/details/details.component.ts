@@ -1,12 +1,13 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Subject, of } from "rxjs";
-import { map, switchMap, takeUntil } from "rxjs/operators";
+import { of } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
 import { SalesOrderDetail } from "@app/sales-order/models";
 import { SalesOrderSearchService } from "@app/sales-order";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SalesOrderInfoComponent } from "../widgets/sales-order-info/sales-order-info.component";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-details",
@@ -20,9 +21,9 @@ import { SalesOrderInfoComponent } from "../widgets/sales-order-info/sales-order
     SalesOrderInfoComponent,
   ],
 })
-export class DetailsComponent implements OnInit, OnDestroy {
+export class DetailsComponent implements OnInit {
   public salesOrderDetails: SalesOrderDetail[];
-  private _destroyed$: Subject<void> = new Subject();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -37,13 +38,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
           return param ? +param : null;
         }),
         switchMap((id) => (id ? this.salesOrderService.get(id) : of([]))),
-        takeUntil(this._destroyed$)
+        takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe((details) => (this.salesOrderDetails = details));
-  }
-
-  ngOnDestroy(): void {
-    this._destroyed$.next();
-    this._destroyed$.complete();
+      .subscribe(
+        (details: SalesOrderDetail[]) => (this.salesOrderDetails = details)
+      );
   }
 }

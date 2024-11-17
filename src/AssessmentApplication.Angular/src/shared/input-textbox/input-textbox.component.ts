@@ -1,5 +1,13 @@
 import { CommonModule } from "@angular/common";
-import { Component, forwardRef, Input, OnDestroy } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  forwardRef,
+  inject,
+  input,
+  OnInit,
+} from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -12,7 +20,7 @@ import {
   ValidationErrors,
   Validator,
 } from "@angular/forms";
-import { debounceTime, Subject, takeUntil } from "rxjs";
+import { debounceTime } from "rxjs";
 
 @Component({
   selector: "shared-input-textbox",
@@ -37,7 +45,7 @@ import { debounceTime, Subject, takeUntil } from "rxjs";
   },
 })
 export class InputTextboxComponent
-  implements ControlValueAccessor, OnDestroy, Validator
+  implements ControlValueAccessor, OnInit, Validator
 {
   static nextId = 0;
   id = `input-textbox-${InputTextboxComponent.nextId++}`;
@@ -46,28 +54,19 @@ export class InputTextboxComponent
       textboxValue: new FormControl<string | null>(null),
     });
 
-  private _destroyed$: Subject<void> = new Subject();
-  private _label: string = "";
-  private _onTouched: Function = () => {};
-  private _placeholder: string = "";
+  private destroyRef = inject(DestroyRef);
+  private _onChange: (value: string) => void = () => {};
+  private _onTouched: () => void = () => {};
+  public label = input.required<string>();
 
-  @Input()
-  set label(value: string) {
-    this._label = value;
-    this._placeholder = value;
-  }
-
-  get label() {
-    return this._label;
-  }
-
-  get placeholder() {
-    return this._placeholder;
-  }
-
-  public ngOnDestroy(): void {
-    this._destroyed$.next();
-    this._destroyed$.complete();
+  ngOnInit(): void {
+    this.inputTextboxForm.valueChanges
+      .pipe(debounceTime(250), takeUntilDestroyed(this.destroyRef))
+      .subscribe((value) => {
+        if (this._onChange) {
+          this._onChange(value.textboxValue);
+        }
+      });
   }
 
   writeValue(value: string): void {
@@ -78,11 +77,7 @@ export class InputTextboxComponent
   }
 
   registerOnChange(fn: (val: string) => void): void {
-    this.inputTextboxForm.valueChanges
-      .pipe(debounceTime(500), takeUntil(this._destroyed$))
-      .subscribe((value) => {
-        fn(value.textboxValue);
-      });
+    this._onChange = fn;
   }
 
   registerOnTouched(fn: () => void): void {

@@ -5,7 +5,7 @@ import { ForbiddenPageComponent } from "./static-pages/forbidden-page/forbidden-
 import { NotFoundPageComponent } from "./static-pages/not-found-page/not-found-page.component";
 import { UnavailablePageComponent } from "./static-pages/unavailable-page/unavailable-page.component";
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: "forbidden",
     pathMatch: "full",

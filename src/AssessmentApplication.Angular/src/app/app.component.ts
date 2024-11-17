@@ -1,8 +1,21 @@
+import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
+import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
+import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
 
 @Component({
   selector: "app-root",
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet,
+    NgxUiLoaderModule,
+    NgxUiLoaderRouterModule,
+  ],
+  providers: [Title],
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
 })

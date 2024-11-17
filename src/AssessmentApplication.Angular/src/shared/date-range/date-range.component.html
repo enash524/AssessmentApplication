@@ -1,10 +1,10 @@
 <dl [formGroup]="dateRangeForm">
-  <dt [ngClass]="{ 'error-message': dateRangeForm.invalid }">{{ label }}</dt>
+  <dt [ngClass]="{ 'error-message': dateRangeForm.invalid }">{{ label() }}</dt>
 
   <dd>
     <p-calendar
       formControlName="fromDate"
-      [placeholder]="placeholderFrom"
+      [placeholder]="placeholderFrom()"
       [selectOtherMonths]="true"
       [showIcon]="true"
       (onBlur)="handleOnTouched()"
@@ -16,7 +16,7 @@
   <dd>
     <p-calendar
       formControlName="toDate"
-      [placeholder]="placeholderTo"
+      [placeholder]="placeholderTo()"
       [selectOtherMonths]="true"
       [showIcon]="true"
       (onBlur)="handleOnTouched()"
@@ -26,6 +26,6 @@
   </dd>
 
   <dd *ngIf="dateRangeForm.invalid" class="error-message fw-bold small">
-    {{ errorMessage }}
+    {{ errorMessage() }}
   </dd>
 </dl>

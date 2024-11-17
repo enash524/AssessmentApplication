@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, DestroyRef, inject } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -16,7 +16,6 @@ import {
   SortDirection,
 } from "@shared/models";
 import { SalesOrderSearchService } from "@app/sales-order";
-import { Subject, takeUntil } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { FullAddressPipe } from "@shared/pipes/full-address.pipe";
 import { TableModule } from "primeng/table";
@@ -24,6 +23,7 @@ import { RouterModule } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { DateRangeComponent } from "@shared/date-range/date-range.component";
 import { InputTextboxComponent } from "@shared/input-textbox/input-textbox.component";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-search",
@@ -42,7 +42,7 @@ import { InputTextboxComponent } from "@shared/input-textbox/input-textbox.compo
     TableModule,
   ],
 })
-export class SearchComponent implements OnDestroy {
+export class SearchComponent {
   public columns: ColumnModel[] = [
     {
       field: "fullName",
@@ -78,7 +78,7 @@ export class SearchComponent implements OnDestroy {
     },
   ];
 
-  private _destroyed$: Subject<void> = new Subject();
+  private destroyRef = inject(DestroyRef);
   public salesOrderHeader: SalesOrderHeaderModel[];
   public totalRecords: number = 0;
   public searchForm: FormGroup = new FormGroup<SearchForm>({
@@ -93,11 +93,6 @@ export class SearchComponent implements OnDestroy {
   private _salesOrderSearchModel: PagedResponseModel<SalesOrderHeaderModel[]>;
 
   constructor(private salesOrderSearch: SalesOrderSearchService) {}
-
-  public ngOnDestroy() {
-    this._destroyed$.next();
-    this._destroyed$.complete();
-  }
 
   public onPage(event: any) {
     this._previousSearchModel.offset = event.first;
@@ -154,15 +149,12 @@ export class SearchComponent implements OnDestroy {
   private search(searchModel: SalesOrderSearchModel) {
     this.salesOrderSearch
       .search(searchModel)
-      .pipe(takeUntil(this._destroyed$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (result) => {
+        next: (result: PagedResponseModel<SalesOrderHeaderModel[]>) => {
           this._salesOrderSearchModel = result;
           this.salesOrderHeader = result.data;
           this.totalRecords = result.recordCount;
-        },
-        error: (error) => {
-          console.log("error", error);
         },
       });
   }

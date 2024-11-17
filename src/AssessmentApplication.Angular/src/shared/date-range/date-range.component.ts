@@ -1,4 +1,12 @@
-import { Component, forwardRef, Input, OnDestroy } from "@angular/core";
+import {
+  Component,
+  computed,
+  DestroyRef,
+  forwardRef,
+  inject,
+  input,
+  OnInit,
+} from "@angular/core";
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -12,10 +20,10 @@ import {
   Validator,
 } from "@angular/forms";
 import { dateRangeValidator } from "@shared/validators";
-import { Subject, takeUntil } from "rxjs";
 import { DateRangeModel } from "@shared/models";
 import { CalendarModule } from "primeng/calendar";
 import { CommonModule } from "@angular/common";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "shared-date-range",
@@ -40,7 +48,7 @@ import { CommonModule } from "@angular/common";
   },
 })
 export class DateRangeComponent
-  implements ControlValueAccessor, OnDestroy, Validator
+  implements ControlValueAccessor, OnInit, Validator
 {
   static nextId = 0;
   id = `date-range-${DateRangeComponent.nextId++}`;
@@ -54,48 +62,34 @@ export class DateRangeComponent
     }
   );
 
-  private _destroyed$: Subject<void> = new Subject();
-  private _errorMessage: string = "";
-  private _label: string = "";
+  public errorMessage = computed(
+    () => `${this.label()} End cannot occur before ${this.label()} Start`
+  );
+  public placeholderFrom = computed(() => `${this.label()} Start`);
+  public placeholderTo = computed(() => `${this.label()} End`);
+  public label = input.required<string>();
+
+  private destroyRef = inject(DestroyRef);
+  private _onChange: (val: Partial<DateRangeModel> | null) => void = () => {};
   private _onTouched: () => void = () => {};
-  private _placeholderFrom: string = "";
-  private _placeholderTo: string = "";
-
-  @Input()
-  set label(value: string) {
-    this._label = value;
-    this._errorMessage = `${value} End cannot occur before ${value} Start`;
-    this._placeholderFrom = `${value} Start`;
-    this._placeholderTo = `${value} End`;
-  }
-
-  get label() {
-    return this._label;
-  }
-
-  get errorMessage() {
-    return this._errorMessage;
-  }
 
   get fromDateControl() {
     return this.dateRangeForm.controls["fromDate"];
-  }
-
-  get placeholderFrom() {
-    return this._placeholderFrom;
-  }
-
-  get placeholderTo() {
-    return this._placeholderTo;
   }
 
   get toDateControl() {
     return this.dateRangeForm.controls["toDate"];
   }
 
-  ngOnDestroy(): void {
-    this._destroyed$.next();
-    this._destroyed$.complete();
+  ngOnInit(): void {
+    this.dateRangeForm.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((value: Partial<DateRangeModel> | null) => {
+        if (this._onChange) {
+          const dateRange = this.createDateRange(value);
+          this._onChange(dateRange);
+        }
+      });
   }
 
   writeValue(value: Partial<DateRangeModel> | null): void {
@@ -103,13 +97,8 @@ export class DateRangeComponent
     this.dateRangeForm.patchValue(dateRange);
   }
 
-  registerOnChange(fn: (val: Partial<DateRangeModel> | null) => void): void {
-    this.dateRangeForm.valueChanges
-      .pipe(takeUntil(this._destroyed$))
-      .subscribe((value) => {
-        const dateRange = this.createDateRange(value);
-        fn(dateRange);
-      });
+  registerOnChange(fn: (value: Partial<DateRangeModel> | null) => void): void {
+    this._onChange = fn;
   }
 
   registerOnTouched(fn: () => void): void {

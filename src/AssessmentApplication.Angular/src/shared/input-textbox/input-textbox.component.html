@@ -1,5 +1,5 @@
 <dl [formGroup]="inputTextboxForm">
-  <dt>{{ label }}</dt>
+  <dt>{{ label() }}</dt>
 
   <dd>
     <input
@@ -8,7 +8,7 @@
       type="text"
       pInputText
       formControlName="textboxValue"
-      [placeholder]="label"
+      [placeholder]="label()"
       (blur)="handleOnTouched()" />
   </dd>
 </dl>
