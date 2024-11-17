@@ -4,7 +4,7 @@ import { DetailsComponent } from "./details/details.component";
 import { SalesOrderComponent } from "./sales-order.component";
 import { SearchComponent } from "./search/search.component";
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: "",
     component: SalesOrderComponent,

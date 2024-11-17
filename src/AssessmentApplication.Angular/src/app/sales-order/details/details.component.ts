@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
@@ -22,7 +22,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   ],
 })
 export class DetailsComponent implements OnInit {
-  public salesOrderDetails: SalesOrderDetail[];
+  public salesOrderDetails = signal<SalesOrderDetail[]>(null);
   private destroyRef = inject(DestroyRef);
 
   constructor(
@@ -40,8 +40,8 @@ export class DetailsComponent implements OnInit {
         switchMap((id) => (id ? this.salesOrderService.get(id) : of([]))),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(
-        (details: SalesOrderDetail[]) => (this.salesOrderDetails = details)
+      .subscribe((details: SalesOrderDetail[]) =>
+        this.salesOrderDetails.set(details)
       );
   }
 }

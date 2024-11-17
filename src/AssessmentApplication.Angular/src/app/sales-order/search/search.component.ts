@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from "@angular/core";
+import { Component, DestroyRef, inject, model, signal } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -79,8 +79,8 @@ export class SearchComponent {
   ];
 
   private destroyRef = inject(DestroyRef);
-  public salesOrderHeader: SalesOrderHeaderModel[];
-  public totalRecords: number = 0;
+  public salesOrderHeader = model<SalesOrderHeaderModel[]>(null);
+  public totalRecords = model<number>(0);
   public searchForm: FormGroup = new FormGroup<SearchForm>({
     orderDate: new FormControl<DateRangeModel | null>(new DateRangeModel()),
     dueDate: new FormControl<DateRangeModel | null>(new DateRangeModel()),
@@ -88,16 +88,18 @@ export class SearchComponent {
     customerName: new FormControl<string | null>(null),
   });
 
-  private _previousSearchModel: SalesOrderSearchModel =
-    new SalesOrderSearchModel();
-  private _salesOrderSearchModel: PagedResponseModel<SalesOrderHeaderModel[]>;
+  private _previousSearchModel = signal<SalesOrderSearchModel>(
+    new SalesOrderSearchModel()
+  );
+  private _salesOrderSearchModel =
+    signal<PagedResponseModel<SalesOrderHeaderModel[]>>(null);
 
   constructor(private salesOrderSearch: SalesOrderSearchService) {}
 
   public onPage(event: any) {
-    this._previousSearchModel.offset = event.first;
-    this._previousSearchModel.limit = event.rows;
-    this.search(this._previousSearchModel);
+    this._previousSearchModel().offset = event.first;
+    this._previousSearchModel().limit = event.rows;
+    this.search(this._previousSearchModel());
   }
 
   public onReset() {
@@ -105,10 +107,10 @@ export class SearchComponent {
   }
 
   public onSort(event: any) {
-    this._previousSearchModel.sortBy = event.field;
-    this._previousSearchModel.sortDirection =
+    this._previousSearchModel().sortBy = event.field;
+    this._previousSearchModel().sortDirection =
       event.order === 1 ? SortDirection.Asc : SortDirection.Desc;
-    this.search(this._previousSearchModel);
+    this.search(this._previousSearchModel());
   }
 
   public onSubmit() {
@@ -116,8 +118,8 @@ export class SearchComponent {
       return;
     }
 
-    this._previousSearchModel = this.getSearchModel();
-    this.search(this._previousSearchModel);
+    this._previousSearchModel.set(this.getSearchModel());
+    this.search(this._previousSearchModel());
   }
 
   private getSearchModel() {
@@ -137,10 +139,10 @@ export class SearchComponent {
       this.searchForm.controls["shipDate"].value?.fromDate;
 
     if (this._salesOrderSearchModel) {
-      searchModel.limit = this._salesOrderSearchModel.limit;
-      searchModel.offset = this._salesOrderSearchModel.offset;
-      searchModel.sortBy = this._salesOrderSearchModel.sortBy;
-      searchModel.sortDirection = this._salesOrderSearchModel.sortDirection;
+      searchModel.limit = this._salesOrderSearchModel().limit;
+      searchModel.offset = this._salesOrderSearchModel().offset;
+      searchModel.sortBy = this._salesOrderSearchModel().sortBy;
+      searchModel.sortDirection = this._salesOrderSearchModel().sortDirection;
     }
 
     return searchModel;
@@ -152,9 +154,9 @@ export class SearchComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (result: PagedResponseModel<SalesOrderHeaderModel[]>) => {
-          this._salesOrderSearchModel = result;
-          this.salesOrderHeader = result.data;
-          this.totalRecords = result.recordCount;
+          this._salesOrderSearchModel.set(result);
+          this.salesOrderHeader.set(result.data);
+          this.totalRecords.set(result.recordCount);
         },
       });
   }
