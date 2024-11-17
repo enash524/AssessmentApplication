@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input } from "@angular/core";
+import { Component, input } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SalesOrderDetail } from "@app/sales-order/models";
 
@@ -11,6 +11,5 @@ import { SalesOrderDetail } from "@app/sales-order/models";
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class SalesOrderInfoComponent {
-  @Input()
-  public salesOrderDetail: SalesOrderDetail;
+  public salesOrderDetail = input.required<SalesOrderDetail>();
 }
