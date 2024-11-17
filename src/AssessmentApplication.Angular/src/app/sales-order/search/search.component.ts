@@ -1,5 +1,10 @@
 import { Component, OnDestroy } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import {
   SalesOrderHeaderModel,
   SalesOrderSearchModel,
@@ -12,11 +17,30 @@ import {
 } from "@shared/models";
 import { SalesOrderSearchService } from "@app/sales-order";
 import { Subject, takeUntil } from "rxjs";
+import { CommonModule } from "@angular/common";
+import { FullAddressPipe } from "@shared/pipes/full-address.pipe";
+import { TableModule } from "primeng/table";
+import { RouterModule } from "@angular/router";
+import { ButtonModule } from "primeng/button";
+import { DateRangeComponent } from "@shared/date-range/date-range.component";
+import { InputTextboxComponent } from "@shared/input-textbox/input-textbox.component";
 
 @Component({
   selector: "app-search",
   templateUrl: "./search.component.html",
   styleUrls: ["./search.component.scss"],
+  standalone: true,
+  imports: [
+    ButtonModule,
+    CommonModule,
+    DateRangeComponent,
+    FormsModule,
+    FullAddressPipe,
+    InputTextboxComponent,
+    ReactiveFormsModule,
+    RouterModule,
+    TableModule,
+  ],
 })
 export class SearchComponent implements OnDestroy {
   public columns: ColumnModel[] = [
@@ -61,7 +85,7 @@ export class SearchComponent implements OnDestroy {
     orderDate: new FormControl<DateRangeModel | null>(new DateRangeModel()),
     dueDate: new FormControl<DateRangeModel | null>(new DateRangeModel()),
     shipDate: new FormControl<DateRangeModel | null>(new DateRangeModel()),
-    customerName: new FormControl<string>(""),
+    customerName: new FormControl<string | null>(null),
   });
 
   private _previousSearchModel: SalesOrderSearchModel =
@@ -148,5 +172,5 @@ export type SearchForm = {
   orderDate: FormControl<DateRangeModel | null>;
   dueDate: FormControl<DateRangeModel | null>;
   shipDate: FormControl<DateRangeModel | null>;
-  customerName: FormControl<string>;
+  customerName: FormControl<string | null>;
 };

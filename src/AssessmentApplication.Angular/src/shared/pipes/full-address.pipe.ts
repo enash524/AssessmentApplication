@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({ name: "fullAddress" })
+@Pipe({
+  name: "fullAddress",
+  standalone: true,
+})
 export class FullAddressPipe implements PipeTransform {
   transform(
     address1: string,

@@ -19,7 +19,10 @@ export class PageLoadHttpInterceptor implements HttpInterceptor {
     excludeRoute: [],
   };
 
-  constructor(private ngxService: NgxUiLoaderService, private router: Router) {}
+  constructor(
+    private ngxService: NgxUiLoaderService,
+    private router: Router
+  ) {}
 
   public intercept(
     request: HttpRequest<any>,

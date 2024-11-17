@@ -12,7 +12,7 @@ export class EnvService {
 
   public init(): Promise<void> {
     return new Promise((resolve) => {
-      this._api = "https://localhost:5001/api";
+      this._api = "https://localhost:7220/api";
       resolve();
     });
   }

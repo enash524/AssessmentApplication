@@ -15,7 +15,10 @@ import {
 export class SalesOrderSearchService {
   private readonly url: string;
 
-  constructor(private env: EnvService, private http: HttpClient) {
+  constructor(
+    private env: EnvService,
+    private http: HttpClient
+  ) {
     this.url = `${this.env.api}/sales/`;
   }
 

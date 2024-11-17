@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { DetailsComponent } from "./details/details.component";
 import { SalesOrderComponent } from "./sales-order.component";
-import { SalesOrderModule } from "./sales-order.module";
 import { SearchComponent } from "./search/search.component";
 
 const routes: Routes = [
@@ -28,7 +27,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), SalesOrderModule],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
 export class SalesOrderRouting {}

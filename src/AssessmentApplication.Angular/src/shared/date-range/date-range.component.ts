@@ -4,19 +4,25 @@ import {
   ControlValueAccessor,
   FormControl,
   FormGroup,
+  FormsModule,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
   ValidationErrors,
   Validator,
 } from "@angular/forms";
 import { dateRangeValidator } from "@shared/validators";
 import { Subject, takeUntil } from "rxjs";
 import { DateRangeModel } from "@shared/models";
+import { CalendarModule } from "primeng/calendar";
+import { CommonModule } from "@angular/common";
 
 @Component({
   selector: "shared-date-range",
   templateUrl: "./date-range.component.html",
   styleUrls: ["./date-range.component.scss"],
+  standalone: true,
+  imports: [CalendarModule, CommonModule, FormsModule, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

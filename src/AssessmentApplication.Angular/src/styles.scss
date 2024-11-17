@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 // Bootstrap
-@import "~bootstrap/dist/css/bootstrap.css";
-@import "~primeicons/primeicons.css";
-@import "~primeng/resources/themes/saga-blue/theme.css";
-@import "~primeng/resources/primeng.css";
-@import "~@fortawesome/fontawesome-free/css/all.css";
+@import "bootstrap/dist/css/bootstrap.css";
+@import "primeicons/primeicons.css";
+@import "primeng/resources/themes/saga-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "@fortawesome/fontawesome-free/css/all.css";
 
 .error-message {
   color: #f44336;

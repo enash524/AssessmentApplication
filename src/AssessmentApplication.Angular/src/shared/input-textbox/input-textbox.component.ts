@@ -1,11 +1,14 @@
+import { CommonModule } from "@angular/common";
 import { Component, forwardRef, Input, OnDestroy } from "@angular/core";
 import {
   AbstractControl,
   ControlValueAccessor,
   FormControl,
   FormGroup,
+  FormsModule,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
   ValidationErrors,
   Validator,
 } from "@angular/forms";
@@ -15,6 +18,8 @@ import { debounceTime, Subject, takeUntil } from "rxjs";
   selector: "shared-input-textbox",
   templateUrl: "./input-textbox.component.html",
   styleUrls: ["./input-textbox.component.scss"],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
