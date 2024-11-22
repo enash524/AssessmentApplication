@@ -1,6 +1,6 @@
 import { catchError, tap } from "rxjs/operators";
 import { Observable, throwError as observableThrowError } from "rxjs";
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import {
   HttpEvent,
   HttpEventType,
@@ -14,15 +14,12 @@ import { v4 as uuid } from "uuid";
 
 @Injectable()
 export class PageLoadHttpInterceptor implements HttpInterceptor {
+  private ngxService = inject(NgxUiLoaderService);
+  private router = inject(Router);
   private defaultConfig = {
     excludeRequest: [],
     excludeRoute: [],
   };
-
-  constructor(
-    private ngxService: NgxUiLoaderService,
-    private router: Router
-  ) {}
 
   public intercept(
     request: HttpRequest<any>,

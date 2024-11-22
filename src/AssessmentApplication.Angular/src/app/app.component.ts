@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
@@ -21,8 +21,7 @@ import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
 })
 export class AppComponent implements OnInit {
   public title: string = "Assessment Application";
-
-  public constructor(private titleService: Title) {}
+  private titleService = inject(Title);
 
   public ngOnInit(): void {
     this.setTitle(this.title);

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import {
   HttpErrorResponse,
   HttpHandler,
@@ -11,10 +11,8 @@ import { MessageService } from "primeng/api";
 
 @Injectable()
 export class ErrorHttpInterceptor implements HttpInterceptor {
-  constructor(
-    private messageService: MessageService,
-    private ngxService: NgxUiLoaderService
-  ) {}
+  private messageService = inject(MessageService);
+  private ngxService = inject(NgxUiLoaderService);
 
   public intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req.clone()).pipe(

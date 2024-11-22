@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { EnvService } from "@shared/services";
 import { PagedResponseModel, SortDirection } from "@shared/models";
 import { Observable } from "rxjs";
@@ -13,14 +13,9 @@ import {
   providedIn: "root",
 })
 export class SalesOrderSearchService {
-  private readonly url: string;
-
-  constructor(
-    private env: EnvService,
-    private http: HttpClient
-  ) {
-    this.url = `${this.env.api}/sales/`;
-  }
+  private env = inject(EnvService);
+  private http = inject(HttpClient);
+  private readonly url: string = `${this.env.api}/sales/`;
 
   public get(id: number): Observable<SalesOrderDetail[]> {
     const endpoint: string = `${this.url}detail/${id}`;

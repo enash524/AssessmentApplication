@@ -23,12 +23,9 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 })
 export class DetailsComponent implements OnInit {
   public salesOrderDetails = signal<SalesOrderDetail[]>(null);
+  private activatedRoute = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
-
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private salesOrderService: SalesOrderSearchService
-  ) {}
+  private salesOrderSearchService = inject(SalesOrderSearchService);
 
   ngOnInit(): void {
     this.activatedRoute.paramMap
@@ -37,7 +34,7 @@ export class DetailsComponent implements OnInit {
           const param = params.get("id");
           return param ? +param : null;
         }),
-        switchMap((id) => (id ? this.salesOrderService.get(id) : of([]))),
+        switchMap((id) => (id ? this.salesOrderSearchService.get(id) : of([]))),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((details: SalesOrderDetail[]) =>
