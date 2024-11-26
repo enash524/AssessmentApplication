@@ -12,7 +12,8 @@ import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { routes } from "../sales-order.routing";
 import { provideLocationMocks } from "@angular/common/testing";
 import { SalesOrderSearchService } from "../sales-order.service";
-import { SalesOrderSearchServiceStub } from "@testing/stubs";
+import { EnvServiceStub, SalesOrderSearchServiceStub } from "@testing/stubs";
+import { EnvService } from "@shared/services";
 
 function mountSearchComponent(): Cypress.Chainable {
   return cy.mount(SearchComponent, {
@@ -32,6 +33,10 @@ function mountSearchComponent(): Cypress.Chainable {
       provideHttpClientTesting(),
       provideRouter(routes),
       provideLocationMocks(),
+      {
+        provide: EnvService,
+        useClass: EnvServiceStub,
+      },
       {
         provide: SalesOrderSearchService,
         useClass: SalesOrderSearchServiceStub,
