@@ -1,5 +1,6 @@
 import { Component, DestroyRef, inject, model, signal } from "@angular/core";
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
@@ -121,23 +122,34 @@ export class SearchComponent {
     this.search(this._previousSearchModel());
   }
 
+  private customerNameControl(): AbstractControl<string | null> | null {
+    return this.searchForm.get("customerName");
+  }
+
+  private dueDateControl(): AbstractControl<DateRangeModel | null> | null {
+    return this.searchForm.get("dueDate");
+  }
+
+  private orderDateControl(): AbstractControl<DateRangeModel | null> | null {
+    return this.searchForm.get("orderDate");
+  }
+
+  private shipDateControl(): AbstractControl<DateRangeModel | null> | null {
+    return this.searchForm.get("shipDate");
+  }
+
   private getSearchModel() {
     const searchModel: SalesOrderSearchModel = new SalesOrderSearchModel();
 
-    searchModel.customerName = this.searchForm.controls["customerName"].value;
-    searchModel.dueDateEnd = this.searchForm.controls["dueDate"].value?.toDate;
-    searchModel.dueDateStart =
-      this.searchForm.controls["dueDate"].value?.fromDate;
-    searchModel.orderDateEnd =
-      this.searchForm.controls["orderDate"].value?.toDate;
-    searchModel.orderDateStart =
-      this.searchForm.controls["orderDate"].value?.fromDate;
-    searchModel.shipDateEnd =
-      this.searchForm.controls["shipDate"].value?.toDate;
-    searchModel.shipDateStart =
-      this.searchForm.controls["shipDate"].value?.fromDate;
+    searchModel.customerName = this.customerNameControl()?.value;
+    searchModel.dueDateEnd = this.dueDateControl()?.value?.toDate;
+    searchModel.dueDateStart = this.dueDateControl()?.value?.fromDate;
+    searchModel.orderDateEnd = this.orderDateControl()?.value?.toDate;
+    searchModel.orderDateStart = this.orderDateControl()?.value?.fromDate;
+    searchModel.shipDateEnd = this.shipDateControl()?.value?.toDate;
+    searchModel.shipDateStart = this.shipDateControl()?.value?.fromDate;
 
-    if (this._salesOrderSearchModel) {
+    if (this._salesOrderSearchModel()) {
       searchModel.limit = this._salesOrderSearchModel().limit;
       searchModel.offset = this._salesOrderSearchModel().offset;
       searchModel.sortBy = this._salesOrderSearchModel().sortBy;
@@ -151,12 +163,10 @@ export class SearchComponent {
     this.salesOrderSearchService
       .search(searchModel)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (result: PagedResponseModel<SalesOrderHeaderModel[]>) => {
-          this._salesOrderSearchModel.set(result);
-          this.salesOrderHeader.set(result.data);
-          this.totalRecords.set(result.recordCount);
-        },
+      .subscribe((result: PagedResponseModel<SalesOrderHeaderModel[]>) => {
+        this._salesOrderSearchModel.set(result);
+        this.salesOrderHeader.set(result.data);
+        this.totalRecords.set(result.recordCount);
       });
   }
 }

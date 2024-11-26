@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, OnInit, signal } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, ParamMap } from "@angular/router";
 import { of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { SalesOrderDetail } from "@app/sales-order/models";
@@ -30,11 +30,13 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap
       .pipe(
-        map((params) => {
+        map((params: ParamMap) => {
           const param = params.get("id");
-          return param ? +param : null;
+          return param !== null ? +param : null;
         }),
-        switchMap((id) => (id ? this.salesOrderSearchService.get(id) : of([]))),
+        switchMap((id: number | null) =>
+          id !== null ? this.salesOrderSearchService.get(id) : of([])
+        ),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((details: SalesOrderDetail[]) =>
