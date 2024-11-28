@@ -81,7 +81,7 @@ export class SearchComponent {
 
   private destroyRef = inject(DestroyRef);
   private salesOrderSearchService = inject(SalesOrderSearchService);
-  public salesOrderHeader = model<SalesOrderHeaderModel[]>(null);
+  public salesOrderHeader = model<SalesOrderHeaderModel[] | null>(null);
   public totalRecords = model<number>(0);
   public searchForm: FormGroup = new FormGroup<SearchForm>({
     orderDate: new FormControl<DateRangeModel | null>(new DateRangeModel()),
@@ -93,8 +93,9 @@ export class SearchComponent {
   private _previousSearchModel = signal<SalesOrderSearchModel>(
     new SalesOrderSearchModel()
   );
-  private _salesOrderSearchModel =
-    signal<PagedResponseModel<SalesOrderHeaderModel[]>>(null);
+  private _salesOrderSearchModel = signal<PagedResponseModel<
+    SalesOrderHeaderModel[]
+  > | null>(null);
 
   public onPage(event: any) {
     this._previousSearchModel().offset = event.first;
@@ -103,7 +104,7 @@ export class SearchComponent {
   }
 
   public onReset() {
-    this.salesOrderHeader = null;
+    this.salesOrderHeader.set(null);
   }
 
   public onSort(event: any) {
@@ -114,7 +115,7 @@ export class SearchComponent {
   }
 
   public onSubmit() {
-    if (this.searchForm.invalid) {
+    if (!this.searchForm.valid) {
       return;
     }
 

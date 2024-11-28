@@ -22,7 +22,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   ],
 })
 export class DetailsComponent implements OnInit {
-  public salesOrderDetails = signal<SalesOrderDetail[]>(null);
+  public salesOrderDetails = signal<SalesOrderDetail[] | null>(null);
   private activatedRoute = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
   private salesOrderSearchService = inject(SalesOrderSearchService);
