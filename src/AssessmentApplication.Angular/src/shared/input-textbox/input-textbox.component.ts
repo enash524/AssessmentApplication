@@ -20,6 +20,7 @@ import {
   ValidationErrors,
   Validator,
 } from "@angular/forms";
+import { InputTextModule } from "primeng/inputtext";
 import { debounceTime } from "rxjs";
 
 @Component({
@@ -27,7 +28,7 @@ import { debounceTime } from "rxjs";
   templateUrl: "./input-textbox.component.html",
   styleUrls: ["./input-textbox.component.scss"],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, InputTextModule, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

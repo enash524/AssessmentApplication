@@ -28,7 +28,7 @@ describe(
     it("should properly set labels", () => {
       const label: string = "Test Name";
       mountInputTextboxComponent(label).then((wrapper) => {
-        cy.get("dt").should("contain.text", label)
+        cy.get("dt").should("contain.text", label);
         cy.get("input[formcontrolname='textboxValue']")
           .invoke("attr", "placeholder")
           .then((placeholder) => expect(placeholder).to.equal(label));

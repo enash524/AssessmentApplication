@@ -31,20 +31,19 @@
 
   <div class="row">
     <div class="col col-md-12">
-      <button
-        pButton
+      <p-button
         type="submit"
         icon="fa fa-search"
         iconPos="left"
-        label="search"
-        [disabled]="searchForm.invalid"></button>
-      <button
-        pButton
+        label="Search"
+        [disabled]="!searchForm.valid"></p-button>
+      <p-button
         type="reset"
         icon="fa fa-sync-alt"
         iconPos="left"
         label="Reset"
-        class="p-button-secondary ms-3"></button>
+        severity="secondary"
+        class="p-button-secondary ms-3"></p-button>
     </div>
   </div>
 </form>

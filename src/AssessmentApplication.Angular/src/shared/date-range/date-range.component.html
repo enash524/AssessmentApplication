@@ -2,7 +2,7 @@
   <dt [ngClass]="{ 'error-message': dateRangeForm.invalid }">{{ label() }}</dt>
 
   <dd>
-    <p-calendar
+    <p-datepicker
       formControlName="fromDate"
       [placeholder]="placeholderFrom()"
       [selectOtherMonths]="true"
@@ -10,11 +10,11 @@
       (onBlur)="handleOnTouched()"
       [id]="id + '-fromDate'"
       [name]="id + '-fromDate'">
-    </p-calendar>
+    </p-datepicker>
   </dd>
 
   <dd>
-    <p-calendar
+    <p-datepicker
       formControlName="toDate"
       [placeholder]="placeholderTo()"
       [selectOtherMonths]="true"
@@ -22,7 +22,7 @@
       (onBlur)="handleOnTouched()"
       [id]="id + '-toDate'"
       [name]="id + '-toDate'">
-    </p-calendar>
+    </p-datepicker>
   </dd>
 
   <dd *ngIf="dateRangeForm.invalid" class="error-message fw-bold small">

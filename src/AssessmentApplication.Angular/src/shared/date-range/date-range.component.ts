@@ -21,7 +21,7 @@ import {
 } from "@angular/forms";
 import { dateRangeValidator } from "@shared/validators";
 import { DateRangeModel } from "@shared/models";
-import { CalendarModule } from "primeng/calendar";
+import { DatePickerModule } from "primeng/datepicker";
 import { CommonModule } from "@angular/common";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
@@ -30,7 +30,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   templateUrl: "./date-range.component.html",
   styleUrls: ["./date-range.component.scss"],
   standalone: true,
-  imports: [CalendarModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, DatePickerModule, FormsModule, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
