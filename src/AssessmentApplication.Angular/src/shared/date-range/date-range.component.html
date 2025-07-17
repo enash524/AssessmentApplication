@@ -25,7 +25,9 @@
     </p-datepicker>
   </dd>
 
-  <dd *ngIf="dateRangeForm.invalid" class="error-message fw-bold small">
-    {{ errorMessage() }}
-  </dd>
+  @if (dateRangeForm.invalid) {
+    <dd class="error-message fw-bold small">
+      {{ errorMessage() }}
+    </dd>
+  }
 </dl>

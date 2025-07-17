@@ -1,13 +1,18 @@
 <h2>Sales Order Detail</h2>
 
-<div class="row" *ngIf="salesOrderDetails()?.length > 0">
-  <div class="col col-md-4" *ngFor="let detail of salesOrderDetails()">
-    <app-sales-order-info [salesOrderDetail]="detail"></app-sales-order-info>
+@if (salesOrderDetails()?.length > 0) {
+  <div class="row">
+    @for (detail of salesOrderDetails(); track detail) {
+      <div class="col col-md-4">
+        <app-sales-order-info
+          [salesOrderDetail]="detail"></app-sales-order-info>
+      </div>
+    }
   </div>
-</div>
+}
 
-<div
-  class="row"
-  *ngIf="!salesOrderDetails() || salesOrderDetails().length === 0">
-  <div class="col col-md-12">No records found</div>
-</div>
+@if (!salesOrderDetails() || salesOrderDetails().length === 0) {
+  <div class="row">
+    <div class="col col-md-12">No records found</div>
+  </div>
+}

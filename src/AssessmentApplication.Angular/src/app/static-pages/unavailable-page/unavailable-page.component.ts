@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 
 @Component({
@@ -6,6 +5,6 @@ import { Component } from "@angular/core";
   templateUrl: "./unavailable-page.component.html",
   styleUrls: ["./unavailable-page.component.scss"],
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
 })
 export class UnavailablePageComponent {}

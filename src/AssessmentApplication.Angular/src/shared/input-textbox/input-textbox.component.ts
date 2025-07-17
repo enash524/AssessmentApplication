@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import {
   Component,
   DestroyRef,
@@ -28,7 +27,7 @@ import { debounceTime } from "rxjs";
   templateUrl: "./input-textbox.component.html",
   styleUrls: ["./input-textbox.component.scss"],
   standalone: true,
-  imports: [CommonModule, FormsModule, InputTextModule, ReactiveFormsModule],
+  imports: [FormsModule, InputTextModule, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

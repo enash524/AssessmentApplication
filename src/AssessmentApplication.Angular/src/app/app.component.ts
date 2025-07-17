@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { Component, inject, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
@@ -8,7 +7,6 @@ import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
   selector: "app-root",
   standalone: true,
   imports: [
-    CommonModule,
     RouterLink,
     RouterLinkActive,
     RouterOutlet,

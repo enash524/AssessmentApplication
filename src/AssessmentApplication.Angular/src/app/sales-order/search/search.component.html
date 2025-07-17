@@ -48,78 +48,73 @@
   </div>
 </form>
 
-<div class="row mt-3" *ngIf="salesOrderHeader()">
-  <div class="col col-md-12">
-    <p-table
-      [value]="salesOrderHeader()"
-      [columns]="columns"
-      [rows]="10"
-      [paginator]="true"
-      [autoLayout]="true"
-      [totalRecords]="totalRecords()"
-      [lazy]="true"
-      [lazyLoadOnInit]="false"
-      [alwaysShowPaginator]="false"
-      (onPage)="onPage($event)"
-      (onSort)="onSort($event)">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-            {{ col.header }}
-            <p-sortIcon [field]="col.field"></p-sortIcon>
-          </th>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="emptymessage" let-columns>
-        <tr>
-          <td [attr.colspan]="columns.length">No records found</td>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-          <td>
-            <a [routerLink]="['/sales-order', 'detail', rowData.salesOrderId]">
-              {{ rowData.person.fullName }}
-            </a>
-          </td>
-
-          <td>
-            {{ rowData.accountNumber }}
-          </td>
-
-          <td
-            [innerHtml]="
-              rowData.shipToAddress.address1
-                | fullAddress
-                  : rowData.shipToAddress.city
-                  : rowData.shipToAddress.stateOrProvinceCode
-                  : rowData.shipToAddress.postalCode
-                  : rowData.shipToAddress.address2
-            "></td>
-
-          <td>
-            {{ rowData.shipMethod.shipMethodName }}
-          </td>
-
-          <td>
-            {{ rowData.subTotal | currency }}
-          </td>
-
-          <td>
-            {{ rowData.taxAmt | currency }}
-          </td>
-
-          <td>
-            {{ rowData.freight | currency }}
-          </td>
-
-          <td>
-            {{ rowData.totalDue | currency }}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+@if (salesOrderHeader()) {
+  <div class="row mt-3">
+    <div class="col col-md-12">
+      <p-table
+        [value]="salesOrderHeader()"
+        [columns]="columns"
+        [rows]="10"
+        [paginator]="true"
+        [totalRecords]="totalRecords()"
+        [lazy]="true"
+        [lazyLoadOnInit]="false"
+        [alwaysShowPaginator]="false"
+        (onPage)="onPage($event)"
+        (onSort)="onSort($event)">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            @for (col of columns; track col) {
+              <th [pSortableColumn]="col.field">
+                {{ col.header }}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            }
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td [attr.colspan]="columns.length">No records found</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td>
+              <a
+                [routerLink]="['/sales-order', 'detail', rowData.salesOrderId]">
+                {{ rowData.person.fullName }}
+              </a>
+            </td>
+            <td>
+              {{ rowData.accountNumber }}
+            </td>
+            <td
+              [innerHtml]="
+                rowData.shipToAddress.address1
+                  | fullAddress
+                    : rowData.shipToAddress.city
+                    : rowData.shipToAddress.stateOrProvinceCode
+                    : rowData.shipToAddress.postalCode
+                    : rowData.shipToAddress.address2
+              "></td>
+            <td>
+              {{ rowData.shipMethod.shipMethodName }}
+            </td>
+            <td>
+              {{ rowData.subTotal | currency }}
+            </td>
+            <td>
+              {{ rowData.taxAmt | currency }}
+            </td>
+            <td>
+              {{ rowData.freight | currency }}
+            </td>
+            <td>
+              {{ rowData.totalDue | currency }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
-</div>
+}

@@ -4,7 +4,6 @@ import { of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { SalesOrderDetail } from "@app/sales-order/models";
 import { SalesOrderSearchService } from "@app/sales-order";
-import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SalesOrderInfoComponent } from "../widgets/sales-order-info/sales-order-info.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -14,12 +13,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   templateUrl: "./details.component.html",
   styleUrls: ["./details.component.scss"],
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SalesOrderInfoComponent,
-  ],
+  imports: [FormsModule, ReactiveFormsModule, SalesOrderInfoComponent],
 })
 export class DetailsComponent implements OnInit {
   public salesOrderDetails = signal<SalesOrderDetail[] | null>(null);
