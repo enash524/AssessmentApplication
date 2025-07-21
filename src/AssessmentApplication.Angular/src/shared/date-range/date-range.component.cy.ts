@@ -1,6 +1,6 @@
 import { signal } from "@angular/core";
 import { DateRangeComponent } from "./date-range.component";
-import { CalendarModule } from "primeng/calendar";
+import { DatePickerModule } from "primeng/datepicker";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 function mountDateRangeComponent(label: string = null): Cypress.Chainable {
   return cy.mount(DateRangeComponent, {
     imports: [
-      CalendarModule,
+      DatePickerModule,
       CommonModule,
       FormsModule,
       NoopAnimationsModule,
