@@ -1,3 +1,4 @@
+import { CommonModule } from "@angular/common";
 import {
   Component,
   computed,
@@ -7,6 +8,7 @@ import {
   input,
   OnInit,
 } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -19,17 +21,14 @@ import {
   ValidationErrors,
   Validator,
 } from "@angular/forms";
-import { dateRangeValidator } from "@shared/validators";
 import { DateRangeModel } from "@shared/models";
+import { dateRangeValidator } from "@shared/validators";
 import { DatePickerModule } from "primeng/datepicker";
-import { CommonModule } from "@angular/common";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "shared-date-range",
   templateUrl: "./date-range.component.html",
-  styleUrls: ["./date-range.component.scss"],
-  standalone: true,
+  styleUrl: "./date-range.component.scss",
   imports: [CommonModule, DatePickerModule, FormsModule, ReactiveFormsModule],
   providers: [
     {

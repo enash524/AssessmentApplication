@@ -1,40 +1,24 @@
-import { Component, DestroyRef, inject, OnInit, signal } from "@angular/core";
-import { ActivatedRoute, ParamMap } from "@angular/router";
-import { of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
-import { SalesOrderDetail } from "@app/sales-order/models";
-import { SalesOrderSearchService } from "@app/sales-order";
+import { Component, inject, input } from "@angular/core";
+import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { SalesOrderSearchService } from "@app/sales-order";
+import { of } from "rxjs";
+import { catchError, switchMap } from "rxjs/operators";
 import { SalesOrderInfoComponent } from "../widgets/sales-order-info/sales-order-info.component";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-details",
   templateUrl: "./details.component.html",
-  styleUrls: ["./details.component.scss"],
-  standalone: true,
+  styleUrl: "./details.component.scss",
   imports: [FormsModule, ReactiveFormsModule, SalesOrderInfoComponent],
 })
-export class DetailsComponent implements OnInit {
-  public salesOrderDetails = signal<SalesOrderDetail[] | null>(null);
-  private activatedRoute = inject(ActivatedRoute);
-  private destroyRef = inject(DestroyRef);
+export class DetailsComponent {
+  public id = input.required<number>();
   private salesOrderSearchService = inject(SalesOrderSearchService);
-
-  ngOnInit(): void {
-    this.activatedRoute.paramMap
-      .pipe(
-        map((params: ParamMap) => {
-          const param = params.get("id");
-          return param !== null ? +param : null;
-        }),
-        switchMap((id: number | null) =>
-          id !== null ? this.salesOrderSearchService.get(id) : of([])
-        ),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe((details: SalesOrderDetail[]) =>
-        this.salesOrderDetails.set(details)
-      );
-  }
+  public salesOrderDetails = toSignal(
+    toObservable(this.id).pipe(
+      switchMap((id) => this.salesOrderSearchService.get(id)),
+      catchError(() => of([]))
+    )
+  );
 }

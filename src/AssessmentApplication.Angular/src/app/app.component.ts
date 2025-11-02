@@ -1,11 +1,10 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, effect, inject, input } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
 
 @Component({
   selector: "app-root",
-  standalone: true,
   imports: [
     RouterLink,
     RouterLinkActive,
@@ -15,17 +14,13 @@ import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
   ],
   providers: [Title],
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+  styleUrl: "./app.component.scss",
 })
-export class AppComponent implements OnInit {
-  public title: string = "Assessment Application";
+export class AppComponent {
+  public title = input<string>("Assessment Application");
   private titleService = inject(Title);
 
-  public ngOnInit(): void {
-    this.setTitle(this.title);
-  }
-
-  public setTitle(newTitle: string) {
-    this.titleService.setTitle(newTitle);
+  constructor() {
+    effect(() => this.titleService.setTitle(this.title()));
   }
 }

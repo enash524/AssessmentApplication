@@ -25,8 +25,7 @@ import { debounceTime } from "rxjs";
 @Component({
   selector: "shared-input-textbox",
   templateUrl: "./input-textbox.component.html",
-  styleUrls: ["./input-textbox.component.scss"],
-  standalone: true,
+  styleUrl: "./input-textbox.component.scss",
   imports: [FormsModule, InputTextModule, ReactiveFormsModule],
   providers: [
     {

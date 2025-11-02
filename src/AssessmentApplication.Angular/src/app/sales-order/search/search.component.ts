@@ -1,4 +1,6 @@
+import { CommonModule } from "@angular/common";
 import { Component, DestroyRef, inject, model, signal } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
   AbstractControl,
   FormControl,
@@ -6,31 +8,28 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from "@angular/forms";
+import { RouterModule } from "@angular/router";
+import { SalesOrderSearchService } from "@app/sales-order";
 import {
   SalesOrderHeaderModel,
   SalesOrderSearchModel,
 } from "@app/sales-order/models";
+import { DateRangeComponent } from "@shared/date-range/date-range.component";
+import { InputTextboxComponent } from "@shared/input-textbox/input-textbox.component";
 import {
   ColumnModel,
   DateRangeModel,
   PagedResponseModel,
   SortDirection,
 } from "@shared/models";
-import { SalesOrderSearchService } from "@app/sales-order";
-import { CommonModule } from "@angular/common";
 import { FullAddressPipe } from "@shared/pipes/full-address.pipe";
-import { TableModule } from "primeng/table";
-import { RouterModule } from "@angular/router";
 import { ButtonModule } from "primeng/button";
-import { DateRangeComponent } from "@shared/date-range/date-range.component";
-import { InputTextboxComponent } from "@shared/input-textbox/input-textbox.component";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { TableModule } from "primeng/table";
 
 @Component({
   selector: "app-search",
   templateUrl: "./search.component.html",
-  styleUrls: ["./search.component.scss"],
-  standalone: true,
+  styleUrl: "./search.component.scss",
   imports: [
     ButtonModule,
     CommonModule,
@@ -90,17 +89,17 @@ export class SearchComponent {
     customerName: new FormControl<string | null>(null),
   });
 
-  private _previousSearchModel = signal<SalesOrderSearchModel>(
+  private previousSearchModel = signal<SalesOrderSearchModel>(
     new SalesOrderSearchModel()
   );
-  private _salesOrderSearchModel = signal<PagedResponseModel<
+  private salesOrderSearchModel = signal<PagedResponseModel<
     SalesOrderHeaderModel[]
   > | null>(null);
 
   public onPage(event: any) {
-    this._previousSearchModel().offset = event.first;
-    this._previousSearchModel().limit = event.rows;
-    this.search(this._previousSearchModel());
+    this.previousSearchModel().offset = event.first;
+    this.previousSearchModel().limit = event.rows;
+    this.search(this.previousSearchModel());
   }
 
   public onReset() {
@@ -108,10 +107,10 @@ export class SearchComponent {
   }
 
   public onSort(event: any) {
-    this._previousSearchModel().sortBy = event.field;
-    this._previousSearchModel().sortDirection =
+    this.previousSearchModel().sortBy = event.field;
+    this.previousSearchModel().sortDirection =
       event.order === 1 ? SortDirection.Asc : SortDirection.Desc;
-    this.search(this._previousSearchModel());
+    this.search(this.previousSearchModel());
   }
 
   public onSubmit() {
@@ -119,8 +118,8 @@ export class SearchComponent {
       return;
     }
 
-    this._previousSearchModel.set(this.getSearchModel());
-    this.search(this._previousSearchModel());
+    this.previousSearchModel.set(this.getSearchModel());
+    this.search(this.previousSearchModel());
   }
 
   private customerNameControl(): AbstractControl<string | null> | null {
@@ -150,11 +149,11 @@ export class SearchComponent {
     searchModel.shipDateEnd = this.shipDateControl()?.value?.toDate;
     searchModel.shipDateStart = this.shipDateControl()?.value?.fromDate;
 
-    if (this._salesOrderSearchModel()) {
-      searchModel.limit = this._salesOrderSearchModel().limit;
-      searchModel.offset = this._salesOrderSearchModel().offset;
-      searchModel.sortBy = this._salesOrderSearchModel().sortBy;
-      searchModel.sortDirection = this._salesOrderSearchModel().sortDirection;
+    if (this.salesOrderSearchModel()) {
+      searchModel.limit = this.salesOrderSearchModel().limit;
+      searchModel.offset = this.salesOrderSearchModel().offset;
+      searchModel.sortBy = this.salesOrderSearchModel().sortBy;
+      searchModel.sortDirection = this.salesOrderSearchModel().sortDirection;
     }
 
     return searchModel;
@@ -165,7 +164,7 @@ export class SearchComponent {
       .search(searchModel)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((result: PagedResponseModel<SalesOrderHeaderModel[]>) => {
-        this._salesOrderSearchModel.set(result);
+        this.salesOrderSearchModel.set(result);
         this.salesOrderHeader.set(result.data);
         this.totalRecords.set(result.recordCount);
       });

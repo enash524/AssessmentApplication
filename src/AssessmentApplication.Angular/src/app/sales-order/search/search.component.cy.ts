@@ -1,19 +1,21 @@
-import { ButtonModule } from "primeng/button";
-import { SearchComponent } from "./search.component";
 import { CommonModule } from "@angular/common";
-import { DateRangeComponent } from "@shared/date-range/date-range.component";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { InputTextboxComponent } from "@shared/input-textbox/input-textbox.component";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { TableModule } from "primeng/table";
-import { provideRouter, RouterModule } from "@angular/router";
-import { FullAddressPipe } from "@shared/pipes/full-address.pipe";
 import { provideHttpClientTesting } from "@angular/common/http/testing";
-import { routes } from "../sales-order.routing";
 import { provideLocationMocks } from "@angular/common/testing";
-import { SalesOrderSearchService } from "../sales-order.service";
-import { EnvServiceStub, SalesOrderSearchServiceStub } from "@testing/stubs";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { provideRouter, RouterModule } from "@angular/router";
+import Aura from "@primeuix/themes/aura";
+import { DateRangeComponent } from "@shared/date-range/date-range.component";
+import { InputTextboxComponent } from "@shared/input-textbox/input-textbox.component";
+import { FullAddressPipe } from "@shared/pipes/full-address.pipe";
 import { EnvService } from "@shared/services";
+import { EnvServiceStub, SalesOrderSearchServiceStub } from "@testing/stubs";
+import { ButtonModule } from "primeng/button";
+import { providePrimeNG } from "primeng/config";
+import { TableModule } from "primeng/table";
+import { routes } from "../sales-order.routing";
+import { SalesOrderSearchService } from "../sales-order.service";
+import { SearchComponent } from "./search.component";
 
 function mountSearchComponent(): Cypress.Chainable {
   return cy.mount(SearchComponent, {
@@ -33,6 +35,14 @@ function mountSearchComponent(): Cypress.Chainable {
       provideHttpClientTesting(),
       provideRouter(routes),
       provideLocationMocks(),
+      providePrimeNG({
+        theme: {
+          preset: Aura,
+          options: {
+            darkModeSelector: false || "none",
+          },
+        },
+      }),
       {
         provide: EnvService,
         useClass: EnvServiceStub,

@@ -1,32 +1,32 @@
 import {
   ApplicationConfig,
   importProvidersFrom,
-  provideZoneChangeDetection,
   inject,
   provideAppInitializer,
+  provideZoneChangeDetection,
 } from "@angular/core";
-import { provideRouter } from "@angular/router";
+import { provideRouter, withComponentInputBinding } from "@angular/router";
 
-import { routes } from "./app.routing";
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
 } from "@angular/common/http";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+import { definePreset } from "@primeuix/themes";
+import Aura from "@primeuix/themes/aura";
+import { ErrorHttpInterceptor } from "@shared/interceptors";
+import { EnvService } from "@shared/services";
 import {
   NgxUiLoaderHttpModule,
   NgxUiLoaderModule,
   NgxUiLoaderService,
 } from "ngx-ui-loader";
-import { EnvService } from "@shared/services";
-import { ErrorHttpInterceptor } from "@shared/interceptors";
-import { providePrimeNG } from "primeng/config";
 import { MessageService } from "primeng/api";
-import Lara from "@primeng/themes/lara";
-import { definePreset } from "@primeng/themes";
+import { providePrimeNG } from "primeng/config";
+import { routes } from "./app.routing";
 
-const myPreset = definePreset(Lara, {
+const myPreset = definePreset(Aura, {
   semantic: {
     primary: {
       50: "{blue.50}",
@@ -48,7 +48,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi()),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     providePrimeNG({
       theme: {

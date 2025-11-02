@@ -1,8 +1,7 @@
 import { CommonModule } from "@angular/common";
-import { SalesOrderInfoComponent } from "./sales-order-info.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { signal } from "@angular/core";
 import { SalesOrderDetail } from "@app/sales-order/models";
+import { SalesOrderInfoComponent } from "./sales-order-info.component";
 
 function mountSalesOrderInfoComponent(
   salesOrderDetail: SalesOrderDetail | null = null
@@ -10,7 +9,7 @@ function mountSalesOrderInfoComponent(
   return cy.mount(SalesOrderInfoComponent, {
     imports: [CommonModule, FormsModule, ReactiveFormsModule],
     componentProperties: {
-      salesOrderDetail: signal(salesOrderDetail) as any,
+      salesOrderDetail: salesOrderDetail,
     },
   });
 }

@@ -6,8 +6,7 @@ import { SalesOrderDetail } from "@app/sales-order/models";
 @Component({
   selector: "app-sales-order-info",
   templateUrl: "./sales-order-info.component.html",
-  styleUrls: ["./sales-order-info.component.scss"],
-  standalone: true,
+  styleUrl: "./sales-order-info.component.scss",
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class SalesOrderInfoComponent {

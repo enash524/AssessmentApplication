@@ -1,9 +1,10 @@
-import { signal } from "@angular/core";
-import { DateRangeComponent } from "./date-range.component";
-import { DatePickerModule } from "primeng/datepicker";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import Aura from "@primeuix/themes/aura";
+import { providePrimeNG } from "primeng/config";
+import { DatePickerModule } from "primeng/datepicker";
+import { DateRangeComponent } from "./date-range.component";
 
 function mountDateRangeComponent(label: string = null): Cypress.Chainable {
   return cy.mount(DateRangeComponent, {
@@ -14,8 +15,18 @@ function mountDateRangeComponent(label: string = null): Cypress.Chainable {
       NoopAnimationsModule,
       ReactiveFormsModule,
     ],
+    providers: [
+      providePrimeNG({
+        theme: {
+          preset: Aura,
+          options: {
+            darkModeSelector: false || "none",
+          },
+        },
+      }),
+    ],
     componentProperties: {
-      label: signal(label) as any,
+      label: label,
     },
   });
 }

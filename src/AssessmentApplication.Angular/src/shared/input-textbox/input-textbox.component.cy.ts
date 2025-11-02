@@ -1,8 +1,9 @@
 import { CommonModule } from "@angular/common";
-import { InputTextboxComponent } from "./input-textbox.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { signal } from "@angular/core";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import Aura from "@primeuix/themes/aura";
+import { providePrimeNG } from "primeng/config";
+import { InputTextboxComponent } from "./input-textbox.component";
 
 function mountInputTextboxComponent(label: string = null): Cypress.Chainable {
   return cy.mount(InputTextboxComponent, {
@@ -12,8 +13,18 @@ function mountInputTextboxComponent(label: string = null): Cypress.Chainable {
       NoopAnimationsModule,
       ReactiveFormsModule,
     ],
+    providers: [
+      providePrimeNG({
+        theme: {
+          preset: Aura,
+          options: {
+            darkModeSelector: false || "none",
+          },
+        },
+      }),
+    ],
     componentProperties: {
-      label: signal(label) as any,
+      label: label,
     },
   });
 }
